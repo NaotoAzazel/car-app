@@ -1,9 +1,8 @@
 import type { Metadata } from 'next'
 
-import '../styles/globals.css'
+import '@/shared/globals.css'
 
-import { fontHeading, fontText } from '@/lib/fonts'
-import { cn } from '@/lib/utils'
+import { cn, fontHeading, fontText } from '@/shared/lib'
 
 export const metadata: Metadata = {
   title: 'Car app',
