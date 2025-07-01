@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator json {
+  provider = "prisma-json-types-generator"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Records {
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  title      String
+  mileage    Int
+  /// [Components]
+  components Json
+  /// [Categories]
+  categories Json
+}
+
+model Components {
+  id        Int      @id @default(autoincrement())
+  name      String
+  isLiquid  Boolean
+  createdAt DateTime @default(now())
+}
+
+model RecordTypes {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+}
+
+model Categories {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+}
