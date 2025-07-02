@@ -5,7 +5,9 @@ import '@/shared/globals.css'
 import { AppHeader } from '@/widgets/app-header'
 import { AppSidebar } from '@/widgets/app-sidebar'
 import { cn, fontHeading, fontText } from '@/shared/lib'
-import { SidebarInset, SidebarProvider } from '@/shared/ui'
+import { SidebarInset } from '@/shared/ui'
+
+import { Providers } from './_providers'
 
 export const metadata: Metadata = {
   title: 'Car app',
@@ -26,14 +28,7 @@ export default function RootLayout({
           fontText.variable,
         )}
       >
-        <SidebarProvider
-          style={
-            {
-              '--sidebar-width': 'calc(var(--spacing) * 72)',
-              '--header-height': 'calc(var(--spacing) * 12)',
-            } as React.CSSProperties
-          }
-        >
+        <Providers>
           <AppSidebar variant="inset" />
           <SidebarInset>
             <AppHeader />
@@ -41,7 +36,7 @@ export default function RootLayout({
               <div className="flex-1 flex-grow m-6">{children}</div>
             </main>
           </SidebarInset>
-        </SidebarProvider>
+        </Providers>
       </body>
     </html>
   )
