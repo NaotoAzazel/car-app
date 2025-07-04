@@ -4,6 +4,7 @@ import {
   Component,
   History,
   List,
+  Loader,
   LucideIcon,
 } from 'lucide-react'
 
@@ -15,4 +16,5 @@ export const Icons = {
   history: History,
   circlePlus: CirclePlus,
   list: List,
+  loader: Loader,
 }

@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
+import { CreateRecordDialog } from '@/entities/record'
 import { cn } from '@/shared/lib'
 import {
   Icons,
@@ -27,13 +28,7 @@ export function MainNav({ items }: MainNavProps) {
       <SidebarGroupContent className="flex flex-col gap-2">
         <SidebarMenu>
           <SidebarMenuItem className="flex items-center gap-2">
-            <SidebarMenuButton
-              tooltip="Создать запись"
-              className="bg-primary hover:bg-primary/90 active:bg-primary/90 min-w-8 duration-200 ease-linear"
-            >
-              <Icons.circlePlus className="mr-1 size-4" />
-              <span>Создать запись</span>
-            </SidebarMenuButton>
+            <CreateRecordDialog />
           </SidebarMenuItem>
         </SidebarMenu>
         <SidebarMenu>

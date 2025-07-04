@@ -1,0 +1,1 @@
+export { redirects } from './redirects'
