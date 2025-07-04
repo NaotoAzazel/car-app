@@ -27,6 +27,7 @@ export function useCreateRecord() {
       categories: [],
       components: [],
       mileage: 0,
+      recordTypeId: null,
     })
   }
 

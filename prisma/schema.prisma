@@ -21,6 +21,9 @@ model Records {
   components Json
   /// [Categories]
   categories Json
+
+  recordTypeId Int
+  recordType   RecordTypes @relation(fields: [recordTypeId], references: [id])
 }
 
 model Components {
@@ -31,8 +34,9 @@ model Components {
 }
 
 model RecordTypes {
-  id   Int    @id @default(autoincrement())
-  name String @unique
+  id      Int       @id @default(autoincrement())
+  name    String    @unique
+  Records Records[]
 }
 
 model Categories {

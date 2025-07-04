@@ -31,6 +31,7 @@ export const recordSchema = z.object({
       MILEAGE_MIN_LENGTH,
       `Пробег не может быть меньше ${MILEAGE_MIN_LENGTH}`,
     ),
+  recordTypeId: z.number().optional(),
   components: z.array(componentsSchema),
   categories: z.array(categoriesSchema),
 })
