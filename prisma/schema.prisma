@@ -22,8 +22,8 @@ model Records {
   /// [Categories]
   categories Json
 
-  recordTypeId Int
-  recordType   RecordTypes @relation(fields: [recordTypeId], references: [id])
+  recordTypeId Int?
+  recordType   RecordTypes? @relation(fields: [recordTypeId], references: [id])
 }
 
 model Components {
