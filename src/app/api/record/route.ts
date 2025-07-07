@@ -3,7 +3,12 @@ import { createRecord, recordSchema } from '@/entities/record'
 export async function POST(request: Request) {
   try {
     const json = await request.json()
-    const body = recordSchema.parse(json)
+    const parsedJson = {
+      ...json,
+      createdAt: new Date(json.createdAt),
+    }
+
+    const body = recordSchema.parse(parsedJson)
 
     const createdRecord = await createRecord(body)
 
@@ -12,6 +17,7 @@ export async function POST(request: Request) {
       { status: 200 },
     )
   } catch (error) {
+    console.error(error)
     if (error instanceof Error) {
       return Response.json({ message: error.message }, { status: 500 })
     }

@@ -20,9 +20,6 @@ export const createRecordSchema = z.object(titleValidation)
 
 export type CreateRecordSchema = z.infer<typeof createRecordSchema>
 
-const componentsSchema = z.object({ componentId: z.number(), cost: z.number() })
-const categoriesSchema = z.number()
-
 export const recordSchema = z.object({
   ...titleValidation,
   mileage: z
@@ -32,6 +29,7 @@ export const recordSchema = z.object({
       `Пробег не может быть меньше ${MILEAGE_MIN_LENGTH}`,
     ),
   recordTypeId: z.number().nullable(),
-  components: z.array(componentsSchema),
-  categories: z.array(categoriesSchema),
+  createdAt: z.date(),
 })
+
+export type RecordSchema = z.infer<typeof recordSchema>

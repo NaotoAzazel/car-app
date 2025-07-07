@@ -4,9 +4,29 @@ import { Records } from '@prisma/client'
 
 import { db } from '@/shared/lib'
 
-export type CreateRecordParam = Omit<Records, 'id' | 'createdAt' | 'updatedAt'>
+export type CreateRecordParam = Omit<Records, 'id' | 'updatedAt'>
 
 export async function createRecord(record: CreateRecordParam) {
-  const createdRecord = await db.records.create({ data: record })
-  return createdRecord
+  return await db.records.create({
+    data: { ...record, RecordsComponents: { create: [] } },
+  })
+}
+
+export async function getRecordById(id: Records['id']) {
+  return await db.records.findFirst({
+    where: { id },
+    include: {
+      recordType: true,
+      RecordsComponents: {
+        include: {
+          component: true,
+        },
+      },
+    },
+  })
+}
+
+export async function getRecordTypes() {
+  const recordTypes = await db.recordTypes.findMany()
+  return recordTypes
 }
