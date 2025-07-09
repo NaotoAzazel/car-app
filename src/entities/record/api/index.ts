@@ -2,6 +2,7 @@ export {
   createRecord,
   getRecordById,
   getRecordTypes,
+  updateRecordById,
   type CreateRecordParam,
 } from './actions'
-export { createRecordRequest } from './requests'
+export { createRecordRequest, updateRecordByIdRequest } from './requests'

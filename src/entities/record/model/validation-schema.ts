@@ -16,9 +16,27 @@ const titleValidation = {
     }),
 }
 
-export const createRecordSchema = z.object(titleValidation)
+export const createRecordFormSchema = z.object(titleValidation)
 
-export type CreateRecordSchema = z.infer<typeof createRecordSchema>
+export type CreateRecordFormSchema = z.infer<typeof createRecordFormSchema>
+
+const componentsSchema = z.object({
+  componentId: z.number(),
+  recordId: z.number(),
+  component: z.object({
+    id: z.number(),
+    name: z.string(),
+    cost: z.number(),
+    isLiquid: z.boolean(),
+  }),
+})
+
+export type ComponentsSchema = z.infer<typeof componentsSchema>
+
+const recordTypeSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+})
 
 export const recordSchema = z.object({
   ...titleValidation,
@@ -29,7 +47,20 @@ export const recordSchema = z.object({
       `Пробег не может быть меньше ${MILEAGE_MIN_LENGTH}`,
     ),
   recordTypeId: z.number().nullable(),
+  recordType: recordTypeSchema.nullable(),
   createdAt: z.date(),
+  components: z.array(componentsSchema),
 })
 
 export type RecordSchema = z.infer<typeof recordSchema>
+
+export const createRecordSchema = recordSchema.omit({
+  components: true,
+})
+export type CreateRecordRequest = z.infer<typeof createRecordSchema>
+
+export const updateRecordSchema = recordSchema.partial().extend({
+  id: z.number(),
+})
+
+export type UpdateRecordRequest = z.infer<typeof updateRecordSchema>

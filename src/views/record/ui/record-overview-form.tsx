@@ -1,10 +1,15 @@
 'use client'
 
-import { useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 
-import { getRecordById, recordSchema, RecordSchema } from '@/entities/record'
+import {
+  getRecordById,
+  recordSchema,
+  RecordSchema,
+  RecordsComponentWithData,
+  useUpdateRecordById,
+} from '@/entities/record'
 import {
   Button,
   Form,
@@ -27,22 +32,19 @@ interface RecordOverviewFormProps {
 }
 
 export function RecordOverviewForm({ record }: RecordOverviewFormProps) {
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const { update, isPending } = useUpdateRecordById()
 
   const form = useForm<RecordSchema>({
     resolver: zodResolver(recordSchema),
     defaultValues: {
       ...record,
+      components: record?.RecordsComponents,
     },
   })
 
   const onSubmit = async (data: RecordSchema) => {
-    setIsLoading(true)
     console.log(data)
-
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 5000)
+    await update({ id: record!.id, ...data })
   }
 
   return (
@@ -61,7 +63,7 @@ export function RecordOverviewForm({ record }: RecordOverviewFormProps) {
                 <FormControl>
                   <Input
                     className="h-10"
-                    disabled={isLoading}
+                    disabled={isPending}
                     placeholder="Замена масла, масляного фильтра"
                     {...field}
                   />
@@ -80,7 +82,7 @@ export function RecordOverviewForm({ record }: RecordOverviewFormProps) {
                   <RecordTypeSelect
                     field={field}
                     initialValue={record?.recordType ? [record.recordType] : []}
-                    disabled={isLoading}
+                    disabled={isPending}
                   />
                 </FormControl>
                 <FormMessage />
@@ -89,12 +91,25 @@ export function RecordOverviewForm({ record }: RecordOverviewFormProps) {
           />
         </FormSection>
         <FormSection title="Компоненты">
-          <ComponentsContainer
-            recordId={record!.id}
-            components={record?.RecordsComponents}
+          <FormField
+            control={form.control}
+            name="components"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <ComponentsContainer
+                    recordId={record!.id}
+                    value={field.value as RecordsComponentWithData[]}
+                    onChange={field.onChange}
+                    disabled={isPending}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
         </FormSection>
-        <FormSection title="Дата создания">
+        <FormSection title="Дата создания и пробег">
           <FormField
             control={form.control}
             name="createdAt"
@@ -103,14 +118,36 @@ export function RecordOverviewForm({ record }: RecordOverviewFormProps) {
                 <FormLabel className="text-lg font-heading">
                   Дата создания
                 </FormLabel>
-                <DatePickerPopover disabled={isLoading} field={field} />
+                <DatePickerPopover disabled={isPending} field={field} />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="mileage"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-lg font-heading">
+                  Пробег (километры)
+                </FormLabel>
+                <Input
+                  className="h-10"
+                  disabled={isPending}
+                  placeholder="122459"
+                  type="number"
+                  min="0"
+                  onChange={(e) => field.onChange(Number(e.target.value))}
+                  value={field.value ?? ''}
+                />
+                {/* TODO: add button insert current */}
                 <FormMessage />
               </FormItem>
             )}
           />
         </FormSection>
-        <Button type="submit" disabled={isLoading}>
-          {isLoading && <Icons.loader className="mr-2 size-4 animate-spin" />}
+        <Button type="submit" disabled={isPending}>
+          {isPending && <Icons.loader className="mr-2 size-4 animate-spin" />}
           <span>Сохранить</span>
         </Button>
       </form>

@@ -1,4 +1,4 @@
-import { createRecord, recordSchema } from '@/entities/record'
+import { createRecord, createRecordSchema } from '@/entities/record'
 
 export async function POST(request: Request) {
   try {
@@ -8,7 +8,7 @@ export async function POST(request: Request) {
       createdAt: new Date(json.createdAt),
     }
 
-    const body = recordSchema.parse(parsedJson)
+    const body = createRecordSchema.parse(parsedJson)
 
     const createdRecord = await createRecord(body)
 

@@ -28,6 +28,7 @@ export function useCreateRecord() {
       title,
       mileage: 0,
       recordTypeId: null,
+      recordType: null,
       createdAt: now,
     })
   }

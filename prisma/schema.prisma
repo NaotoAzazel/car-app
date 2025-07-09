@@ -24,7 +24,6 @@ model Components {
   name              String
   isLiquid          Boolean             @default(false)
   cost              Int
-  createdAt         DateTime            @default(now())
   RecordsComponents RecordsComponents[]
 }
 

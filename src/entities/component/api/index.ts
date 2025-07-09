@@ -1,1 +1,1 @@
-export { getComponents } from './actions'
+export { getComponents, getComponentsForPagination } from './actions'

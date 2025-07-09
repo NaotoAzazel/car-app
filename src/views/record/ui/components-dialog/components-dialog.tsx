@@ -2,18 +2,17 @@ import { useEffect, useState } from 'react'
 import { Components } from '@prisma/client'
 
 import { useGetComponents } from '@/entities/component'
-import { cn } from '@/shared/lib'
+import { useDebounce, useIntersection } from '@/shared/lib'
 import {
   Button,
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-  Icons,
   Input,
 } from '@/shared/ui'
 
-import { ComponentListItem } from '../components-container/component-list-item'
+import { ComponentsDialogList } from './components-dialog-list'
 
 interface ComponentsDialogProps {
   onConfirm: (components: Components[]) => void
@@ -28,15 +27,22 @@ export function ComponentsDialog({
   onOpenChange,
   initiallySelected,
 }: ComponentsDialogProps) {
-  const { data, isError, isLoading, isFetched, refetch } = useGetComponents()
+  const [searchValue, setSearchValue] = useState<string>('')
+  const debouncedSearch = useDebounce<string>(searchValue, 1_000)
+
   const [selected, setSelected] = useState<Components[]>(
     initiallySelected ?? [],
   )
-  const [searchValue, setSearchValue] = useState<string>('')
 
-  const filteredData = data?.filter((component) =>
-    component.name.toLowerCase().includes(searchValue.toLowerCase()),
-  )
+  const {
+    data,
+    isError,
+    isLoading,
+    isFetched,
+    isFetchingNextPage,
+    refetch,
+    fetchNextPage,
+  } = useGetComponents(debouncedSearch)
 
   const toggleSelect = (component: Components) => {
     setSelected((prev) => {
@@ -46,6 +52,18 @@ export function ComponentsDialog({
         : [...prev, component]
     })
   }
+
+  const cursorRef = useIntersection(() => {
+    if (!isFetchingNextPage) {
+      fetchNextPage()
+    }
+  })
+
+  useEffect(() => {
+    if (debouncedSearch.length > 0) {
+      refetch()
+    }
+  }, [debouncedSearch])
 
   useEffect(() => {
     if (isOpen && !isFetched) {
@@ -69,35 +87,16 @@ export function ComponentsDialog({
             onChange={(e) => setSearchValue(e.target.value)}
           />
 
-          {isLoading && (
-            <div className="flex text-muted-foreground text-sm items-center justify-center py-5">
-              <Icons.loader className="mr-2 size-4 animate-spin" />
-              <span>Загрузка компонентов...</span>
-            </div>
-          )}
-
-          {isError && (
-            <div className="text-destructive text-sm text-center py-4">
-              Ошибка загрузки компонентов
-            </div>
-          )}
-
-          {!isLoading && !isError && (
-            <div className="grid gap-1">
-              {filteredData?.map((component) => (
-                <ComponentListItem
-                  key={component.id}
-                  className={cn(
-                    'hover:cursor-pointer hover:bg-accent duration-200',
-                    selected.some((c) => c.id === component.id) && 'bg-accent',
-                  )}
-                  cost={component.cost}
-                  name={component.name}
-                  onClick={() => toggleSelect(component)}
-                />
-              ))}
-            </div>
-          )}
+          <ComponentsDialogList
+            data={data}
+            isLoading={isLoading}
+            isError={isError}
+            isFetchingNextPage={isFetchingNextPage}
+            searchValue={debouncedSearch}
+            selected={selected}
+            onToggle={toggleSelect}
+            cursorRef={cursorRef}
+          />
 
           <Button
             className="w-full mt-4"
@@ -106,7 +105,7 @@ export function ComponentsDialog({
               onConfirm(selected)
               onOpenChange(false)
             }}
-            disabled={isLoading || isError}
+            disabled={isLoading || isError || isFetchingNextPage}
           >
             Применить изменения
           </Button>
