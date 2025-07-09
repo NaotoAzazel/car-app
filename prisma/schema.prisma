@@ -2,40 +2,60 @@ generator client {
   provider = "prisma-client-js"
 }
 
-generator json {
-  provider = "prisma-json-types-generator"
-}
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model Records {
-  id         Int      @id @default(autoincrement())
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  title      String
-  mileage    Int
-  /// [Components]
-  components Json
-  /// [Categories]
-  categories Json
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String
+  mileage   Int
+
+  recordTypeId      Int?
+  recordType        RecordTypes?        @relation(fields: [recordTypeId], references: [id])
+  RecordsComponents RecordsComponents[]
+  TagsComponents    TagsComponents[]
 }
 
 model Components {
-  id        Int      @id @default(autoincrement())
-  name      String
-  isLiquid  Boolean
-  createdAt DateTime @default(now())
+  id                Int                 @id @default(autoincrement())
+  name              String
+  isLiquid          Boolean             @default(false)
+  cost              Int
+  RecordsComponents RecordsComponents[]
+}
+
+model Tags {
+  id             Int              @id @default(autoincrement())
+  name           String
+  TagsComponents TagsComponents[]
+}
+
+model TagsComponents {
+  recordId Int
+  tagId    Int
+
+  record Records @relation(fields: [recordId], references: [id])
+  tag    Tags    @relation(fields: [tagId], references: [id])
+
+  @@id([recordId, tagId])
+}
+
+model RecordsComponents {
+  recordId    Int
+  componentId Int
+
+  record    Records    @relation(fields: [recordId], references: [id])
+  component Components @relation(fields: [componentId], references: [id])
+
+  @@id([recordId, componentId])
 }
 
 model RecordTypes {
-  id   Int    @id @default(autoincrement())
-  name String @unique
-}
-
-model Categories {
-  id   Int    @id @default(autoincrement())
-  name String @unique
+  id      Int       @id @default(autoincrement())
+  name    String    @unique
+  Records Records[]
 }

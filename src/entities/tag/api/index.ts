@@ -1,0 +1,1 @@
+export { getTagsForPagination } from './actions'

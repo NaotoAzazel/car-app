@@ -25,21 +25,21 @@ import {
 } from '@/shared/ui'
 
 import { useCreateRecord } from '../lib'
-import { createRecordSchema, CreateRecordSchema } from '../model'
+import { createRecordFormSchema, CreateRecordFormSchema } from '../model'
 
 export function CreateRecordDialog() {
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
   const { create, isPending } = useCreateRecord()
 
-  const form = useForm<CreateRecordSchema>({
-    resolver: zodResolver(createRecordSchema),
+  const form = useForm<CreateRecordFormSchema>({
+    resolver: zodResolver(createRecordFormSchema),
     defaultValues: {
       title: '',
     },
   })
 
-  const onSubmit = async (data: CreateRecordSchema) => {
+  const onSubmit = async (data: CreateRecordFormSchema) => {
     try {
       await create(data.title)
     } catch (error) {

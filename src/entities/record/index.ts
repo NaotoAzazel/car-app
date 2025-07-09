@@ -1,3 +1,14 @@
 export { CreateRecordDialog } from './ui/create-record-dialog'
-export { createRecord } from './api'
-export { createRecordSchema, recordSchema } from './model'
+export { createRecord, getRecordById, updateRecordById } from './api'
+export {
+  createRecordSchema,
+  recordSchema,
+  updateRecordSchema,
+  createRecordFormSchema,
+  type CreateRecordFormSchema,
+  type RecordSchema,
+  type ComponentsSchema,
+  type RecordsComponentWithData,
+  type TagsSchema,
+} from './model'
+export { useGetRecordTypes, useGetRecordById, useUpdateRecordById } from './lib'

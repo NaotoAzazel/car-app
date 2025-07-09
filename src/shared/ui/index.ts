@@ -8,5 +8,10 @@ export * from './tooltip'
 export * from './dialog'
 export * from './form'
 export { Label } from './label'
-
+export * from './select'
+export * from './popover'
+export * from './calendar'
+export * from './scroll-area'
 export * from './icons/icons'
+
+export { Title } from './title/title'

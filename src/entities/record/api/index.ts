@@ -1,2 +1,7 @@
-export { createRecord, type CreateRecordParam } from './actions'
-export { createRecordRequest } from './requests'
+export {
+  createRecord,
+  getRecordById,
+  getRecordTypes,
+  updateRecordById,
+} from './actions'
+export { createRecordRequest, updateRecordByIdRequest } from './requests'

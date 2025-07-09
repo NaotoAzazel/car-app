@@ -1,0 +1,1 @@
+export { useGetComponents } from './lib'

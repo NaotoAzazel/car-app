@@ -1,7 +1,10 @@
 import {
+  Calendar,
   ChartArea,
+  Check,
   CirclePlus,
   Component,
+  Filter,
   History,
   List,
   Loader,
@@ -17,4 +20,5 @@ export const Icons = {
   circlePlus: CirclePlus,
   list: List,
   loader: Loader,
+  calendar: Calendar,
 }

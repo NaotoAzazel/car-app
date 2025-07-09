@@ -16,12 +16,38 @@ const titleValidation = {
     }),
 }
 
-export const createRecordSchema = z.object(titleValidation)
+export const createRecordFormSchema = z.object(titleValidation)
 
-export type CreateRecordSchema = z.infer<typeof createRecordSchema>
+export type CreateRecordFormSchema = z.infer<typeof createRecordFormSchema>
 
-const componentsSchema = z.object({ componentId: z.number(), cost: z.number() })
-const categoriesSchema = z.number()
+const componentsSchema = z.object({
+  componentId: z.number(),
+  recordId: z.number(),
+  component: z.object({
+    id: z.number(),
+    name: z.string(),
+    cost: z.number(),
+    isLiquid: z.boolean(),
+  }),
+})
+
+export type ComponentsSchema = z.infer<typeof componentsSchema>
+
+const tagsSchema = z.object({
+  recordId: z.number(),
+  tagId: z.number(),
+  tag: z.object({
+    id: z.number(),
+    name: z.string(),
+  }),
+})
+
+export type TagsSchema = z.infer<typeof tagsSchema>
+
+const recordTypeSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+})
 
 export const recordSchema = z.object({
   ...titleValidation,
@@ -31,6 +57,23 @@ export const recordSchema = z.object({
       MILEAGE_MIN_LENGTH,
       `Пробег не может быть меньше ${MILEAGE_MIN_LENGTH}`,
     ),
+  recordTypeId: z.number().nullable(),
+  recordType: recordTypeSchema.nullable(),
+  createdAt: z.date(),
   components: z.array(componentsSchema),
-  categories: z.array(categoriesSchema),
+  tags: z.array(tagsSchema),
 })
+
+export type RecordSchema = z.infer<typeof recordSchema>
+
+export const createRecordSchema = recordSchema.omit({
+  components: true,
+  tags: true,
+})
+export type CreateRecordRequest = z.infer<typeof createRecordSchema>
+
+export const updateRecordSchema = recordSchema.partial().extend({
+  id: z.number(),
+})
+
+export type UpdateRecordRequest = z.infer<typeof updateRecordSchema>

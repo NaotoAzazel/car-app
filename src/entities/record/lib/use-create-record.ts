@@ -22,11 +22,14 @@ export function useCreateRecord() {
   })
 
   const create = async (title: Records['title']) => {
+    const now = new Date()
+
     await mutateAsync({
       title,
-      categories: [],
-      components: [],
       mileage: 0,
+      recordTypeId: null,
+      recordType: null,
+      createdAt: now,
     })
   }
 
