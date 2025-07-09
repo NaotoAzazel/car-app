@@ -4,13 +4,13 @@ import { Records } from '@prisma/client'
 
 import { db } from '@/shared/lib'
 
-import { UpdateRecordRequest } from '../model'
+import { CreateRecordRequest, UpdateRecordRequest } from '../model'
 
-export type CreateRecordParam = Omit<Records, 'id' | 'updatedAt'>
+export async function createRecord(record: CreateRecordRequest) {
+  const { recordTypeId, recordType, ...rest } = record
 
-export async function createRecord(record: CreateRecordParam) {
   return await db.records.create({
-    data: { ...record, RecordsComponents: { create: [] } },
+    data: { ...rest, RecordsComponents: { create: [] } },
   })
 }
 
