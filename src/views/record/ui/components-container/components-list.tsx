@@ -4,6 +4,7 @@ import { RecordsComponentWithData } from '@/entities/record'
 import { formatCurrency } from '@/shared/lib'
 import { ScrollArea } from '@/shared/ui'
 
+import { ListItem } from '../list-item'
 import { ComponentListItem } from './component-list-item'
 
 const VISIBLE_COUNT = 6
@@ -44,7 +45,7 @@ export function ComponentsList({ components }: ComponentsListProps) {
         ))}
 
         {placeholders.map((_, i) => (
-          <ComponentListItem.Empty key={i} className="mt-1" />
+          <ListItem.Empty key={i} className="mt-1" />
         ))}
       </ScrollArea>
       <div className="flex justify-between">

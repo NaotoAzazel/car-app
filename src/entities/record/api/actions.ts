@@ -24,6 +24,11 @@ export async function getRecordById(id: Records['id']) {
           component: true,
         },
       },
+      TagsComponents: {
+        include: {
+          tag: true,
+        },
+      },
     },
   })
 }
@@ -37,7 +42,14 @@ export async function updateRecordById(
   id: number,
   record: UpdateRecordRequest,
 ) {
-  const { recordTypeId, recordType, components, id: recordId, ...rest } = record
+  const {
+    recordTypeId,
+    recordType,
+    components,
+    tags,
+    id: recordId,
+    ...rest
+  } = record
 
   await db.records.update({
     where: { id },
@@ -52,6 +64,15 @@ export async function updateRecordById(
         create: components?.map((c) => ({
           component: {
             connect: { id: c.componentId },
+          },
+        })),
+      },
+
+      TagsComponents: {
+        deleteMany: {},
+        create: tags?.map((t) => ({
+          tag: {
+            connect: { id: t.tagId },
           },
         })),
       },

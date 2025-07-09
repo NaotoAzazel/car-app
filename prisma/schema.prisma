@@ -17,6 +17,7 @@ model Records {
   recordTypeId      Int?
   recordType        RecordTypes?        @relation(fields: [recordTypeId], references: [id])
   RecordsComponents RecordsComponents[]
+  TagsComponents    TagsComponents[]
 }
 
 model Components {
@@ -25,6 +26,22 @@ model Components {
   isLiquid          Boolean             @default(false)
   cost              Int
   RecordsComponents RecordsComponents[]
+}
+
+model Tags {
+  id             Int              @id @default(autoincrement())
+  name           String
+  TagsComponents TagsComponents[]
+}
+
+model TagsComponents {
+  recordId Int
+  tagId    Int
+
+  record Records @relation(fields: [recordId], references: [id])
+  tag    Tags    @relation(fields: [tagId], references: [id])
+
+  @@id([recordId, tagId])
 }
 
 model RecordsComponents {

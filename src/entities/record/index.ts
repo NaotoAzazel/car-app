@@ -9,5 +9,6 @@ export {
   type RecordSchema,
   type ComponentsSchema,
   type RecordsComponentWithData,
+  type TagsSchema,
 } from './model'
 export { useGetRecordTypes, useGetRecordById, useUpdateRecordById } from './lib'

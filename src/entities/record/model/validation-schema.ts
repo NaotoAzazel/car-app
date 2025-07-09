@@ -33,6 +33,17 @@ const componentsSchema = z.object({
 
 export type ComponentsSchema = z.infer<typeof componentsSchema>
 
+const tagsSchema = z.object({
+  recordId: z.number(),
+  tagId: z.number(),
+  tag: z.object({
+    id: z.number(),
+    name: z.string(),
+  }),
+})
+
+export type TagsSchema = z.infer<typeof tagsSchema>
+
 const recordTypeSchema = z.object({
   id: z.number(),
   name: z.string(),
@@ -50,12 +61,14 @@ export const recordSchema = z.object({
   recordType: recordTypeSchema.nullable(),
   createdAt: z.date(),
   components: z.array(componentsSchema),
+  tags: z.array(tagsSchema),
 })
 
 export type RecordSchema = z.infer<typeof recordSchema>
 
 export const createRecordSchema = recordSchema.omit({
   components: true,
+  tags: true,
 })
 export type CreateRecordRequest = z.infer<typeof createRecordSchema>
 

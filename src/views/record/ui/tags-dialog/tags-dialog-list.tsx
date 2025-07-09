@@ -1,23 +1,23 @@
-import { Components } from '@prisma/client'
+import { Tags } from '@prisma/client'
 
 import { cn } from '@/shared/lib'
 import { Icons, ScrollArea } from '@/shared/ui'
 
-import { ComponentListItem } from '../components-container/component-list-item'
 import { ListItem } from '../list-item'
+import { TagsDialogListItem } from './tags-dialog-list-item'
 
-interface ComponentsDialogListProps {
-  data?: Components[]
+interface TagsDialogListProps {
+  data?: Tags[]
   isLoading: boolean
   isError: boolean
   isFetchingNextPage: boolean
   searchValue: string
-  selected: Components[]
-  onToggle: (component: Components) => void
+  selected: Tags[]
+  onToggle: (component: Tags) => void
   cursorRef: (el: HTMLDivElement | null) => void
 }
 
-export function ComponentsDialogList({
+export function TagsDialogList({
   data,
   isLoading,
   isError,
@@ -26,7 +26,7 @@ export function ComponentsDialogList({
   selected,
   onToggle,
   cursorRef,
-}: ComponentsDialogListProps) {
+}: TagsDialogListProps) {
   const isInitialLoading = isLoading && !data
   const hasNoResults = data?.length === 0 && !isFetchingNextPage
 
@@ -60,16 +60,15 @@ export function ComponentsDialogList({
 
   return (
     <ScrollArea className="h-64 w-full" type="always">
-      {data?.map((component) => (
-        <ComponentListItem
-          key={component.id}
-          name={component.name}
-          cost={component.cost}
+      {data?.map((tag) => (
+        <TagsDialogListItem
+          key={tag.id}
+          name={tag.name}
           className={cn(
             'hover:cursor-pointer hover:bg-accent duration-200 mt-1',
-            selected.some((c) => c.id === component.id) && 'bg-accent',
+            selected.some((c) => c.id === tag.id) && 'bg-accent',
           )}
-          onClick={() => onToggle(component)}
+          onClick={() => onToggle(tag)}
         />
       ))}
       {data && data.length >= 6 && (

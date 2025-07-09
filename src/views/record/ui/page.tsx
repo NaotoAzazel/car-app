@@ -22,7 +22,6 @@ export function RecordOverviewPage({ id }: RecordOverviewPageProps) {
 
   return (
     <div className="grid items-start gap-4">
-      <span>{JSON.stringify(data)}</span>
       <Title heading="Редактирование записи" />
       <RecordOverviewForm record={data} />
     </div>

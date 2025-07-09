@@ -8,6 +8,7 @@ import {
   recordSchema,
   RecordSchema,
   RecordsComponentWithData,
+  TagsSchema,
   useUpdateRecordById,
 } from '@/entities/record'
 import {
@@ -26,6 +27,7 @@ import { ComponentsContainer } from './components-container/components-container
 import { DatePickerPopover } from './date-picker-popover'
 import { FormSection } from './form-section'
 import { RecordTypeSelect } from './record-type-select'
+import { TagsContainer } from './tags-container/tags-container'
 
 interface RecordOverviewFormProps {
   record: Awaited<ReturnType<typeof getRecordById>>
@@ -39,11 +41,11 @@ export function RecordOverviewForm({ record }: RecordOverviewFormProps) {
     defaultValues: {
       ...record,
       components: record?.RecordsComponents,
+      tags: record?.TagsComponents,
     },
   })
 
   const onSubmit = async (data: RecordSchema) => {
-    console.log(data)
     await update({ id: record!.id, ...data })
   }
 
@@ -90,16 +92,37 @@ export function RecordOverviewForm({ record }: RecordOverviewFormProps) {
             )}
           />
         </FormSection>
-        <FormSection title="Компоненты">
+        <FormSection title="Компоненты и тэги">
           <FormField
             control={form.control}
             name="components"
             render={({ field }) => (
               <FormItem>
+                <FormLabel className="text-lg font-heading">
+                  Компоненты
+                </FormLabel>
                 <FormControl>
                   <ComponentsContainer
                     recordId={record!.id}
                     value={field.value as RecordsComponentWithData[]}
+                    onChange={field.onChange}
+                    disabled={isPending}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="tags"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-lg font-heading">Тэги</FormLabel>
+                <FormControl>
+                  <TagsContainer
+                    recordId={record!.id}
+                    value={field.value as TagsSchema[]}
                     onChange={field.onChange}
                     disabled={isPending}
                   />
