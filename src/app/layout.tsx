@@ -22,6 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
+        suppressHydrationWarning
         className={cn(
           'relative h-full font-primary antialiased',
           fontHeading.variable,
