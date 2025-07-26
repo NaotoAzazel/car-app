@@ -11,4 +11,9 @@ export {
   type RecordsComponentWithData,
   type TagsSchema,
 } from './model'
-export { useGetRecordTypes, useGetRecordById, useUpdateRecordById } from './lib'
+export {
+  useGetRecordTypes,
+  useGetRecordById,
+  useUpdateRecordById,
+  useGetRecords,
+} from './lib'
