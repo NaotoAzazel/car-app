@@ -16,9 +16,11 @@ export function ComponentListItem({
   const formattedCost = formatCurrency(cost)
 
   return (
-    <ListItem {...props} className={cn(className)}>
-      <p className="flex-1 break-words">{name}</p>
-      <span className="text-muted-foreground">{formattedCost}</span>
+    <ListItem {...props} className={cn('flex', className)}>
+      <p className="flex-1 break-all break-words">{name}</p>
+      <span className="text-muted-foreground flex items-center">
+        {formattedCost}
+      </span>
     </ListItem>
   )
 }
