@@ -1,6 +1,6 @@
 'use server'
 
-import { Records } from '@prisma/client'
+import { Prisma, Records } from '@prisma/client'
 
 import { db } from '@/shared/lib'
 
@@ -31,6 +31,90 @@ export async function getRecordById(id: Records['id']) {
       },
     },
   })
+}
+
+interface GetRecordsForPaginationParams {
+  title?: string
+  page: number
+  itemsPerPage: number
+  includeTags?: boolean
+  includeComponents?: boolean
+  includeTypes?: boolean
+}
+
+export async function getRecordsForPagination({
+  page,
+  itemsPerPage,
+  title,
+  includeTags = false,
+  includeComponents = false,
+  includeTypes = false,
+}: GetRecordsForPaginationParams) {
+  const skip = (page - 1) * itemsPerPage
+
+  const whereClause = {
+    title: {
+      contains: title,
+      mode: Prisma.QueryMode.insensitive,
+    },
+  }
+
+  const include: Prisma.RecordsFindManyArgs['include'] = {}
+
+  if (includeTypes) {
+    include.recordType = true
+  }
+
+  if (includeComponents) {
+    include.RecordsComponents = {
+      include: {
+        component: true,
+      },
+    }
+  }
+
+  if (includeTags) {
+    include.TagsComponents = {
+      include: {
+        tag: true,
+      },
+    }
+  }
+
+  const totalItems = await db.records.count({
+    where: whereClause,
+  })
+
+  const records = await db.records.findMany({
+    where: whereClause,
+    take: itemsPerPage,
+    skip,
+    include: {
+      recordType: true,
+      RecordsComponents: {
+        include: {
+          component: true,
+        },
+      },
+      TagsComponents: {
+        include: {
+          tag: true,
+        },
+      },
+    },
+  })
+
+  const totalPages = Math.ceil(totalItems / itemsPerPage)
+
+  return {
+    data: records,
+    metadata: {
+      totalPages,
+      totalItems,
+      hasNextPage: page < totalPages,
+      hasPrevPage: page > 1,
+    },
+  }
 }
 
 export async function getRecordTypes() {

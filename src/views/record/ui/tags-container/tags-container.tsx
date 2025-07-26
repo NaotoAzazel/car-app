@@ -4,10 +4,9 @@ import { useState } from 'react'
 import { Tags } from '@prisma/client'
 
 import { TagsSchema } from '@/entities/record'
-import { Button } from '@/shared/ui'
+import { Button, TagsList } from '@/shared/ui'
 
 import { TagsDialog } from '../tags-dialog/tags-dialog'
-import { TagsList } from './tags-list'
 
 interface TagsContainerProps {
   recordId: number
@@ -36,7 +35,15 @@ export function TagsContainer({
   return (
     <>
       <div className="flex flex-col rounded-md p-2 space-y-2 border bg-background justify-center">
-        <TagsList tags={value} />
+        {value.length ? (
+          <TagsList tags={value} />
+        ) : (
+          <div className="flex items-center justify-center">
+            <span className="text-sm text-muted-foreground py-10">
+              Тэги не добавлены
+            </span>
+          </div>
+        )}
         <Button
           variant="outline"
           onClick={() => setIsTagsDialogOpen(true)}

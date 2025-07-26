@@ -5,16 +5,6 @@ interface TagsListProps {
 }
 
 export function TagsList({ tags }: TagsListProps) {
-  if (tags.length === 0) {
-    return (
-      <div className="flex items-center justify-center">
-        <span className="text-sm text-muted-foreground py-10">
-          Тэги не добавлены
-        </span>
-      </div>
-    )
-  }
-
   return (
     <div className="flex flex-wrap gap-1 max-w-max">
       {tags?.map((tag) => (

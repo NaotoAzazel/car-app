@@ -7,4 +7,4 @@ export { useDebounce } from './use-debounce/use-debounce'
 
 export { db } from './db/prisma'
 
-export { formatCurrency } from './formatters'
+export { formatCurrency, formatDate } from './formatters'
