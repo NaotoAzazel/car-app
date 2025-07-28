@@ -33,7 +33,7 @@ export default function RootLayout({
           <AppSidebar variant="inset" />
           <SidebarInset>
             <AppHeader />
-            <main className="relative flex min-h-screen flex-col">
+            <main className="relative flex flex-col">
               <div className="flex-1 flex-grow m-6">{children}</div>
             </main>
           </SidebarInset>
