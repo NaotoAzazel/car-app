@@ -4,6 +4,7 @@ import {
   Check,
   CirclePlus,
   Component,
+  Droplets,
   Filter,
   History,
   List,
@@ -21,4 +22,5 @@ export const Icons = {
   list: List,
   loader: Loader,
   calendar: Calendar,
+  droplets: Droplets,
 }

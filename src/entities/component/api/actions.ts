@@ -1,8 +1,19 @@
 'use server'
 
-import { Prisma } from '@prisma/client'
+import { Components, Prisma } from '@prisma/client'
 
 import { db } from '@/shared/lib'
+
+export async function createComponent(component: Omit<Components, 'id'>) {
+  return await db.components.create({ data: component })
+}
+
+export async function deleteComponentById(id: Components['id']) {
+  await db.recordsComponents.deleteMany({
+    where: { componentId: id },
+  })
+  return await db.components.delete({ where: { id } })
+}
 
 export async function getComponents() {
   return await db.components.findMany()

@@ -1,1 +1,7 @@
-export { getComponents, getComponentsForPagination } from './actions'
+export {
+  getComponents,
+  getComponentsForPagination,
+  createComponent,
+  deleteComponentById,
+} from './actions'
+export { createComponentRequest, deleteComponentByIdRequest } from './requests'
