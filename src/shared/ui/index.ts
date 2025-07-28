@@ -12,6 +12,7 @@ export * from './select'
 export * from './popover'
 export * from './calendar'
 export * from './scroll-area'
+export { Switch } from './switch'
 export * from './icons/icons'
 
 export { Title } from './title/title'

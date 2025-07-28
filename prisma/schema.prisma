@@ -25,6 +25,7 @@ model Components {
   name              String
   isLiquid          Boolean             @default(false)
   cost              Int
+  code              String
   RecordsComponents RecordsComponents[]
 }
 

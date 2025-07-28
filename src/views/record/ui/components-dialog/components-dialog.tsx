@@ -14,6 +14,8 @@ import {
 
 import { ComponentsDialogList } from './components-dialog-list'
 
+const COMPONENTS_PER_PAGE = 6
+
 interface ComponentsDialogProps {
   onConfirm: (components: Components[]) => void
   isOpen: boolean
@@ -42,7 +44,10 @@ export function ComponentsDialog({
     isFetchingNextPage,
     refetch,
     fetchNextPage,
-  } = useGetComponents(debouncedSearch)
+  } = useGetComponents({
+    sortByName: debouncedSearch,
+    itemsPerPage: COMPONENTS_PER_PAGE,
+  })
 
   const toggleSelect = (component: Components) => {
     setSelected((prev) => {
