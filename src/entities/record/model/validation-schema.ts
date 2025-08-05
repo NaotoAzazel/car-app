@@ -5,6 +5,9 @@ const TITLE_MAX_LENGTH = 128
 
 const MILEAGE_MIN_LENGTH = 0
 
+const ADDITIONAL_SPEND_COST_MIN_VALUE = 1
+const ADDITIONAL_SPEND_COST_MAX_VALUE = 2_000_000_000
+
 const titleValidation = {
   title: z
     .string({ message: 'Обязательное поле' })
@@ -49,6 +52,20 @@ const recordTypeSchema = z.object({
   name: z.string(),
 })
 
+export const additionalSpendsSchema = z.object({
+  id: z.number(),
+  name: z.string().min(1),
+  cost: z.coerce
+    .number()
+    .min(ADDITIONAL_SPEND_COST_MIN_VALUE, 'Цена должна быть неотрицательной')
+    .max(
+      ADDITIONAL_SPEND_COST_MAX_VALUE,
+      `Цена не должна превышать ${ADDITIONAL_SPEND_COST_MAX_VALUE}`,
+    ),
+})
+
+export type AdditionalSpendsSchema = z.infer<typeof additionalSpendsSchema>
+
 export const recordSchema = z.object({
   ...titleValidation,
   mileage: z
@@ -62,6 +79,7 @@ export const recordSchema = z.object({
   createdAt: z.date(),
   components: z.array(componentsSchema),
   tags: z.array(tagsSchema),
+  additionalSpends: z.array(additionalSpendsSchema),
 })
 
 export type RecordSchema = z.infer<typeof recordSchema>

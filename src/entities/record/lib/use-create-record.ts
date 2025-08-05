@@ -27,6 +27,7 @@ export function useCreateRecord() {
     await mutateAsync({
       title,
       mileage: 0,
+      additionalSpends: [],
       recordTypeId: null,
       recordType: null,
       createdAt: now,

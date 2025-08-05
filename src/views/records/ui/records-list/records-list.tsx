@@ -58,6 +58,7 @@ export function RecordsList({ searchValue }: RecordsListProps) {
           type={record.recordType?.name}
           tags={record.TagsComponents}
           components={record.RecordsComponents}
+          additionalSpends={record.additionalSpends}
           createdAt={record.createdAt}
         />
       ))}

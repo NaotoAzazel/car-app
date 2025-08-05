@@ -2,17 +2,23 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator json {
+  provider = "prisma-json-types-generator"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model Records {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  title     String
-  mileage   Int
+  id               Int      @id @default(autoincrement())
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  title            String
+  mileage          Int
+  /// [AdditionalSpends]
+  additionalSpends Json
 
   recordTypeId      Int?
   recordType        RecordTypes?        @relation(fields: [recordTypeId], references: [id])
