@@ -23,6 +23,7 @@ import {
   Input,
 } from '@/shared/ui'
 
+import { AdditionalSpendsContainer } from './additional-spends-container/additional-spends-container'
 import { ComponentsContainer } from './components-container/components-container'
 import { DatePickerPopover } from './date-picker-popover'
 import { FormSection } from './form-section'
@@ -92,7 +93,7 @@ export function RecordOverviewForm({ record }: RecordOverviewFormProps) {
             )}
           />
         </FormSection>
-        <FormSection title="Компоненты и тэги">
+        <FormSection title="Компоненты, дополнительные траты, тэги">
           <FormField
             control={form.control}
             name="components"
@@ -105,6 +106,25 @@ export function RecordOverviewForm({ record }: RecordOverviewFormProps) {
                   <ComponentsContainer
                     recordId={record!.id}
                     value={field.value as RecordsComponentWithData[]}
+                    onChange={field.onChange}
+                    disabled={isPending}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="additionalSpends"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-lg font-heading">
+                  Дополнительные траты
+                </FormLabel>
+                <FormControl>
+                  <AdditionalSpendsContainer
+                    value={field.value}
                     onChange={field.onChange}
                     disabled={isPending}
                   />

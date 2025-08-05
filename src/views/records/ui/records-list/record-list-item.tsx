@@ -2,7 +2,11 @@
 
 import Link from 'next/link'
 
-import { ComponentsSchema, TagsSchema } from '@/entities/record'
+import {
+  AdditionalSpendsSchema,
+  ComponentsSchema,
+  TagsSchema,
+} from '@/entities/record'
 import { redirects } from '@/shared/constants'
 import { formatCurrency, formatDate } from '@/shared/lib'
 import { TagsList } from '@/shared/ui'
@@ -13,6 +17,7 @@ interface RecordListItemProps {
   type: string | undefined
   tags: TagsSchema[]
   components: ComponentsSchema[]
+  additionalSpends: AdditionalSpendsSchema[]
   createdAt: Date
 }
 
@@ -22,11 +27,18 @@ export function RecordListItem({
   type,
   tags,
   components,
+  additionalSpends,
   createdAt,
 }: RecordListItemProps) {
-  const totalCost = components.reduce((sum, component) => {
+  const totalComponentsCost = components.reduce((sum, component) => {
     return sum + component.component.cost
   }, 0)
+
+  const totalAdditionalSpendsCost = additionalSpends.reduce((sum, spend) => {
+    return sum + spend.cost
+  }, 0)
+
+  const totalCost = totalComponentsCost + totalAdditionalSpendsCost
 
   return (
     <Link
