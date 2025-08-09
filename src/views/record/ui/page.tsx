@@ -3,6 +3,7 @@
 import { useGetRecordById } from '@/entities/record'
 import { Title } from '@/shared/ui'
 
+import { ActionsDropdown } from './actions-dropdown/actions-dropdown'
 import { RecordOverviewForm } from './record-overview-form'
 
 interface RecordOverviewPageProps {
@@ -21,8 +22,10 @@ export function RecordOverviewPage({ id }: RecordOverviewPageProps) {
   }
 
   return (
-    <div className="grid items-start gap-4">
-      <Title heading="Редактирование записи" />
+    <div className="grid items-start gap-4 w-full xl:w-1/3">
+      <Title heading="Редактирование записи">
+        <ActionsDropdown recordId={Number(id)} />
+      </Title>
       <RecordOverviewForm record={data} />
     </div>
   )

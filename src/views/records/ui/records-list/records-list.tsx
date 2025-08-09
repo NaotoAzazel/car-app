@@ -7,6 +7,8 @@ import { Icons } from '@/shared/ui'
 import { RecordListItem } from './record-list-item'
 import { RecordListItemSkeleton } from './record-list-item-skeleton'
 
+const RECORDS_PER_PAGE = 6
+
 interface RecordsListProps {
   searchValue: string
 }
@@ -62,7 +64,7 @@ export function RecordsList({ searchValue }: RecordsListProps) {
           createdAt={record.createdAt}
         />
       ))}
-      {data && (
+      {data && data?.length >= RECORDS_PER_PAGE && (
         <div
           className="mt-4 flex flex-row items-center justify-center"
           ref={cursorRef}

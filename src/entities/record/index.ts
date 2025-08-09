@@ -1,5 +1,5 @@
 export { CreateRecordDialog } from './ui/create-record-dialog'
-export { createRecord, getRecordById, updateRecordById } from './api'
+export { createRecord, getRecordById, updateRecordById, deleteRecordById } from './api'
 export {
   createRecordSchema,
   recordSchema,

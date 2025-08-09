@@ -1,4 +1,5 @@
 import {
+  AlignJustify,
   Calendar,
   ChartArea,
   Check,
@@ -23,4 +24,5 @@ export const Icons = {
   loader: Loader,
   calendar: Calendar,
   droplets: Droplets,
+  alignJustify: AlignJustify,
 }

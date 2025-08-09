@@ -53,7 +53,7 @@ export function RecordOverviewForm({ record }: RecordOverviewFormProps) {
   return (
     <Form {...form}>
       <form
-        className="flex w-full xl:w-1/3 flex-col space-y-8"
+        className="flex flex-col space-y-8"
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <FormSection title="Название и тип">
