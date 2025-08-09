@@ -4,5 +4,10 @@ export {
   getRecordTypes,
   updateRecordById,
   getRecordsForPagination,
+  deleteRecordById,
 } from './actions'
-export { createRecordRequest, updateRecordByIdRequest } from './requests'
+export {
+  createRecordRequest,
+  updateRecordByIdRequest,
+  deleteRecordByIdRequest,
+} from './requests'

@@ -163,3 +163,10 @@ export async function updateRecordById(
     },
   })
 }
+
+export async function deleteRecordById(id: Records['id']) {
+  await db.recordsComponents.deleteMany({
+    where: { recordId: id },
+  })
+  await db.records.delete({ where: { id } })
+}
