@@ -170,3 +170,99 @@ export async function deleteRecordById(id: Records['id']) {
   })
   await db.records.delete({ where: { id } })
 }
+
+export async function getTotalSpends() {
+  // dont touch this please never!
+  const result = await db.$queryRaw<{ total: number }[]>`
+    SELECT
+      (
+        COALESCE(SUM(c.cost), 0) +
+        COALESCE(SUM((spend->>'cost')::int), 0)
+      )::int AS total
+    FROM "Records" r
+    LEFT JOIN "RecordsComponents" rc ON rc."recordId" = r.id
+    LEFT JOIN "Components" c ON c.id = rc."componentId"
+    LEFT JOIN LATERAL jsonb_array_elements(r."additionalSpends") spend ON true
+  `
+  return result[0].total
+}
+
+export async function getSpendsByMonthYear(month: number, year: number) {
+  if (month < 0 || month > 11) {
+    throw new Error('The month must be within the range 0–11')
+  }
+
+  const dbMonth = month + 1
+  const result = await db.$queryRaw<{ total: number }[]>`
+    SELECT
+      (
+        COALESCE(SUM(c.cost), 0) +
+        COALESCE(SUM((spend->>'cost')::int), 0)
+      )::int AS total
+    FROM "Records" r
+    LEFT JOIN "RecordsComponents" rc ON rc."recordId" = r.id
+    LEFT JOIN "Components" c ON c.id = rc."componentId"
+    LEFT JOIN LATERAL jsonb_array_elements(r."additionalSpends") spend ON true
+    WHERE EXTRACT(MONTH FROM r."createdAt") = ${dbMonth}
+      AND EXTRACT(YEAR FROM r."createdAt") = ${year}
+  `
+
+  return result[0]?.total ?? 0
+}
+
+export async function getSpendsByYear(year: number) {
+  const result = await db.$queryRaw<{ total: number }[]>`
+    SELECT
+      (
+        COALESCE(SUM(c.cost), 0) +
+        COALESCE(SUM((spend->>'cost')::int), 0)
+      )::int AS total
+    FROM "Records" r
+    LEFT JOIN "RecordsComponents" rc ON rc."recordId" = r.id
+    LEFT JOIN "Components" c ON c.id = rc."componentId"
+    LEFT JOIN LATERAL jsonb_array_elements(r."additionalSpends") spend ON true
+    WHERE EXTRACT(YEAR FROM r."createdAt") = ${year}
+  `
+  return result[0].total ?? 0
+}
+
+export async function getRecordsCountByMonth(month: number) {
+  if (month < 0 || month > 11) {
+    throw new Error('The month must be within the range 0–11')
+  }
+
+  const currentYear = new Date().getFullYear()
+
+  const startDate = new Date(currentYear, month, 1, 0, 0, 0)
+  const endDate = new Date(currentYear, month + 1, 1, 0, 0, 0)
+
+  const count = await db.records.count({
+    where: {
+      createdAt: {
+        gte: startDate,
+        lt: endDate,
+      },
+    },
+  })
+
+  return count
+}
+
+export async function avgSpendsInMonth() {
+  const months = await db.records.findMany({
+    select: {
+      createdAt: true,
+    },
+  })
+
+  const uniqueMonths = new Set(
+    months.map(
+      (record) =>
+        `${record.createdAt.getFullYear()}-${record.createdAt.getMonth() + 1}`,
+    ),
+  )
+
+  const totalSpends = await getTotalSpends()
+
+  return totalSpends / uniqueMonths.size
+}

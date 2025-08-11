@@ -2,6 +2,7 @@ import {
   AlignJustify,
   Calendar,
   ChartArea,
+  ChartNoAxesColumn,
   Check,
   CirclePlus,
   Component,
@@ -11,6 +12,8 @@ import {
   List,
   Loader,
   LucideIcon,
+  TrendingDown,
+  TrendingUp,
 } from 'lucide-react'
 
 export type Icon = LucideIcon
@@ -25,4 +28,7 @@ export const Icons = {
   calendar: Calendar,
   droplets: Droplets,
   alignJustify: AlignJustify,
+  trendingUp: TrendingUp,
+  trendingDown: TrendingDown,
+  avg: ChartNoAxesColumn,
 }
