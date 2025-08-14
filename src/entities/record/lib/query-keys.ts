@@ -1,1 +1,7 @@
 export const RECORD_BASE_QUERY_KEY = 'record'
+export const AVARAGE_SPENDS_IN_MONTH = 'avg-month'
+export const TOTAL_SPENDS = 'total-spends'
+export const SPENDS_BY_YEAR = 'spends-by-year'
+export const SPENDS_BY_MONTH_AND_YEAR = 'spends-by-month-and-year'
+export const MONTHS_SPENDS = 'months-spends'
+export const YEARS_WITH_DATA = 'years-with-data'

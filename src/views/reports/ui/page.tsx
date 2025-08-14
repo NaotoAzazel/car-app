@@ -1,14 +1,15 @@
-export function ReportsPage() {
+import { getYears } from '@/entities/record/api/actions'
+
+import { ChartArea } from './chart/chart-area'
+import { SectionCards } from './section-cards/section-cards'
+
+export async function ReportsPage() {
+  await getYears()
+
   return (
-    <>
-      <div className="flex flex-1 flex-col gap-4 pt-0">
-        <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-          <div className="bg-muted/50 aspect-video rounded-xl" />
-          <div className="bg-muted/50 aspect-video rounded-xl" />
-          <div className="bg-muted/50 aspect-video rounded-xl" />
-        </div>
-        <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min" />
-      </div>
-    </>
+    <div className="flex flex-col gap-4">
+      <SectionCards />
+      <ChartArea />
+    </div>
   )
 }

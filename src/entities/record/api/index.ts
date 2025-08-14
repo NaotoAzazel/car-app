@@ -5,6 +5,13 @@ export {
   updateRecordById,
   getRecordsForPagination,
   deleteRecordById,
+  getTotalSpends,
+  getSpendsByMonthYear,
+  getSpendsByYear,
+  getRecordsCountByMonth,
+  avgSpendsInMonth,
+  getMonthsSpendsByYear,
+  getYears,
 } from './actions'
 export {
   createRecordRequest,

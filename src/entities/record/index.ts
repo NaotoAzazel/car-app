@@ -1,5 +1,17 @@
 export { CreateRecordDialog } from './ui/create-record-dialog'
-export { createRecord, getRecordById, updateRecordById, deleteRecordById } from './api'
+export {
+  createRecord,
+  getRecordById,
+  updateRecordById,
+  deleteRecordById,
+  getTotalSpends,
+  getSpendsByMonthYear,
+  getSpendsByYear,
+  getRecordsCountByMonth,
+  avgSpendsInMonth,
+  getMonthsSpendsByYear,
+  getYears,
+} from './api'
 export {
   createRecordSchema,
   recordSchema,
@@ -18,4 +30,12 @@ export {
   useGetRecordById,
   useUpdateRecordById,
   useGetRecords,
+  useGetRecordsCountByMonth,
+  useGetSpendsByMonthYear,
+  useGetSpendsByYear,
+  useGetMonthsSpends,
+  TOTAL_SPENDS,
+  RECORD_BASE_QUERY_KEY,
+  AVARAGE_SPENDS_IN_MONTH,
+  YEARS_WITH_DATA,
 } from './lib'
