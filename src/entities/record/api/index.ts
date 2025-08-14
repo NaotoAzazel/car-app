@@ -10,6 +10,8 @@ export {
   getSpendsByYear,
   getRecordsCountByMonth,
   avgSpendsInMonth,
+  getMonthsSpendsByYear,
+  getYears,
 } from './actions'
 export {
   createRecordRequest,

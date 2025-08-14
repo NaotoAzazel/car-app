@@ -9,6 +9,8 @@ export {
   getSpendsByYear,
   getRecordsCountByMonth,
   avgSpendsInMonth,
+  getMonthsSpendsByYear,
+  getYears,
 } from './api'
 export {
   createRecordSchema,
@@ -31,8 +33,9 @@ export {
   useGetRecordsCountByMonth,
   useGetSpendsByMonthYear,
   useGetSpendsByYear,
-  AVARAGE_SPENDS_IN_MONTH,
-  RECORD_BASE_QUERY_KEY,
+  useGetMonthsSpends,
   TOTAL_SPENDS,
-  SPENDS_BY_YEAR,
+  RECORD_BASE_QUERY_KEY,
+  AVARAGE_SPENDS_IN_MONTH,
+  YEARS_WITH_DATA,
 } from './lib'

@@ -2,6 +2,7 @@
 
 import { Prisma, Records } from '@prisma/client'
 
+import { MONTHS_RU } from '@/shared/constants'
 import { db } from '@/shared/lib'
 
 import { CreateRecordRequest, UpdateRecordRequest } from '../model'
@@ -265,4 +266,50 @@ export async function avgSpendsInMonth() {
   const totalSpends = await getTotalSpends()
 
   return totalSpends / uniqueMonths.size
+}
+
+export async function getMonthsSpendsByYear(year: number) {
+  const rawData = await db.$queryRaw<{ month: number; spend: any }[]>`
+    SELECT
+      CAST(EXTRACT(MONTH FROM r."createdAt") AS int) AS month,
+      SUM(c.cost)
+      + SUM(
+          COALESCE(
+            (SELECT SUM((spend->>'cost')::int)
+             FROM jsonb_array_elements(r."additionalSpends") AS spend),
+            0
+          )
+        ) AS spend
+    FROM "Records" r
+    LEFT JOIN "RecordsComponents" rc ON r.id = rc."recordId"
+    LEFT JOIN "Components" c ON rc."componentId" = c.id
+    WHERE EXTRACT(YEAR FROM r."createdAt") = ${year}
+    GROUP BY month
+    ORDER BY MIN(r."createdAt")
+  `
+
+  if (!rawData.length) {
+    return []
+  }
+
+  const monthMap = new Map<number, number>()
+  rawData.forEach((row) => {
+    monthMap.set(row.month, Number(row.spend))
+  })
+
+  return MONTHS_RU.map((month, i) => ({
+    month,
+    spend: monthMap.get(i + 1) ?? 0,
+  }))
+}
+
+export async function getYears() {
+  const years = await db.$queryRaw<{ year: number }[]>`
+    SELECT DISTINCT EXTRACT(YEAR FROM "createdAt")::int AS year
+    FROM "Records"
+    ORDER BY year;
+  `
+
+  const uniqueYears = [...new Set(years.map((r) => r.year))]
+  return uniqueYears
 }
