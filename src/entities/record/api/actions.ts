@@ -8,7 +8,7 @@ import { db } from '@/shared/lib'
 import { CreateRecordRequest, UpdateRecordRequest } from '../model'
 
 export async function createRecord(record: CreateRecordRequest) {
-  const { recordTypeId, recordType, ...rest } = record
+  const { recordType, ...rest } = record
 
   return await db.records.create({
     data: { ...rest, RecordsComponents: { create: [] } },
@@ -19,7 +19,6 @@ export async function getRecordById(id: Records['id']) {
   return await db.records.findFirst({
     where: { id },
     include: {
-      recordType: true,
       RecordsComponents: {
         include: {
           component: true,
@@ -40,7 +39,6 @@ interface GetRecordsForPaginationParams {
   itemsPerPage: number
   includeTags?: boolean
   includeComponents?: boolean
-  includeTypes?: boolean
 }
 
 export async function getRecordsForPagination({
@@ -49,7 +47,6 @@ export async function getRecordsForPagination({
   title,
   includeTags = false,
   includeComponents = false,
-  includeTypes = false,
 }: GetRecordsForPaginationParams) {
   const skip = (page - 1) * itemsPerPage
 
@@ -61,10 +58,6 @@ export async function getRecordsForPagination({
   }
 
   const include: Prisma.RecordsFindManyArgs['include'] = {}
-
-  if (includeTypes) {
-    include.recordType = true
-  }
 
   if (includeComponents) {
     include.RecordsComponents = {
@@ -91,7 +84,6 @@ export async function getRecordsForPagination({
     take: itemsPerPage,
     skip,
     include: {
-      recordType: true,
       RecordsComponents: {
         include: {
           component: true,
@@ -118,32 +110,17 @@ export async function getRecordsForPagination({
   }
 }
 
-export async function getRecordTypes() {
-  const recordTypes = await db.recordTypes.findMany()
-  return recordTypes
-}
-
 export async function updateRecordById(
   id: number,
   record: UpdateRecordRequest,
 ) {
-  const {
-    recordTypeId,
-    recordType,
-    components,
-    tags,
-    id: recordId,
-    ...rest
-  } = record
+  const { recordType, components, tags, id: recordId, ...rest } = record
 
   await db.records.update({
     where: { id },
     data: {
       ...rest,
-      recordType: recordTypeId
-        ? { connect: { id: recordTypeId } }
-        : { disconnect: true },
-
+      recordType,
       RecordsComponents: {
         deleteMany: {},
         create: components?.map((c) => ({

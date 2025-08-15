@@ -1,10 +1,12 @@
 'use client'
 
+import { RecordTypes } from '@prisma/client'
 import Link from 'next/link'
 
 import {
   AdditionalSpendsSchema,
   ComponentsSchema,
+  recordTypesRu,
   TagsSchema,
 } from '@/entities/record'
 import { redirects } from '@/shared/constants'
@@ -14,7 +16,7 @@ import { TagsList } from '@/shared/ui'
 interface RecordListItemProps {
   recordId: number
   title: string
-  type: string | undefined
+  type: RecordTypes | null
   tags: TagsSchema[]
   components: ComponentsSchema[]
   additionalSpends: AdditionalSpendsSchema[]
@@ -46,7 +48,7 @@ export function RecordListItem({
       className="border rounded-md p-4 hover:bg-input/30 hover:border-primary/50 duration-200 flex flex-col space-y-2"
     >
       <div className="flex justify-between text-xs text-muted-foreground">
-        <span>{type ?? 'Тип не указан'}</span>
+        <span>{type ? recordTypesRu[type] : 'Тип не указан'}</span>
         <span>{formatDate(createdAt)}</span>
       </div>
 

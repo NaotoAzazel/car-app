@@ -11,6 +11,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum RecordTypes {
+  REPAIRING
+  SERVICING
+  TUNING
+  BUYING
+  INSURANCE
+}
+
 model Records {
   id               Int      @id @default(autoincrement())
   createdAt        DateTime @default(now())
@@ -20,8 +28,7 @@ model Records {
   /// [AdditionalSpends]
   additionalSpends Json
 
-  recordTypeId      Int?
-  recordType        RecordTypes?        @relation(fields: [recordTypeId], references: [id])
+  recordType        RecordTypes?
   RecordsComponents RecordsComponents[]
   TagsComponents    TagsComponents[]
 }
@@ -59,10 +66,4 @@ model RecordsComponents {
   component Components @relation(fields: [componentId], references: [id])
 
   @@id([recordId, componentId])
-}
-
-model RecordTypes {
-  id      Int       @id @default(autoincrement())
-  name    String    @unique
-  Records Records[]
 }

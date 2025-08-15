@@ -1,3 +1,4 @@
+import { RecordTypes } from '@prisma/client'
 import { z } from 'zod'
 
 const TITLE_MIN_LENGTH = 1
@@ -47,11 +48,6 @@ const tagsSchema = z.object({
 
 export type TagsSchema = z.infer<typeof tagsSchema>
 
-const recordTypeSchema = z.object({
-  id: z.number(),
-  name: z.string(),
-})
-
 export const additionalSpendsSchema = z.object({
   id: z.number(),
   name: z.string().min(1),
@@ -74,8 +70,7 @@ export const recordSchema = z.object({
       MILEAGE_MIN_LENGTH,
       `Пробег не может быть меньше ${MILEAGE_MIN_LENGTH}`,
     ),
-  recordTypeId: z.number().nullable(),
-  recordType: recordTypeSchema.nullable(),
+  recordType: z.nativeEnum(RecordTypes).nullable(),
   createdAt: z.date(),
   components: z.array(componentsSchema),
   tags: z.array(tagsSchema),
