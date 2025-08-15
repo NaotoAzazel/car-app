@@ -1,7 +1,6 @@
 export {
   createRecord,
   getRecordById,
-  getRecordTypes,
   updateRecordById,
   getRecordsForPagination,
   deleteRecordById,

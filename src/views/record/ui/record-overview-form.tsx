@@ -27,7 +27,7 @@ import { AdditionalSpendsContainer } from './additional-spends-container/additio
 import { ComponentsContainer } from './components-container/components-container'
 import { DatePickerPopover } from './date-picker-popover'
 import { FormSection } from './form-section'
-import { RecordTypeSelect } from './record-type-select'
+import { RecordTypeSelect } from './record-type-select/record-type-select'
 import { TagsContainer } from './tags-container/tags-container'
 
 interface RecordOverviewFormProps {
@@ -77,14 +77,14 @@ export function RecordOverviewForm({ record }: RecordOverviewFormProps) {
           />
           <FormField
             control={form.control}
-            name="recordTypeId"
+            name="recordType"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-lg font-heading">Тип</FormLabel>
                 <FormControl>
                   <RecordTypeSelect
                     field={field}
-                    initialValue={record?.recordType ? [record.recordType] : []}
+                    initialValue={record?.recordType ?? undefined}
                     disabled={isPending}
                   />
                 </FormControl>

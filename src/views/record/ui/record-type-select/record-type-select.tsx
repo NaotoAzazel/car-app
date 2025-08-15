@@ -1,58 +1,52 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { RecordTypes } from '@prisma/client'
 import { ControllerRenderProps } from 'react-hook-form'
 
-import { RecordSchema, useGetRecordTypes } from '@/entities/record'
-import { Select, SelectContent, SelectTrigger, SelectValue } from '@/shared/ui'
-
-import { RecordTypeSelectContent } from './record-type-select-content'
+import {
+  RecordSchema,
+  recordTypesRu,
+  RecordTypesRuKeys,
+} from '@/entities/record'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/shared/ui'
 
 interface RecordTypeSelectProps {
-  field: ControllerRenderProps<RecordSchema, 'recordTypeId'>
-  initialValue?: RecordTypes[]
+  field: ControllerRenderProps<RecordSchema, 'recordType'>
+  initialValue?: RecordTypes
   disabled: boolean
 }
 
 export function RecordTypeSelect({
-  field,
   initialValue,
+  field,
   disabled,
 }: RecordTypeSelectProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
-  const { data, isLoading, isError, isFetched, refetch } = useGetRecordTypes()
-
-  useEffect(() => {
-    if (isOpen && !isFetched) {
-      refetch()
-    }
-  }, [isOpen, setIsOpen])
-
-  // make this shit below for display placeholder
-  // in <SelectValue> when nothing  has been chosen.
-  const selectValue =
-    field.value !== null && field.value !== undefined ? String(field.value) : ''
-
   return (
     <Select
+      value={field.value ? RecordTypes[field.value] : ''}
+      onValueChange={(val) => field.onChange(val)}
       open={isOpen}
       onOpenChange={setIsOpen}
-      onValueChange={(val) => {
-        field.onChange(val ? Number(val) : null)
-      }}
-      value={selectValue}
+      defaultValue={initialValue}
     >
-      <SelectTrigger className="w-full" disabled={isLoading || disabled}>
+      <SelectTrigger className="w-full" disabled={disabled}>
         <SelectValue placeholder="Не выбрано" />
       </SelectTrigger>
       <SelectContent>
-        <RecordTypeSelectContent
-          data={(data as RecordTypes[]) ?? initialValue}
-          isLoading={isLoading}
-          isError={isError}
-        />
+        {(Object.keys(recordTypesRu) as RecordTypesRuKeys[]).map((type) => (
+          <SelectItem key={type} value={type}>
+            {recordTypesRu[type]}
+          </SelectItem>
+        ))}
       </SelectContent>
     </Select>
   )

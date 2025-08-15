@@ -26,7 +26,7 @@ export {
   type AdditionalSpendsSchema,
 } from './model'
 export {
-  useGetRecordTypes,
+  type RecordTypesRuKeys,
   useGetRecordById,
   useUpdateRecordById,
   useGetRecords,
@@ -34,6 +34,7 @@ export {
   useGetSpendsByMonthYear,
   useGetSpendsByYear,
   useGetMonthsSpends,
+  recordTypesRu,
   TOTAL_SPENDS,
   RECORD_BASE_QUERY_KEY,
   AVARAGE_SPENDS_IN_MONTH,

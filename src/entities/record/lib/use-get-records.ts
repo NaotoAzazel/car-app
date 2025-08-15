@@ -20,7 +20,6 @@ export function useGetRecords(searchValue?: string) {
         page: meta.pageParam,
         itemsPerPage: RECORDS_PER_PAGE,
         includeTags: true,
-        includeTypes: true,
         includeComponents: true,
         title: searchValue,
       }),
