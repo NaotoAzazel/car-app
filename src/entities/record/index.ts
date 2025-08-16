@@ -22,7 +22,6 @@ export {
   type RecordSchema,
   type ComponentsSchema,
   type RecordsComponentWithData,
-  type TagsSchema,
   type AdditionalSpendsSchema,
 } from './model'
 export {
@@ -35,6 +34,8 @@ export {
   useGetSpendsByYear,
   useGetMonthsSpends,
   recordTypesRu,
+  recordTagsGrouped,
+  recordTagsRu,
   TOTAL_SPENDS,
   RECORD_BASE_QUERY_KEY,
   AVARAGE_SPENDS_IN_MONTH,

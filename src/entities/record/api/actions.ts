@@ -24,11 +24,6 @@ export async function getRecordById(id: Records['id']) {
           component: true,
         },
       },
-      TagsComponents: {
-        include: {
-          tag: true,
-        },
-      },
     },
   })
 }
@@ -37,7 +32,6 @@ interface GetRecordsForPaginationParams {
   title?: string
   page: number
   itemsPerPage: number
-  includeTags?: boolean
   includeComponents?: boolean
 }
 
@@ -45,7 +39,6 @@ export async function getRecordsForPagination({
   page,
   itemsPerPage,
   title,
-  includeTags = false,
   includeComponents = false,
 }: GetRecordsForPaginationParams) {
   const skip = (page - 1) * itemsPerPage
@@ -67,14 +60,6 @@ export async function getRecordsForPagination({
     }
   }
 
-  if (includeTags) {
-    include.TagsComponents = {
-      include: {
-        tag: true,
-      },
-    }
-  }
-
   const totalItems = await db.records.count({
     where: whereClause,
   })
@@ -87,11 +72,6 @@ export async function getRecordsForPagination({
       RecordsComponents: {
         include: {
           component: true,
-        },
-      },
-      TagsComponents: {
-        include: {
-          tag: true,
         },
       },
     },
@@ -114,27 +94,17 @@ export async function updateRecordById(
   id: number,
   record: UpdateRecordRequest,
 ) {
-  const { recordType, components, tags, id: recordId, ...rest } = record
+  const { components, id: recordId, ...rest } = record
 
   await db.records.update({
     where: { id },
     data: {
       ...rest,
-      recordType,
       RecordsComponents: {
         deleteMany: {},
         create: components?.map((c) => ({
           component: {
             connect: { id: c.componentId },
-          },
-        })),
-      },
-
-      TagsComponents: {
-        deleteMany: {},
-        create: tags?.map((t) => ({
-          tag: {
-            connect: { id: t.tagId },
           },
         })),
       },

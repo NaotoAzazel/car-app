@@ -8,7 +8,6 @@ import {
   recordSchema,
   RecordSchema,
   RecordsComponentWithData,
-  TagsSchema,
   useUpdateRecordById,
 } from '@/entities/record'
 import {
@@ -42,7 +41,6 @@ export function RecordOverviewForm({ record }: RecordOverviewFormProps) {
     defaultValues: {
       ...record,
       components: record?.RecordsComponents,
-      tags: record?.TagsComponents,
     },
   })
 
@@ -141,8 +139,7 @@ export function RecordOverviewForm({ record }: RecordOverviewFormProps) {
                 <FormLabel className="text-lg font-heading">Тэги</FormLabel>
                 <FormControl>
                   <TagsContainer
-                    recordId={record!.id}
-                    value={field.value as TagsSchema[]}
+                    value={field.value}
                     onChange={field.onChange}
                     disabled={isPending}
                   />

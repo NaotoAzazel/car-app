@@ -19,7 +19,6 @@ export function useGetRecords(searchValue?: string) {
       getRecordsForPagination({
         page: meta.pageParam,
         itemsPerPage: RECORDS_PER_PAGE,
-        includeTags: true,
         includeComponents: true,
         title: searchValue,
       }),

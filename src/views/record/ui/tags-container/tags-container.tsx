@@ -1,35 +1,27 @@
 'use client'
 
 import { useState } from 'react'
-import { Tags } from '@prisma/client'
+import { RecordTags } from '@prisma/client'
 
-import { TagsSchema } from '@/entities/record'
 import { Button, TagsList } from '@/shared/ui'
 
 import { TagsDialog } from '../tags-dialog/tags-dialog'
 
 interface TagsContainerProps {
-  recordId: number
-  value: TagsSchema[]
-  onChange: (components: TagsSchema[]) => void
+  value: RecordTags[]
+  onChange: (components: RecordTags[]) => void
   disabled: boolean
 }
 
 export function TagsContainer({
-  recordId,
   value,
   onChange,
   disabled,
 }: TagsContainerProps) {
   const [isTagsDialogOpen, setIsTagsDialogOpen] = useState<boolean>(false)
 
-  const onConfirm = (selectedTags: Tags[]) => {
-    const newList = selectedTags.map((tag) => ({
-      recordId,
-      tagId: tag.id,
-      tag,
-    }))
-    onChange(newList)
+  const onConfirm = (selectedTags: RecordTags[]) => {
+    onChange(selectedTags)
   }
 
   return (
@@ -58,7 +50,7 @@ export function TagsContainer({
       <TagsDialog
         isOpen={isTagsDialogOpen}
         onOpenChange={setIsTagsDialogOpen}
-        initiallySelected={value?.map((rt) => rt.tag)}
+        initiallySelected={value}
         onConfirm={(selectedTags) => onConfirm(selectedTags)}
       />
     </>
