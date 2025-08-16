@@ -1,4 +1,4 @@
-import { RecordTypes } from '@prisma/client'
+import { RecordTags, RecordTypes } from '@prisma/client'
 import { z } from 'zod'
 
 const TITLE_MIN_LENGTH = 1
@@ -37,17 +37,6 @@ const componentsSchema = z.object({
 
 export type ComponentsSchema = z.infer<typeof componentsSchema>
 
-const tagsSchema = z.object({
-  recordId: z.number(),
-  tagId: z.number(),
-  tag: z.object({
-    id: z.number(),
-    name: z.string(),
-  }),
-})
-
-export type TagsSchema = z.infer<typeof tagsSchema>
-
 export const additionalSpendsSchema = z.object({
   id: z.number(),
   name: z.string().min(1),
@@ -73,7 +62,7 @@ export const recordSchema = z.object({
   recordType: z.nativeEnum(RecordTypes).nullable(),
   createdAt: z.date(),
   components: z.array(componentsSchema),
-  tags: z.array(tagsSchema),
+  tags: z.array(z.nativeEnum(RecordTags)),
   additionalSpends: z.array(additionalSpendsSchema),
 })
 
@@ -81,7 +70,6 @@ export type RecordSchema = z.infer<typeof recordSchema>
 
 export const createRecordSchema = recordSchema.omit({
   components: true,
-  tags: true,
 })
 export type CreateRecordRequest = z.infer<typeof createRecordSchema>
 
