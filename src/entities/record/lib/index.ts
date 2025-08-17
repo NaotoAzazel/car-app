@@ -15,4 +15,5 @@ export { useGetSpendsByYear } from './use-get-spends-by-year'
 export { useGetMonthsSpends } from './use-get-monts-spends'
 
 export { type RecordTypesRuKeys, recordTypesRu } from './record-types'
-export { recordTagsGrouped, recordTagsRu } from './record-tags'
+export { recordTagsGrouped, recordTagsRu, recordIntervals } from './record-tags'
+export { useGetLatestRecordByTag } from './use-get-latest-record-by-tag'

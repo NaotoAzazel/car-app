@@ -1,6 +1,6 @@
 'use server'
 
-import { Prisma, Records } from '@prisma/client'
+import { Prisma, Records, RecordTags } from '@prisma/client'
 
 import { MONTHS_RU } from '@/shared/constants'
 import { db } from '@/shared/lib'
@@ -259,4 +259,17 @@ export async function getYears() {
 
   const uniqueYears = [...new Set(years.map((r) => r.year))]
   return uniqueYears
+}
+
+export async function getLatestRecordByTag(tag: RecordTags) {
+  return await db.records.findMany({
+    where: { tags: { has: tag } },
+    take: 1,
+    orderBy: {
+      mileage: 'desc',
+    },
+    select: {
+      mileage: true,
+    },
+  })
 }
