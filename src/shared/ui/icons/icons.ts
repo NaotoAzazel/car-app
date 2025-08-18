@@ -11,6 +11,7 @@ import {
   Component,
   Droplets,
   Filter,
+  Gauge,
   HelpCircle,
   History,
   Loader,
@@ -39,4 +40,5 @@ export const Icons = {
   checkCircle: CheckCircle,
   alertTriangle: AlertTriangle,
   alertCircle: AlertCircle,
+  gauge: Gauge,
 }

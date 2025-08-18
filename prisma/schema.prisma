@@ -71,3 +71,9 @@ model RecordsComponents {
 
   @@id([recordId, componentId])
 }
+
+model Mileage {
+  id        Int      @id @default(autoincrement())
+  mileage   Int
+  createdAt DateTime @default(now())
+}
