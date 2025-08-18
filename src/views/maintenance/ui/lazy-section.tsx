@@ -9,9 +9,10 @@ import { MaintenanceCard } from './maintenance-card/maintenance-card'
 interface LazySectionProps {
   title: string
   tags: RecordTags[]
+  currMileage: number
 }
 
-export function LazySection({ title, tags }: LazySectionProps) {
+export function LazySection({ title, tags, currMileage }: LazySectionProps) {
   const [isVisible, setIsVisible] = useState(false)
 
   const intersectionRef = useIntersection(() => {
@@ -20,7 +21,10 @@ export function LazySection({ title, tags }: LazySectionProps) {
 
   return (
     <ItemSection title={title} ref={intersectionRef}>
-      {isVisible && tags.map((tag) => <MaintenanceCard key={tag} tag={tag} />)}
+      {isVisible &&
+        tags.map((tag) => (
+          <MaintenanceCard currMileage={currMileage} key={tag} tag={tag} />
+        ))}
     </ItemSection>
   )
 }

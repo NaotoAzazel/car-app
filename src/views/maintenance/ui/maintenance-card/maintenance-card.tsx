@@ -51,13 +51,11 @@ const statusConfig = {
 
 interface MaintenanceCardProps {
   tag: RecordTags
+  currMileage: number
 }
 
-export function MaintenanceCard({ tag }: MaintenanceCardProps) {
+export function MaintenanceCard({ tag, currMileage }: MaintenanceCardProps) {
   const { data, isLoading, isError } = useGetLatestRecordByTag(tag)
-
-  // TODO: get mileage from db
-  const currentMileage = 245800
 
   if (isLoading) {
     return <MaintenanceCardSkeleton tag={tag} />
@@ -86,7 +84,7 @@ export function MaintenanceCard({ tag }: MaintenanceCardProps) {
   const mileageLatestRecord = data[0].mileage
   const interval = recordIntervals[tag]
 
-  const mileageFromLastReplacement = currentMileage - mileageLatestRecord
+  const mileageFromLastReplacement = currMileage - mileageLatestRecord
   const mileageToNextReplacement = interval - mileageFromLastReplacement
 
   let status: CardStatus = CardStatus.VERY_BAD
