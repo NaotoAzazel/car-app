@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react'
-import { Tags } from '@prisma/client'
+'use client'
 
-import { useGetTags } from '@/entities/tag'
-import { useDebounce, useIntersection } from '@/shared/lib'
+import { useState } from 'react'
+import { RecordTags } from '@prisma/client'
+
+import { recordTagsRu } from '@/entities/record'
+import { cn, useDebounce } from '@/shared/lib'
 import {
   Button,
   Dialog,
@@ -10,62 +12,45 @@ import {
   DialogHeader,
   DialogTitle,
   Input,
+  ScrollArea,
 } from '@/shared/ui'
 
-import { TagsDialogList } from './tags-dialog-list'
+import { ListItem } from '../list-item'
 
 interface TagsDialogProps {
-  onConfirm: (tags: Tags[]) => void
-  isOpen: boolean
+  onConfirm: (tags: RecordTags[]) => void
   onOpenChange: (isOpen: boolean) => void
-  initiallySelected?: Tags[]
+  isOpen: boolean
+  initiallySelected?: RecordTags[]
 }
 
 export function TagsDialog({
   onConfirm,
-  isOpen,
   onOpenChange,
+  isOpen,
   initiallySelected,
 }: TagsDialogProps) {
   const [searchValue, setSearchValue] = useState<string>('')
-  const debouncedSearch = useDebounce<string>(searchValue, 1_000)
+  const debouncedSearch = useDebounce<string>(searchValue, 300)
 
-  const [selected, setSelected] = useState<Tags[]>(initiallySelected ?? [])
+  const [selected, setSelected] = useState<RecordTags[]>(
+    initiallySelected ?? [],
+  )
 
-  const {
-    data,
-    isError,
-    isLoading,
-    isFetched,
-    isFetchingNextPage,
-    refetch,
-    fetchNextPage,
-  } = useGetTags(debouncedSearch)
+  const tagsEntries = Object.entries(recordTagsRu) as [RecordTags, string][]
 
-  const toggleSelect = (tag: Tags) => {
+  const filteredTags = tagsEntries.filter(([, value]) =>
+    value.toLowerCase().includes(debouncedSearch.toLowerCase()),
+  )
+
+  const toggleSelect = (selectedTag: RecordTags) => {
     setSelected((prev) => {
-      const isSelected = prev.some((c) => c.id === tag.id)
-      return isSelected ? prev.filter((c) => c.id !== tag.id) : [...prev, tag]
+      const isSelected = prev.includes(selectedTag)
+      return isSelected
+        ? prev.filter((tag) => tag !== selectedTag)
+        : [...prev, selectedTag]
     })
   }
-
-  const cursorRef = useIntersection(() => {
-    if (!isFetchingNextPage) {
-      fetchNextPage()
-    }
-  })
-
-  useEffect(() => {
-    if (debouncedSearch.length > 0) {
-      refetch()
-    }
-  }, [debouncedSearch])
-
-  useEffect(() => {
-    if (isOpen && !isFetched) {
-      refetch()
-    }
-  }, [isOpen, onOpenChange])
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
@@ -83,16 +68,20 @@ export function TagsDialog({
             onChange={(e) => setSearchValue(e.target.value)}
           />
 
-          <TagsDialogList
-            data={data}
-            isLoading={isLoading}
-            isError={isError}
-            isFetchingNextPage={isFetchingNextPage}
-            searchValue={debouncedSearch}
-            selected={selected}
-            onToggle={toggleSelect}
-            cursorRef={cursorRef}
-          />
+          <ScrollArea className="h-64 w-full" type="always">
+            {filteredTags.map(([tag, label]) => (
+              <ListItem
+                key={tag}
+                className={cn(
+                  'hover:cursor-pointer hover:bg-accent duration-200 mt-1',
+                  selected.includes(tag) && 'bg-accent',
+                )}
+                onClick={() => toggleSelect(tag)}
+              >
+                <p className="flex-1 break-words">{label}</p>
+              </ListItem>
+            ))}
+          </ScrollArea>
 
           <Button
             className="w-full mt-4"
@@ -101,7 +90,6 @@ export function TagsDialog({
               onConfirm(selected)
               onOpenChange(false)
             }}
-            disabled={isLoading || isError || isFetchingNextPage}
           >
             Применить изменения
           </Button>

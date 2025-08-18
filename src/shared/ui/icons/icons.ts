@@ -1,18 +1,24 @@
 import {
+  AlertCircle,
+  AlertTriangle,
   AlignJustify,
   Calendar,
   ChartArea,
   ChartNoAxesColumn,
   Check,
+  CheckCircle,
   CirclePlus,
   Component,
   Droplets,
   Filter,
+  Gauge,
+  HelpCircle,
   History,
   Loader,
   LucideIcon,
   TrendingDown,
   TrendingUp,
+  Wrench,
 } from 'lucide-react'
 
 export type Icon = LucideIcon
@@ -29,4 +35,10 @@ export const Icons = {
   trendingUp: TrendingUp,
   trendingDown: TrendingDown,
   avg: ChartNoAxesColumn,
+  wrench: Wrench,
+  helpCircle: HelpCircle,
+  checkCircle: CheckCircle,
+  alertTriangle: AlertTriangle,
+  alertCircle: AlertCircle,
+  gauge: Gauge,
 }

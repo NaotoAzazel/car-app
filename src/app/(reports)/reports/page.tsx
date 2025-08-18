@@ -1,5 +1,5 @@
 import { ReportsPage } from '@/views/reports'
 
-export default function Home() {
+export default function Page() {
   return <ReportsPage />
 }

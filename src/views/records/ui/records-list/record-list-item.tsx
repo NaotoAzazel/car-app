@@ -1,13 +1,12 @@
 'use client'
 
-import { RecordTypes } from '@prisma/client'
+import { RecordTags, RecordTypes } from '@prisma/client'
 import Link from 'next/link'
 
 import {
   AdditionalSpendsSchema,
   ComponentsSchema,
   recordTypesRu,
-  TagsSchema,
 } from '@/entities/record'
 import { redirects } from '@/shared/constants'
 import { formatCurrency, formatDate } from '@/shared/lib'
@@ -17,7 +16,7 @@ interface RecordListItemProps {
   recordId: number
   title: string
   type: RecordTypes | null
-  tags: TagsSchema[]
+  tags: RecordTags[]
   components: ComponentsSchema[]
   additionalSpends: AdditionalSpendsSchema[]
   createdAt: Date
