@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 
 import {
   Button,
@@ -42,9 +43,13 @@ export function CreateMileageDialog() {
 
   const onSubmit = async (data: CreateMileageSchema) => {
     try {
-      await create(data)
+      toast.promise(create(data), {
+        loading: 'Сохранение записи о пробеге...',
+        success: () => `Пробег успешно записан`,
+        error: 'Возникла ошибка при сохранении пробега, проверьте консоль',
+      })
     } catch (error) {
-      console.error(error)
+      console.error('CreateMileageDialog', error)
     } finally {
       setIsOpen(false)
       form.reset()

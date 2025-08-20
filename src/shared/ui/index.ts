@@ -18,6 +18,7 @@ export * from './chart'
 export * from './card'
 export * from './badge'
 export * from './icons/icons'
+export { Toaster } from './sonner'
 
 export { Title } from './title/title'
 export { TagsList } from './tags-list/tags-list'

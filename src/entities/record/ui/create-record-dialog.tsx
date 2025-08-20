@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 
 import {
   Button,
@@ -41,7 +42,11 @@ export function CreateRecordDialog() {
 
   const onSubmit = async (data: CreateRecordFormSchema) => {
     try {
-      await create(data.title)
+      toast.promise(create(data.title), {
+        loading: 'Создание записи...',
+        success: () => `Запись была успешно создана`,
+        error: 'Возникла ошибка при создании записи, проверьте консоль',
+      })
     } catch (error) {
       console.error(error)
     } finally {

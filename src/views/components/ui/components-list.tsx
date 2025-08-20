@@ -1,5 +1,6 @@
 import { RecordListItemSkeleton } from '@/views/records/ui/records-list/record-list-item-skeleton'
 import { Components } from '@prisma/client'
+import { toast } from 'sonner'
 
 import { useDeleteComponent, useGetComponents } from '@/entities/component'
 import { useIntersection } from '@/shared/lib'
@@ -30,7 +31,15 @@ export function ComponentsList({ searchValue }: ComponentsListProps) {
   })
 
   const onComponentDelete = async (id: Components['id']) => {
-    await deleteComponent(id)
+    try {
+      toast.promise(deleteComponent(id), {
+        loading: 'Удаление компонента...',
+        success: () => `Компонент был успешно удалена`,
+        error: 'Возникла ошибка при удалении компонента, проверьте консоль',
+      })
+    } catch (error) {
+      console.error('onComponentDelete', error)
+    }
   }
 
   const isInitialLoading = isLoading && !data
