@@ -2,6 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 
 import {
   getRecordById,
@@ -45,7 +46,15 @@ export function RecordOverviewForm({ record }: RecordOverviewFormProps) {
   })
 
   const onSubmit = async (data: RecordSchema) => {
-    await update({ id: record!.id, ...data })
+    try {
+      toast.promise(update({ id: record!.id, ...data }), {
+        loading: 'Сохранение записи...',
+        success: () => `Запись была успешно сохранена`,
+        error: 'Возникла ошибка при сохранении записи, проверьте консоль',
+      })
+    } catch (error) {
+      console.error('RecordOverviewForm', error)
+    }
   }
 
   return (

@@ -76,7 +76,11 @@ export function AdditionalSpendsDialog({
         </DialogHeader>
 
         <Form {...form}>
-          <form className="grid gap-2" onSubmit={form.handleSubmit(onSubmit)}>
+          <form
+            id="additional-spends-form"
+            className="grid gap-2"
+            onSubmit={form.handleSubmit(onSubmit)}
+          >
             <FormField
               control={form.control}
               name="name"
@@ -112,7 +116,9 @@ export function AdditionalSpendsDialog({
               <DialogClose asChild>
                 <Button variant="outline">Отмена</Button>
               </DialogClose>
-              <Button type="submit">Добавить</Button>
+              <Button type="button" onClick={form.handleSubmit(onSubmit)}>
+                Добавить
+              </Button>
             </DialogFooter>
           </form>
         </Form>

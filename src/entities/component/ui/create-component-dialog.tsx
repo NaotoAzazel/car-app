@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 
 import {
   Button,
@@ -46,9 +47,13 @@ export function CreateComponentDialog() {
 
   const onSubmit = async (data: CreateComponentSchema) => {
     try {
-      await create(data)
+      toast.promise(create(data), {
+        loading: 'Создание компонента...',
+        success: () => `Компонент был успешно создан`,
+        error: 'Возникла ошибка при создании компонента, проверьте консоль',
+      })
     } catch (error) {
-      console.error(error)
+      console.error('CreateComponentDialog', error)
     } finally {
       setIsOpen(false)
       form.reset()

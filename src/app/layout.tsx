@@ -5,7 +5,7 @@ import '@/shared/globals.css'
 import { AppHeader } from '@/widgets/app-header'
 import { AppSidebar } from '@/widgets/app-sidebar'
 import { cn, fontHeading, fontText } from '@/shared/lib'
-import { SidebarInset } from '@/shared/ui'
+import { SidebarInset, Toaster } from '@/shared/ui'
 
 import { Providers } from './_providers'
 
@@ -36,6 +36,7 @@ export default function RootLayout({
             <main className="relative flex flex-col">
               <div className="flex-1 flex-grow m-6">{children}</div>
             </main>
+            <Toaster  richColors />
           </SidebarInset>
         </Providers>
       </body>
