@@ -1,10 +1,10 @@
 'use client'
 
 import { useGetLatestMileage } from '@/entities/mileage'
-import { recordTagsGrouped } from '@/entities/record'
 import { formatDate } from '@/shared/lib'
 import { Icons } from '@/shared/ui'
 
+import { recordTagsGrouped } from '../lib'
 import { ItemSection } from './item-section'
 import { LazySection } from './lazy-section'
 import { MaintenanceCard } from './maintenance-card/maintenance-card'

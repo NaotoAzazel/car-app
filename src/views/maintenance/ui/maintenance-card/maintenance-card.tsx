@@ -2,11 +2,7 @@
 
 import { RecordTags } from '@prisma/client'
 
-import {
-  recordIntervals,
-  recordTagsRu,
-  useGetLatestRecordByTag,
-} from '@/entities/record'
+import { recordTagsRu, useGetLatestRecordByTag } from '@/entities/record'
 import { cn } from '@/shared/lib'
 import {
   Card,
@@ -16,6 +12,7 @@ import {
   Icons,
 } from '@/shared/ui'
 
+import { maintenanceIntervals } from '../../lib'
 import { MaintenanceCardError } from './maintenance-card-error'
 import { MaintenanceCardSkeleton } from './maintenance-card-skeleton'
 
@@ -56,7 +53,7 @@ interface MaintenanceCardProps {
 
 export function MaintenanceCard({ tag, currMileage }: MaintenanceCardProps) {
   const { data, isLoading, isError } = useGetLatestRecordByTag(tag)
-  const interval = recordIntervals[tag]
+  const interval = maintenanceIntervals[tag]
 
   if (isLoading) {
     return <MaintenanceCardSkeleton tag={tag} />
