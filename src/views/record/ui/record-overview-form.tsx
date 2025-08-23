@@ -27,6 +27,7 @@ import { AdditionalSpendsContainer } from './additional-spends-container/additio
 import { ComponentsContainer } from './components-container/components-container'
 import { DatePickerPopover } from './date-picker-popover'
 import { FormSection } from './form-section'
+import { InsertCurrentMileageButton } from './insert-current-mileage-button'
 import { RecordTypeSelect } from './record-type-select/record-type-select'
 import { TagsContainer } from './tags-container/tags-container'
 
@@ -189,7 +190,7 @@ export function RecordOverviewForm({ record }: RecordOverviewFormProps) {
                   onChange={(e) => field.onChange(Number(e.target.value))}
                   value={field.value ?? ''}
                 />
-                {/* TODO: add button insert current */}
+                <InsertCurrentMileageButton form={form} />
                 <FormMessage />
               </FormItem>
             )}
