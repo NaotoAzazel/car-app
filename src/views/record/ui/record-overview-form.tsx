@@ -185,8 +185,7 @@ export function RecordOverviewForm({ record }: RecordOverviewFormProps) {
                   className="h-10"
                   disabled={isPending}
                   placeholder="122459"
-                  type="number"
-                  min="0"
+                  inputMode="numeric"
                   onChange={(e) => field.onChange(Number(e.target.value))}
                   value={field.value ?? ''}
                 />
