@@ -1,1 +1,7 @@
-export { createMileage, getLatestMileage } from './actions'
+export {
+  createMileage,
+  deleteMileageById,
+  getLastMileageMonthRange,
+  getLatestMileage,
+  getMileageByDateRange,
+} from './actions'

@@ -1,4 +1,5 @@
-export { CreateMileageDialog } from './ui/create-mileage-dialog/create-mileage-dialog'
-export { type CreateMileageSchema, createMileageSchema } from './model'
-export { createMileage } from './api'
+export { createMileage, getMileageByDateRange } from './api'
 export { useGetLatestMileage } from './lib'
+export { createMileageSchema, type CreateMileageSchema } from './model'
+export { CreateMileageDialog } from './ui/create-mileage-dialog/create-mileage-dialog'
+export { MileageHistoryDialog } from './ui/mileage-history-dialog/mileage-history-dialog'
