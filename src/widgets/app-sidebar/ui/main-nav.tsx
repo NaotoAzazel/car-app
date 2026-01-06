@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-import { CreateMileageDialog } from '@/entities/mileage'
+import { CreateMileageDialog, MileageHistoryDialog } from '@/entities/mileage'
 import { CreateRecordDialog } from '@/entities/record'
 import { cn } from '@/shared/lib'
 import {
@@ -28,11 +28,14 @@ export function MainNav({ items }: MainNavProps) {
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
         <SidebarMenu>
-          <SidebarMenuItem className="flex items-center gap-1">
-            <div className="flex-1">
-              <CreateRecordDialog />
+          <SidebarMenuItem className="flex flex-col gap-1">
+            <div className="flex flex-row gap-1">
+              <div className="flex-1">
+                <CreateRecordDialog />
+              </div>
+              <CreateMileageDialog />
             </div>
-            <CreateMileageDialog />
+            <MileageHistoryDialog />
           </SidebarMenuItem>
         </SidebarMenu>
         <SidebarMenu>
