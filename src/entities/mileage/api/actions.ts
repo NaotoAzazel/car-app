@@ -36,6 +36,9 @@ export async function getMileageByDateRange(from: Date, to: Date) {
         lte: endOfDay(to),
       },
     },
+    orderBy: {
+      createdAt: 'asc',
+    },
   })
 }
 
