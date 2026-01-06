@@ -13,6 +13,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from '@/shared/ui'
 
 import { MainNavItem } from '../model'
@@ -23,6 +24,7 @@ interface MainNavProps {
 
 export function MainNav({ items }: MainNavProps) {
   const pathname = usePathname()
+  const { setOpenMobile } = useSidebar()
 
   return (
     <SidebarGroup>
@@ -43,7 +45,10 @@ export function MainNav({ items }: MainNavProps) {
             const Icon = Icons[item.icon]
 
             return (
-              <SidebarMenuItem key={item.title}>
+              <SidebarMenuItem
+                key={item.title}
+                onClick={() => setOpenMobile(false)}
+              >
                 <SidebarMenuButton
                   tooltip={item.title}
                   className={cn(
