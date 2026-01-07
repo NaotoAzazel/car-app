@@ -44,15 +44,16 @@ export function CreateMileageDialog() {
   const onSubmit = async (data: CreateMileageSchema) => {
     try {
       toast.promise(create(data), {
-        loading: 'Сохранение записи о пробеге...',
-        success: () => `Пробег успешно записан`,
+        success: () => {
+          setIsOpen(false)
+          form.reset()
+
+          return `Пробег успешно записан`
+        },
         error: 'Возникла ошибка при сохранении пробега, проверьте консоль',
       })
     } catch (error) {
       console.error('CreateMileageDialog', error)
-    } finally {
-      setIsOpen(false)
-      form.reset()
     }
   }
 

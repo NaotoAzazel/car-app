@@ -49,7 +49,6 @@ export function RecordOverviewForm({ record }: RecordOverviewFormProps) {
   const onSubmit = async (data: RecordSchema) => {
     try {
       toast.promise(update({ id: record!.id, ...data }), {
-        loading: 'Сохранение записи...',
         success: () => `Запись была успешно сохранена`,
         error: 'Возникла ошибка при сохранении записи, проверьте консоль',
       })
