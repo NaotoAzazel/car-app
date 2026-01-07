@@ -48,15 +48,16 @@ export function CreateComponentDialog() {
   const onSubmit = async (data: CreateComponentSchema) => {
     try {
       toast.promise(create(data), {
-        loading: 'Создание компонента...',
-        success: () => `Компонент был успешно создан`,
+        success: () => {
+          setIsOpen(false)
+          form.reset()
+
+          return `Компонент был успешно создан`
+        },
         error: 'Возникла ошибка при создании компонента, проверьте консоль',
       })
     } catch (error) {
       console.error('CreateComponentDialog', error)
-    } finally {
-      setIsOpen(false)
-      form.reset()
     }
   }
 

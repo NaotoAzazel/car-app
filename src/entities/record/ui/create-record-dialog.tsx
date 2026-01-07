@@ -43,15 +43,16 @@ export function CreateRecordDialog() {
   const onSubmit = async (data: CreateRecordFormSchema) => {
     try {
       toast.promise(create(data.title), {
-        loading: 'Создание записи...',
-        success: () => `Запись была успешно создана`,
+        success: () => {
+          setIsOpen(false)
+          form.reset()
+
+          return `Запись была успешно создана`
+        },
         error: 'Возникла ошибка при создании записи, проверьте консоль',
       })
     } catch (error) {
       console.error(error)
-    } finally {
-      setIsOpen(false)
-      form.reset()
     }
   }
 
