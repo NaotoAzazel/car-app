@@ -1,15 +1,15 @@
-import { getYears } from '@/entities/record/api/actions'
+import { getLastYearWithData } from '@/entities/record'
 
-import { ChartArea } from './chart/chart-area'
 import { SectionCards } from './section-cards/section-cards'
+import { YearSpendsChart } from './year-spends-chart/year-spends-chart'
 
 export async function ReportsPage() {
-  await getYears()
+  const year = await getLastYearWithData()
 
   return (
     <div className="flex flex-col gap-4">
       <SectionCards />
-      <ChartArea />
+      <YearSpendsChart year={year} />
     </div>
   )
 }
