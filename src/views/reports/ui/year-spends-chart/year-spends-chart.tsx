@@ -28,13 +28,15 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function ChartArea() {
-  const [selectedYear, setSelectedYear] = useState<string>(
-    new Date().getFullYear().toString(),
-  )
+interface YearSpendsChartProps {
+  year: string | null
+}
+
+export function YearSpendsChart({ year }: YearSpendsChartProps) {
+  const [selectedYear, setSelectedYear] = useState<string | null>(year)
 
   const { data, isLoading, isError } = useGetMonthsSpends(Number(selectedYear))
-  const isDataMissing = !data?.length
+  const isDataMissing = !data?.length || year === null
 
   if (isLoading) {
     return <Skeleton className="h-[400px] w-full" />
@@ -48,7 +50,7 @@ export function ChartArea() {
     <Card>
       <CardHeader>
         <CardTitle>График трат</CardTitle>
-        {!isDataMissing && (
+        {!isDataMissing && selectedYear && (
           <>
             <CardDescription>{selectedYear} год</CardDescription>
             <CardAction>

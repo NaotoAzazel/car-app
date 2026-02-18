@@ -11,6 +11,7 @@ export {
   avgSpendsInMonth,
   getMonthsSpendsByYear,
   getYears,
+  getLastYearWithData
 } from './api'
 export {
   createRecordSchema,

@@ -216,24 +216,33 @@ export async function avgSpendsInMonth() {
 }
 
 export async function getMonthsSpendsByYear(year: number) {
-  const rawData = await db.$queryRaw<{ month: number; spend: any }[]>`
+  const rawData = await db.$queryRaw<{ month: number; spend: number }[]>`
+  SELECT
+    month,
+    SUM(component_sum + additional_sum) AS spend
+  FROM (
     SELECT
       CAST(EXTRACT(MONTH FROM r."createdAt") AS int) AS month,
-      SUM(c.cost)
-      + SUM(
-          COALESCE(
-            (SELECT SUM((spend->>'cost')::int)
-             FROM jsonb_array_elements(r."additionalSpends") AS spend),
-            0
-          )
-        ) AS spend
+
+      COALESCE(SUM(c.cost), 0) AS component_sum,
+
+      COALESCE(
+        (
+          SELECT SUM((spend->>'cost')::int)
+          FROM jsonb_array_elements(r."additionalSpends") AS spend
+        ),
+        0
+      ) AS additional_sum
+
     FROM "Records" r
     LEFT JOIN "RecordsComponents" rc ON r.id = rc."recordId"
     LEFT JOIN "Components" c ON rc."componentId" = c.id
     WHERE EXTRACT(YEAR FROM r."createdAt") = ${year}
-    GROUP BY month
-    ORDER BY MIN(r."createdAt")
-  `
+    GROUP BY r.id
+  ) t
+  GROUP BY month
+  ORDER BY month
+`
 
   if (!rawData.length) {
     return []
@@ -259,6 +268,21 @@ export async function getYears() {
 
   const uniqueYears = [...new Set(years.map((r) => r.year))]
   return uniqueYears
+}
+
+export async function getLastYearWithData() {
+  const lastRecord = await db.records.findFirst({
+    orderBy: {
+      createdAt: 'desc',
+    },
+    select: {
+      createdAt: true,
+    },
+  })
+
+  if (!lastRecord) return null
+
+  return lastRecord.createdAt.getFullYear().toString()
 }
 
 export async function getLatestRecordByTag(tag: RecordTags) {
