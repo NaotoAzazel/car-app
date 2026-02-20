@@ -1,27 +1,21 @@
 'use client'
 
 import { useState } from 'react'
-import { format, startOfMonth } from 'date-fns'
-import { ru } from 'date-fns/locale'
+import { startOfMonth } from 'date-fns'
 import { DateRange } from 'react-day-picker'
 
 import {
   Button,
-  Calendar,
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  Icons,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
 } from '@/shared/ui'
 
 import { useGetMileageByDateRange } from '../../lib'
-import { isSameRange } from './content-item/libs'
+import { DatePicker } from './date-picker/date-picker'
 import { MileageHistoryDialogContent } from './mileage-history-dialog-content'
 
 export function MileageHistoryDialog() {
@@ -60,43 +54,15 @@ export function MileageHistoryDialog() {
           </DialogDescription>
         </DialogHeader>
 
-        <Popover
-          open={isCalendarOpen}
-          onOpenChange={(isOpen) => {
-            setIsCalendarOpen(isOpen)
+        <DatePicker
+          draftRange={draftRange}
+          setDraftRange={setDraftRange}
+          appliedRange={appliedRange}
+          setAppliedRange={setAppliedRange}
+          isCalendarOpen={isCalendarOpen}
+          setIsCalendarOpen={setIsCalendarOpen}
+        />
 
-            if (!isOpen && !isSameRange(draftRange, appliedRange)) {
-              setAppliedRange(draftRange)
-            }
-          }}
-        >
-          <PopoverTrigger asChild>
-            <Button variant="outline" className="pl-3 text-left font-normal">
-              {draftRange?.from && draftRange?.to ? (
-                <>
-                  {format(draftRange.from, 'PPP', { locale: ru })} -{' '}
-                  {format(draftRange.to, 'PPP', { locale: ru })}
-                </>
-              ) : (
-                <span>Выберите диапазон</span>
-              )}
-              <Icons.calendar className="ml-auto size-4" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
-            <Calendar
-              locale={ru}
-              mode="range"
-              selected={draftRange}
-              onSelect={setDraftRange}
-              disabled={(date) =>
-                date > new Date() || date < new Date('1900-01-01')
-              }
-              required
-              captionLayout="dropdown"
-            />
-          </PopoverContent>
-        </Popover>
         <MileageHistoryDialogContent
           data={data ?? []}
           isError={isError}
