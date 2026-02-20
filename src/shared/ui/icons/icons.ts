@@ -14,6 +14,8 @@ import {
   HelpCircle,
   History,
   Loader,
+  LogIn,
+  LogOut,
   LucideIcon,
   TrendingDown,
   TrendingUp,
@@ -41,4 +43,6 @@ export const Icons = {
   alertCircle: AlertCircle,
   gauge: Gauge,
   arrowUp: ArrowUp,
+  logout: LogOut,
+  login: LogIn,
 }

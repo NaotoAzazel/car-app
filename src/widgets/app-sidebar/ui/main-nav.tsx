@@ -17,6 +17,7 @@ import {
 } from '@/shared/ui'
 
 import { MainNavItem } from '../model'
+import { LogoutButton } from './logout-button'
 
 interface MainNavProps {
   items: MainNavItem[]
@@ -27,7 +28,7 @@ export function MainNav({ items }: MainNavProps) {
   const { setOpenMobile } = useSidebar()
 
   return (
-    <SidebarGroup>
+    <SidebarGroup className="h-full flex">
       <SidebarGroupContent className="flex flex-col gap-2">
         <SidebarMenu>
           <SidebarMenuItem className="flex flex-col gap-1">
@@ -66,6 +67,7 @@ export function MainNav({ items }: MainNavProps) {
           })}
         </SidebarMenu>
       </SidebarGroupContent>
+      <LogoutButton />
     </SidebarGroup>
   )
 }
