@@ -8,11 +8,8 @@ import { Toaster } from '@/shared/ui'
 import { Providers } from './_providers'
 
 export const metadata: Metadata = {
-  title: 'Машина',
+  title: 'Car app',
   description: 'Statistic app for car',
-  icons: {
-    icon: '/icon.png',
-  },
 }
 
 export default function RootLayout({
