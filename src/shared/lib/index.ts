@@ -8,5 +8,3 @@ export { useIsMobile } from './use-mobile/use-mobile'
 export { db } from './db/prisma'
 
 export { formatCurrency, formatDate } from './formatters'
-
-export { getWebPush } from './webpush/webpush'

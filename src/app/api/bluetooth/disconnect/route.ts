@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 
 import { getSubscriptions } from '@/entities/subscription'
-import { getWebPush } from '@/shared/lib'
+import { getWebPush } from '@/shared/lib/webpush/webpush'
 
 export async function POST() {
   try {
