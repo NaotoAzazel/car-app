@@ -27,7 +27,6 @@ export function LogoutButton() {
       onClick={() => mutate()}
       size="sm"
       variant="secondary"
-      className="mt-auto"
       disabled={isPending}
     >
       {isPending ? (

@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 import {
   Button,
@@ -30,9 +31,20 @@ import { createMileageSchema, CreateMileageSchema } from '../../model'
 import { MileageInfoCard } from './mileage-info-card'
 
 export function CreateMileageDialog() {
-  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const pathname = usePathname()
+  const isOpenFromSearchParams = Boolean(searchParams.get('mileage-dialog'))
+
+  const [isOpen, setIsOpen] = useState<boolean>(false || isOpenFromSearchParams)
 
   const { create, isPending } = useCreateMileage()
+
+  useEffect(() => {
+    if (isOpenFromSearchParams) {
+      setIsOpen(true)
+    }
+  }, [isOpenFromSearchParams])
 
   const form = useForm<CreateMileageSchema>({
     resolver: zodResolver(createMileageSchema),
@@ -40,6 +52,21 @@ export function CreateMileageDialog() {
       mileage: 0,
     },
   })
+
+  const handleOpenChange = (open: boolean) => {
+    setIsOpen(open)
+
+    if (!open) {
+      const params = new URLSearchParams(searchParams.toString())
+      params.delete('mileage-dialog')
+
+      const newUrl = params.toString()
+        ? `${pathname}?${params.toString()}`
+        : pathname
+
+      router.replace(newUrl, { scroll: false })
+    }
+  }
 
   const onSubmit = async (data: CreateMileageSchema) => {
     try {
@@ -58,10 +85,11 @@ export function CreateMileageDialog() {
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button className="justify-start" variant="outline" size="sm">
           <Icons.gauge className="size-4" />
+          Создание записи о пробеге
         </Button>
       </DialogTrigger>
       <DialogContent>

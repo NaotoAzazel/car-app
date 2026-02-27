@@ -3,8 +3,9 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-import { CreateMileageDialog, MileageHistoryDialog } from '@/entities/mileage'
+import { MileageHistoryDialog } from '@/entities/mileage'
 import { CreateRecordDialog } from '@/entities/record'
+import { NotificationStatusContainer } from '@/entities/subscription'
 import { cn } from '@/shared/lib'
 import {
   Icons,
@@ -36,7 +37,6 @@ export function MainNav({ items }: MainNavProps) {
               <div className="flex-1">
                 <CreateRecordDialog />
               </div>
-              <CreateMileageDialog />
             </div>
             <MileageHistoryDialog />
           </SidebarMenuItem>
@@ -67,7 +67,10 @@ export function MainNav({ items }: MainNavProps) {
           })}
         </SidebarMenu>
       </SidebarGroupContent>
-      <LogoutButton />
+      <div className="mt-auto flex flex-col gap-2">
+        <NotificationStatusContainer />
+        <LogoutButton />
+      </div>
     </SidebarGroup>
   )
 }
