@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 import {
   Button,
@@ -31,20 +31,20 @@ import { createMileageSchema, CreateMileageSchema } from '../../model'
 import { MileageInfoCard } from './mileage-info-card'
 
 export function CreateMileageDialog() {
-  const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
-  const isOpenFromSearchParams = Boolean(searchParams.get('mileage-dialog'))
 
-  const [isOpen, setIsOpen] = useState<boolean>(false || isOpenFromSearchParams)
+  const [isOpen, setIsOpen] = useState<boolean>(false)
 
   const { create, isPending } = useCreateMileage()
 
   useEffect(() => {
-    if (isOpenFromSearchParams) {
+    const params = new URLSearchParams(window.location.search)
+
+    if (params.get('mileage-dialog')) {
       setIsOpen(true)
     }
-  }, [isOpenFromSearchParams])
+  }, [])
 
   const form = useForm<CreateMileageSchema>({
     resolver: zodResolver(createMileageSchema),
@@ -57,7 +57,7 @@ export function CreateMileageDialog() {
     setIsOpen(open)
 
     if (!open) {
-      const params = new URLSearchParams(searchParams.toString())
+      const params = new URLSearchParams(window.location.search)
       params.delete('mileage-dialog')
 
       const newUrl = params.toString()

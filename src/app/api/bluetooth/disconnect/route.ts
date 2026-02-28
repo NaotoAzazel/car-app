@@ -4,6 +4,8 @@ import { getAuthToken, validateSession } from '@/features/auth'
 import { getSubscriptions } from '@/entities/subscription'
 import { getWebPush } from '@/shared/lib/webpush/webpush'
 
+export const runtime = 'nodejs'
+
 export async function POST() {
   try {
     const token = await getAuthToken()
