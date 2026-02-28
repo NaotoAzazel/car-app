@@ -1,21 +1,20 @@
 import { env } from '@/env'
-import jwt from 'jsonwebtoken'
 import { NextResponse } from 'next/server'
+
+import { AUTH_TOKEN_NAME, createAuthToken } from '@/features/auth'
 
 export async function POST(req: Request) {
   const { password } = await req.json()
 
-  if (password !== process.env.SITE_PASSWORD) {
+  if (password !== env.SITE_PASSWORD) {
     return NextResponse.json({ message: 'INCORRECT_PASSWORD' }, { status: 401 })
   }
 
-  const token = jwt.sign({ auth: true }, env.JWT_SECRET!, {
-    expiresIn: '7d',
-  })
+  const token = createAuthToken()
 
   const response = NextResponse.json({ success: true })
 
-  response.cookies.set('auth_token', token, {
+  response.cookies.set(AUTH_TOKEN_NAME, token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',

@@ -7,6 +7,11 @@ export const env = createEnv({
     DATABASE_URL: z.string(),
     SITE_PASSWORD: z.string(),
     JWT_SECRET: z.string(),
+    VAPID_PRIVATE_KEY: z.string(),
+  },
+
+  client: {
+    NEXT_PUBLIC_VAPID_KEY: z.string(),
   },
 
   runtimeEnv: {
@@ -14,6 +19,8 @@ export const env = createEnv({
     DATABASE_URL: process.env.DATABASE_URL,
     SITE_PASSWORD: process.env.SITE_PASSWORD,
     JWT_SECRET: process.env.JWT_SECRET,
+    NEXT_PUBLIC_VAPID_KEY: process.env.NEXT_PUBLIC_VAPID_KEY,
+    VAPID_PRIVATE_KEY: process.env.VAPID_PRIVATE_KEY,
   },
 
   /**
