@@ -8,6 +8,7 @@ export const env = createEnv({
     SITE_PASSWORD: z.string(),
     JWT_SECRET: z.string(),
     VAPID_PRIVATE_KEY: z.string(),
+    API_BEARER_TOKEN: z.string(),
   },
 
   client: {
@@ -21,6 +22,7 @@ export const env = createEnv({
     JWT_SECRET: process.env.JWT_SECRET,
     NEXT_PUBLIC_VAPID_KEY: process.env.NEXT_PUBLIC_VAPID_KEY,
     VAPID_PRIVATE_KEY: process.env.VAPID_PRIVATE_KEY,
+    API_BEARER_TOKEN: process.env.API_BEARER_TOKEN,
   },
 
   /**

@@ -1,19 +1,23 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
-import { getAuthToken, validateSession } from '@/features/auth'
+import { validateUsingBearerToken } from '@/features/auth'
 import { getSubscriptions } from '@/entities/subscription'
 import { getWebPush } from '@/shared/lib/webpush/webpush'
 
-export const runtime = 'nodejs'
-
-export async function POST() {
+export async function POST(req: NextRequest) {
   try {
-    const token = await getAuthToken()
+    const authHeader = req.headers.get('authorization') || ''
+    const token = authHeader.startsWith('Bearer ')
+      ? authHeader.substring(7)
+      : null
+
     if (!token) {
       return NextResponse.json({ message: 'UNAUTHORIZED' }, { status: 401 })
     }
 
-    await validateSession(token)
+    if (!validateUsingBearerToken(token)) {
+      return NextResponse.json({ message: 'UNAUTHORIZED' }, { status: 401 })
+    }
 
     const webpush = getWebPush()
     const subscriptions = await getSubscriptions()

@@ -19,6 +19,7 @@ import {
 
 import { MainNavItem } from '../model'
 import { LogoutButton } from './logout-button'
+import { SecretKeysDialog } from './secret-keys-dialog/secret-keys-dialog'
 
 interface MainNavProps {
   items: MainNavItem[]
@@ -68,6 +69,7 @@ export function MainNav({ items }: MainNavProps) {
         </SidebarMenu>
       </SidebarGroupContent>
       <div className="mt-auto flex flex-col gap-2">
+        <SecretKeysDialog />
         <NotificationStatusContainer />
         <LogoutButton />
       </div>
