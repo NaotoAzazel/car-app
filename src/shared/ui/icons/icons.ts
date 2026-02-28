@@ -9,7 +9,10 @@ import {
   CheckCircle,
   CirclePlus,
   Component,
+  Copy,
   Droplets,
+  Eye,
+  EyeOff,
   Gauge,
   HelpCircle,
   History,
@@ -45,4 +48,7 @@ export const Icons = {
   arrowUp: ArrowUp,
   logout: LogOut,
   login: LogIn,
+  copy: Copy,
+  eye: Eye,
+  eyeOff: EyeOff,
 }
