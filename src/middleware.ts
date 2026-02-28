@@ -1,12 +1,10 @@
-import { env } from '@/env'
-import { jwtVerify } from 'jose'
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
-const secret = new TextEncoder().encode(env.JWT_SECRET)
+import { AUTH_TOKEN_NAME, validateSession } from '@/features/auth'
 
 export async function middleware(req: NextRequest) {
-  const token = req.cookies.get('auth_token')?.value
+  const token = req.cookies.get(AUTH_TOKEN_NAME)?.value
   const { pathname } = req.nextUrl
 
   if (pathname.startsWith('/login') || pathname.startsWith('/api')) {
@@ -18,7 +16,7 @@ export async function middleware(req: NextRequest) {
   }
 
   try {
-    await jwtVerify(token, secret)
+    await validateSession(token)
     return NextResponse.next()
   } catch {
     return NextResponse.redirect(new URL('/login', req.url))

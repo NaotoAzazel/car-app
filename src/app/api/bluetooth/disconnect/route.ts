@@ -1,14 +1,19 @@
 import { NextResponse } from 'next/server'
 
+import { getAuthToken, validateSession } from '@/features/auth'
 import { getSubscriptions } from '@/entities/subscription'
 import { getWebPush } from '@/shared/lib/webpush/webpush'
 
 export async function POST() {
   try {
-    // TODO: validate session
+    const token = await getAuthToken()
+    if (!token) {
+      return NextResponse.json({ message: 'UNAUTHORIZED' }, { status: 401 })
+    }
+
+    await validateSession(token)
 
     const webpush = getWebPush()
-
     const subscriptions = await getSubscriptions()
 
     if (!subscriptions.length) {
