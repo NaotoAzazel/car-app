@@ -3,11 +3,10 @@
 import { useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 
-import {
-  additionalSpendsSchema,
-  AdditionalSpendsSchema,
-} from '@/entities/record'
+import { useCreateAndLinkSpend } from '@/entities/additionalSpend'
+import { additionalSpend, CreateAdditionalSpendSchema } from '@/entities/record'
 import {
   Button,
   Dialog,
@@ -16,6 +15,7 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
+  DialogPortal,
   DialogTitle,
   DialogTrigger,
   Form,
@@ -24,35 +24,42 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  Icons,
   Input,
 } from '@/shared/ui'
 
 interface AdditionalSpendsDialogProps {
-  onConfirm: (additionalSpends: AdditionalSpendsSchema) => void
-  arrayLength: number
+  recordId: number
   disabled: boolean
+  onCreated: (spend: any) => void
 }
 
 export function AdditionalSpendsDialog({
-  onConfirm,
-  arrayLength,
   disabled,
+  recordId,
+  onCreated,
 }: AdditionalSpendsDialogProps) {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false)
 
-  const form = useForm<Omit<AdditionalSpendsSchema, 'id'>>({
-    resolver: zodResolver(additionalSpendsSchema.omit({ id: true })),
-    defaultValues: {
-      name: '',
-      cost: 0,
-    },
+  const { mutateAsync: create, isPending } = useCreateAndLinkSpend()
+
+  const form = useForm<CreateAdditionalSpendSchema>({
+    resolver: zodResolver(additionalSpend.omit({ id: true })),
+    defaultValues: { name: '', cost: 0 },
   })
 
-  const onSubmit = async (data: Omit<AdditionalSpendsSchema, 'id'>) => {
-    onConfirm({ ...data, id: arrayLength + 1 })
-    setIsDialogOpen(false)
+  const onSubmit = async (data: CreateAdditionalSpendSchema) => {
+    try {
+      const newSpend = await create({ data, recordId })
 
-    form.reset()
+      onCreated(newSpend)
+
+      setIsDialogOpen(false)
+      form.reset()
+      toast.success('Доп. трата успешно добавлена')
+    } catch (error) {
+      console.error('AdditionalSpendsDialog', error)
+    }
   }
 
   return (
@@ -67,62 +74,77 @@ export function AdditionalSpendsDialog({
           Добавить
         </Button>
       </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Добавление дополнительной траты</DialogTitle>
-          <DialogDescription>
-            Заполните поля для добавление дополнительной траты
-          </DialogDescription>
-        </DialogHeader>
+      <DialogPortal>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Добавление дополнительной траты</DialogTitle>
+            <DialogDescription>
+              Заполните поля для добавление дополнительной траты
+            </DialogDescription>
+          </DialogHeader>
 
-        <Form {...form}>
-          <form
-            id="additional-spends-form"
-            className="grid gap-2"
-            onSubmit={form.handleSubmit(onSubmit)}
-          >
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Название</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Установка на СТО" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="cost"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Цена (грн)</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="2450"
-                      inputMode="numeric"
-                      {...field}
-                      onChange={(e) => field.onChange(e.target.value)}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <DialogFooter>
-              <DialogClose asChild>
-                <Button variant="outline">Отмена</Button>
-              </DialogClose>
-              <Button type="button" onClick={form.handleSubmit(onSubmit)}>
-                Добавить
-              </Button>
-            </DialogFooter>
-          </form>
-        </Form>
-      </DialogContent>
+          <Form {...form}>
+            <form
+              className="grid gap-2"
+              onSubmit={(e) => {
+                e.stopPropagation()
+                form.handleSubmit(onSubmit)(e)
+              }}
+            >
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Название</FormLabel>
+                    <FormControl>
+                      <Input
+                        disabled={isPending}
+                        placeholder="Установка на СТО"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="cost"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Цена (грн)</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="2450"
+                        inputMode="numeric"
+                        {...field}
+                        disabled={isPending}
+                        onChange={(e) => field.onChange(Number(e.target.value))}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button variant="outline" type="button">
+                    Отмена
+                  </Button>
+                </DialogClose>
+
+                <Button type="submit" disabled={isPending}>
+                  {isPending && (
+                    <Icons.loader className="mr-2 size-4 animate-spin" />
+                  )}
+                  <span>Сохранить</span>
+                </Button>
+              </DialogFooter>
+            </form>
+          </Form>
+        </DialogContent>
+      </DialogPortal>
     </Dialog>
   )
 }

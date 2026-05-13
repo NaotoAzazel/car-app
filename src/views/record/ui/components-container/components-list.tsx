@@ -1,6 +1,4 @@
-'use client'
-
-import { RecordsComponentWithData } from '@/entities/record'
+import { RecordSchema } from '@/entities/record'
 import { formatCurrency } from '@/shared/lib'
 import { ScrollArea } from '@/shared/ui'
 
@@ -10,7 +8,7 @@ import { ComponentListItem } from './component-list-item'
 const VISIBLE_COUNT = 6
 
 interface ComponentsListProps {
-  components: RecordsComponentWithData[]
+  components: RecordSchema['recordsToComponents']
 }
 
 export function ComponentsList({ components }: ComponentsListProps) {

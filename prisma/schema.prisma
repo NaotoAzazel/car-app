@@ -2,21 +2,9 @@ generator client {
   provider = "prisma-client-js"
 }
 
-generator json {
-  provider = "prisma-json-types-generator"
-}
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-}
-
-enum RecordTypes {
-  REPAIRING
-  SERVICING
-  TUNING
-  BUYING
-  INSURANCE
 }
 
 enum RecordTags {
@@ -39,37 +27,62 @@ enum RecordTags {
   POWER_STEERING_FLUID_CHANGE
 }
 
-model Records {
-  id               Int      @id @default(autoincrement())
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-  title            String
-  mileage          Int
-  /// [AdditionalSpends]
-  additionalSpends Json
+model Record {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String
+  mileage   Int
 
-  recordType        RecordTypes?
-  tags              RecordTags[]
-  RecordsComponents RecordsComponents[]
+  recordTypeId Int?
+  recordType   RecordType? @relation(fields: [recordTypeId], references: [id])
+
+  tags                     RecordTags[]
+  recordsToComponents      RecordsToComponents[]
+  recordToAdditionalSpends RecordToAdditionalSpend[]
 }
 
-model Components {
-  id                Int                 @id @default(autoincrement())
-  name              String
-  isLiquid          Boolean             @default(false)
-  cost              Int
-  code              String
-  RecordsComponents RecordsComponents[]
+model RecordType {
+  id      Int      @id @default(autoincrement())
+  name    String   @unique
+  records Record[]
 }
 
-model RecordsComponents {
+model Component {
+  id                  Int                   @id @default(autoincrement())
+  name                String
+  isLiquid            Boolean               @default(false)
+  cost                Int
+  code                String
+  recordsToComponents RecordsToComponents[]
+}
+
+model RecordsToComponents {
   recordId    Int
   componentId Int
 
-  record    Records    @relation(fields: [recordId], references: [id])
-  component Components @relation(fields: [componentId], references: [id])
+  record              Record    @relation(fields: [recordId], references: [id])
+  component           Component @relation(fields: [componentId], references: [id])
+  recordsComponentsId Int?
 
   @@id([recordId, componentId])
+}
+
+model AdditionalSpend {
+  id                       Int                       @id @default(autoincrement())
+  name                     String
+  cost                     Int
+  recordToAdditionalSpends RecordToAdditionalSpend[]
+}
+
+model RecordToAdditionalSpend {
+  recordId          Int
+  additionalSpendId Int
+
+  record          Record          @relation(fields: [recordId], references: [id])
+  additionalSpend AdditionalSpend @relation(fields: [additionalSpendId], references: [id])
+
+  @@id([recordId, additionalSpendId])
 }
 
 model Mileage {

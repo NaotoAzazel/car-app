@@ -1,14 +1,16 @@
+export type { RecordsComponentWithData } from './types'
 export {
+  additionalSpend,
+  additionalSpendsSchema,
+  createRecordFormSchema,
   createRecordSchema,
   recordSchema,
   updateRecordSchema,
-  createRecordFormSchema,
-  additionalSpendsSchema,
+  type AdditionalSpendSchema,
+  type ComponentsSchema,
   type CreateRecordFormSchema,
   type CreateRecordRequest,
   type RecordSchema,
-  type ComponentsSchema,
   type UpdateRecordRequest,
-  type AdditionalSpendsSchema,
+  type CreateAdditionalSpendSchema,
 } from './validation-schema'
-export type { RecordsComponentWithData } from './types'

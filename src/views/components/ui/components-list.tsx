@@ -1,5 +1,5 @@
 import { RecordListItemSkeleton } from '@/views/records/ui/records-list/record-list-item-skeleton'
-import { Components } from '@prisma/client'
+import { Component } from '@prisma/client'
 import { toast } from 'sonner'
 
 import { useDeleteComponent, useGetComponents } from '@/entities/component'
@@ -30,7 +30,7 @@ export function ComponentsList({ searchValue }: ComponentsListProps) {
     }
   })
 
-  const onComponentDelete = async (id: Components['id']) => {
+  const onComponentDelete = async (id: Component['id']) => {
     try {
       toast.promise(deleteComponent(id), {
         loading: 'Удаление компонента...',

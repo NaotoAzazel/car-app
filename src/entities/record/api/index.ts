@@ -8,14 +8,11 @@ export {
   getRecordById,
   getRecordsCountByMonth,
   getRecordsForPagination,
+  getRecordTypes,
   getSpendsByMonthYear,
   getSpendsByYear,
   getTotalSpends,
   getYears,
   updateRecordById,
 } from './actions'
-export {
-  createRecordRequest,
-  deleteRecordByIdRequest,
-  updateRecordByIdRequest,
-} from './requests'
+export { deleteRecordByIdRequest } from './requests'

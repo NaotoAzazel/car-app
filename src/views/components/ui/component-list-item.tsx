@@ -1,11 +1,11 @@
 import { useState } from 'react'
-import { Components } from '@prisma/client'
+import { Component } from '@prisma/client'
 
 import { formatCurrency } from '@/shared/lib'
 import { Button, Icons } from '@/shared/ui'
 
 interface ComponentListItemProps {
-  component: Components
+  component: Component
   onDelete: () => void
 }
 

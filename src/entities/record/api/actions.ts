@@ -1,6 +1,6 @@
 'use server'
 
-import { Prisma, Records, RecordTags } from '@prisma/client'
+import { Prisma, Record, RecordTags } from '@prisma/client'
 
 import { MONTHS_RU } from '@/shared/constants'
 import { db } from '@/shared/lib'
@@ -8,38 +8,57 @@ import { db } from '@/shared/lib'
 import { CreateRecordRequest, UpdateRecordRequest } from '../model'
 
 export async function createRecord(record: CreateRecordRequest) {
-  const { recordType, ...rest } = record
+  return await db.record.create({ data: record })
+}
 
-  return await db.records.create({
-    data: { ...rest, RecordsComponents: { create: [] } },
+interface GetRecordByIdOptions {
+  includeComponents?: boolean
+  includeType?: boolean
+  includeAdditionalSpends?: boolean
+}
+
+export async function getRecordById(
+  id: Record['id'],
+  options?: GetRecordByIdOptions,
+) {
+  return await db.record.findFirst({
+    where: { id },
+    include: {
+      recordType: options?.includeType,
+      recordsToComponents: options?.includeComponents
+        ? {
+            include: {
+              component: true,
+            },
+          }
+        : false,
+      recordToAdditionalSpends: options?.includeAdditionalSpends
+        ? {
+            include: {
+              additionalSpend: true,
+            },
+          }
+        : false,
+    },
   })
 }
 
-export async function getRecordById(id: Records['id']) {
-  return await db.records.findFirst({
-    where: { id },
-    include: {
-      RecordsComponents: {
-        include: {
-          component: true,
-        },
-      },
-    },
-  })
+export async function getRecordTypes() {
+  return await db.recordType.findMany()
 }
 
 interface GetRecordsForPaginationParams {
   title?: string
   page: number
   itemsPerPage: number
-  includeComponents?: boolean
+  includeRecordType?: boolean
 }
 
 export async function getRecordsForPagination({
   page,
   itemsPerPage,
   title,
-  includeComponents = false,
+  includeRecordType = false,
 }: GetRecordsForPaginationParams) {
   const skip = (page - 1) * itemsPerPage
 
@@ -50,31 +69,30 @@ export async function getRecordsForPagination({
     },
   }
 
-  const include: Prisma.RecordsFindManyArgs['include'] = {}
-
-  if (includeComponents) {
-    include.RecordsComponents = {
+  const include = Prisma.validator<Prisma.RecordInclude>()({
+    recordType: includeRecordType,
+    recordsToComponents: {
+      // TODO: fix this later, always include components, even when not needed
       include: {
         component: true,
       },
-    }
-  }
+    },
+    recordToAdditionalSpends: {
+      include: {
+        additionalSpend: true,
+      },
+    },
+  })
 
-  const totalItems = await db.records.count({
+  const totalItems = await db.record.count({
     where: whereClause,
   })
 
-  const records = await db.records.findMany({
+  const records = await db.record.findMany({
     where: whereClause,
     take: itemsPerPage,
     skip,
-    include: {
-      RecordsComponents: {
-        include: {
-          component: true,
-        },
-      },
-    },
+    include,
   })
 
   const totalPages = Math.ceil(totalItems / itemsPerPage)
@@ -90,49 +108,67 @@ export async function getRecordsForPagination({
   }
 }
 
-export async function updateRecordById(
-  id: number,
-  record: UpdateRecordRequest,
-) {
-  const { components, id: recordId, ...rest } = record
+export async function updateRecordById(record: UpdateRecordRequest) {
+  const { recordsToComponents, id: _, ...mainData } = record
 
-  await db.records.update({
-    where: { id },
+  return await db.record.update({
+    where: { id: record.id },
     data: {
-      ...rest,
-      RecordsComponents: {
+      ...mainData,
+
+      recordsToComponents: {
         deleteMany: {},
-        create: components?.map((c) => ({
+        create: recordsToComponents?.map((rtc) => ({
           component: {
-            connect: { id: c.componentId },
+            connect: { id: rtc.componentId },
           },
         })),
+      },
+
+      recordToAdditionalSpends: {
+        deleteMany: {},
+        create:
+          record.recordToAdditionalSpends?.map((spend) => ({
+            additionalSpend: {
+              connect: { id: spend.additionalSpendId },
+            },
+          })) ?? [],
       },
     },
   })
 }
 
-export async function deleteRecordById(id: Records['id']) {
-  await db.recordsComponents.deleteMany({
-    where: { recordId: id },
+export async function deleteRecordById(id: Record['id']) {
+  return await db.$transaction(async (tx) => {
+    await tx.recordsToComponents.deleteMany({
+      where: { recordId: id },
+    })
+
+    const deletedRecord = await tx.record.delete({
+      where: { id },
+    })
+
+    return deletedRecord
   })
-  await db.records.delete({ where: { id } })
 }
 
 export async function getTotalSpends() {
-  // dont touch this please never!
   const result = await db.$queryRaw<{ total: number }[]>`
-    SELECT
+    SELECT (
       (
-        COALESCE(SUM(c.cost), 0) +
-        COALESCE(SUM((spend->>'cost')::int), 0)
-      )::int AS total
-    FROM "Records" r
-    LEFT JOIN "RecordsComponents" rc ON rc."recordId" = r.id
-    LEFT JOIN "Components" c ON c.id = rc."componentId"
-    LEFT JOIN LATERAL jsonb_array_elements(r."additionalSpends") spend ON true
+        SELECT COALESCE(SUM(c.cost), 0)
+        FROM "RecordsToComponents" rc
+        JOIN "Component" c ON c.id = rc."componentId"
+      ) +
+      (
+        SELECT COALESCE(SUM(s.cost), 0)
+        FROM "RecordToAdditionalSpend" ras
+        JOIN "AdditionalSpend" s ON s.id = ras."additionalSpendId"
+      )
+    )::int AS total
   `
-  return result[0].total
+
+  return result[0]?.total ?? 0
 }
 
 export async function getSpendsByMonthYear(month: number, year: number) {
@@ -141,37 +177,55 @@ export async function getSpendsByMonthYear(month: number, year: number) {
   }
 
   const dbMonth = month + 1
+
   const result = await db.$queryRaw<{ total: number }[]>`
-    SELECT
-      (
-        COALESCE(SUM(c.cost), 0) +
-        COALESCE(SUM((spend->>'cost')::int), 0)
-      )::int AS total
-    FROM "Records" r
-    LEFT JOIN "RecordsComponents" rc ON rc."recordId" = r.id
-    LEFT JOIN "Components" c ON c.id = rc."componentId"
-    LEFT JOIN LATERAL jsonb_array_elements(r."additionalSpends") spend ON true
-    WHERE EXTRACT(MONTH FROM r."createdAt") = ${dbMonth}
-      AND EXTRACT(YEAR FROM r."createdAt") = ${year}
-  `
+  WITH RELEVANT_RECORDS AS (
+    SELECT id
+    FROM "Record"
+    WHERE EXTRACT(MONTH FROM "createdAt") = ${dbMonth}
+      AND EXTRACT(YEAR FROM "createdAt") = ${year}
+  ),
+  COMPONENTS_SUM AS (
+    SELECT COALESCE(SUM(c.cost), 0) as cost_sum
+    FROM "RecordsToComponents" rc
+    JOIN "Component" c ON c.id = rc."componentId"
+    WHERE rc."recordId" IN (SELECT id FROM RELEVANT_RECORDS)
+  ),
+  SPENDS_SUM AS (
+    SELECT COALESCE(SUM(s.cost), 0) as additional_sum
+    FROM "RecordToAdditionalSpend" ras
+    JOIN "AdditionalSpend" s ON s.id = ras."additionalSpendId"
+    WHERE ras."recordId" IN (SELECT id FROM RELEVANT_RECORDS)
+  )
+  SELECT (COMPONENTS_SUM.cost_sum + SPENDS_SUM.additional_sum)::int AS total
+  FROM COMPONENTS_SUM, SPENDS_SUM
+`
 
   return result[0]?.total ?? 0
 }
 
 export async function getSpendsByYear(year: number) {
   const result = await db.$queryRaw<{ total: number }[]>`
-    SELECT
-      (
-        COALESCE(SUM(c.cost), 0) +
-        COALESCE(SUM((spend->>'cost')::int), 0)
-      )::int AS total
-    FROM "Records" r
-    LEFT JOIN "RecordsComponents" rc ON rc."recordId" = r.id
-    LEFT JOIN "Components" c ON c.id = rc."componentId"
-    LEFT JOIN LATERAL jsonb_array_elements(r."additionalSpends") spend ON true
-    WHERE EXTRACT(YEAR FROM r."createdAt") = ${year}
-  `
-  return result[0].total ?? 0
+  SELECT (
+    COALESCE((
+      SELECT SUM(c.cost)
+      FROM "RecordsToComponents" rc
+      JOIN "Component" c ON c.id = rc."componentId"
+      JOIN "Record" r ON r.id = rc."recordId"
+      WHERE EXTRACT(YEAR FROM r."createdAt") = ${year}
+    ), 0) 
+    + 
+    COALESCE((
+      SELECT SUM(s.cost)
+      FROM "RecordToAdditionalSpend" ras
+      JOIN "AdditionalSpend" s ON s.id = ras."additionalSpendId"
+      JOIN "Record" r ON r.id = ras."recordId"
+      WHERE EXTRACT(YEAR FROM r."createdAt") = ${year}
+    ), 0)
+  )::int AS total
+`
+
+  return result[0]?.total ?? 0
 }
 
 export async function getRecordsCountByMonth(month: number) {
@@ -184,7 +238,7 @@ export async function getRecordsCountByMonth(month: number) {
   const startDate = new Date(currentYear, month, 1, 0, 0, 0)
   const endDate = new Date(currentYear, month + 1, 1, 0, 0, 0)
 
-  const count = await db.records.count({
+  const count = await db.record.count({
     where: {
       createdAt: {
         gte: startDate,
@@ -197,7 +251,7 @@ export async function getRecordsCountByMonth(month: number) {
 }
 
 export async function avgSpendsInMonth() {
-  const months = await db.records.findMany({
+  const months = await db.record.findMany({
     select: {
       createdAt: true,
     },
@@ -217,35 +271,34 @@ export async function avgSpendsInMonth() {
 
 export async function getMonthsSpendsByYear(year: number) {
   const rawData = await db.$queryRaw<{ month: number; spend: number }[]>`
-  SELECT
+  SELECT 
     month,
-    SUM(component_sum + additional_sum) AS spend
+    SUM(component_sum + additional_sum)::int AS spend
   FROM (
-    SELECT
-      CAST(EXTRACT(MONTH FROM r."createdAt") AS int) AS month,
-
-      COALESCE(SUM(c.cost), 0) AS component_sum,
-
-      COALESCE(
-        (
-          SELECT SUM((spend->>'cost')::int)
-          FROM jsonb_array_elements(r."additionalSpends") AS spend
-        ),
-        0
-      ) AS additional_sum
-
-    FROM "Records" r
-    LEFT JOIN "RecordsComponents" rc ON r.id = rc."recordId"
-    LEFT JOIN "Components" c ON rc."componentId" = c.id
+    SELECT 
+      r.id,
+      EXTRACT(MONTH FROM r."createdAt")::int AS month,
+      COALESCE((
+        SELECT SUM(c.cost)
+        FROM "RecordsToComponents" rc
+        JOIN "Component" c ON c.id = rc."componentId"
+        WHERE rc."recordId" = r.id
+      ), 0) AS component_sum,
+      COALESCE((
+        SELECT SUM(s.cost)
+        FROM "RecordToAdditionalSpend" ras
+        JOIN "AdditionalSpend" s ON s.id = ras."additionalSpendId"
+        WHERE ras."recordId" = r.id
+      ), 0) AS additional_sum
+    FROM "Record" r
     WHERE EXTRACT(YEAR FROM r."createdAt") = ${year}
-    GROUP BY r.id
   ) t
   GROUP BY month
   ORDER BY month
 `
 
   if (!rawData.length) {
-    return []
+    return MONTHS_RU.map((month) => ({ month, spend: 0 }))
   }
 
   const monthMap = new Map<number, number>()
@@ -262,7 +315,7 @@ export async function getMonthsSpendsByYear(year: number) {
 export async function getYears() {
   const years = await db.$queryRaw<{ year: number }[]>`
     SELECT DISTINCT EXTRACT(YEAR FROM "createdAt")::int AS year
-    FROM "Records"
+    FROM "Record"
     ORDER BY year;
   `
 
@@ -271,7 +324,7 @@ export async function getYears() {
 }
 
 export async function getLastYearWithData() {
-  const lastRecord = await db.records.findFirst({
+  const lastRecord = await db.record.findFirst({
     orderBy: {
       createdAt: 'desc',
     },
@@ -286,7 +339,7 @@ export async function getLastYearWithData() {
 }
 
 export async function getLatestRecordByTag(tag: RecordTags) {
-  return await db.records.findMany({
+  return await db.record.findMany({
     where: { tags: { has: tag } },
     take: 1,
     orderBy: {

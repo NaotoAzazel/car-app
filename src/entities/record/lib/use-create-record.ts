@@ -1,12 +1,12 @@
 'use client'
 
-import { Records } from '@prisma/client'
+import { Record } from '@prisma/client'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 
 import { redirects } from '@/shared/constants'
 
-import { createRecordRequest } from '../api'
+import { createRecord } from '../api'
 import { RECORD_BASE_QUERY_KEY } from './query-keys'
 
 export function useCreateRecord() {
@@ -14,21 +14,20 @@ export function useCreateRecord() {
   const router = useRouter()
 
   const { mutateAsync, isPending } = useMutation({
-    mutationFn: createRecordRequest,
-    onSuccess: (data) => {
+    mutationFn: createRecord,
+    onSuccess: (record) => {
       queryClient.invalidateQueries({ queryKey: [RECORD_BASE_QUERY_KEY] })
-      router.push(`${redirects.toRecordOverviewPage}/${data.record.id}`)
+      router.push(`${redirects.toRecordOverviewPage}/${record.id}`)
     },
   })
 
-  const create = async (title: Records['title']) => {
+  const create = async (title: Record['title']) => {
     const now = new Date()
 
     await mutateAsync({
       title,
       mileage: 0,
-      additionalSpends: [],
-      recordType: null,
+      recordTypeId: null,
       tags: [],
       createdAt: now,
     })

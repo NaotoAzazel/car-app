@@ -1,4 +1,4 @@
-import { Components } from '@prisma/client'
+import { Component } from '@prisma/client'
 import axios from 'axios'
 
 import { CreateComponentSchema } from '../model'
@@ -18,7 +18,7 @@ export async function createComponentRequest(component: CreateComponentSchema) {
   }
 }
 
-export async function deleteComponentByIdRequest(id: Components['id']) {
+export async function deleteComponentByIdRequest(id: Component['id']) {
   try {
     const response = await axios.delete(`/api/component/${id}`)
     return response.data

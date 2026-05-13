@@ -1,31 +1,29 @@
-'use client'
-
 import { useState } from 'react'
-import { Components } from '@prisma/client'
+import { Component } from '@prisma/client'
 
-import { RecordsComponentWithData } from '@/entities/record'
+import { RecordSchema } from '@/entities/record'
 import { Button } from '@/shared/ui'
 
 import { ComponentsDialog } from '../components-dialog/components-dialog'
 import { ComponentsList } from './components-list'
 
-interface ComponentsContainerProps {
-  recordId: number
-  value: RecordsComponentWithData[]
-  onChange: (components: RecordsComponentWithData[]) => void
+interface ComponentContainerProps {
+  value: RecordSchema['recordsToComponents']
+  onChange: (components: RecordSchema['recordsToComponents']) => void
   disabled: boolean
+  recordId: number
 }
 
 export function ComponentsContainer({
-  recordId,
   value,
-  disabled,
   onChange,
-}: ComponentsContainerProps) {
+  disabled,
+  recordId,
+}: ComponentContainerProps) {
   const [isComponentsDialogOpen, setIsComponentsDialogOpen] =
     useState<boolean>(false)
 
-  const onConfirm = (selectedComponents: Components[]) => {
+  const onConfirm = (selectedComponents: Component[]) => {
     const newList = selectedComponents.map((component) => ({
       recordId,
       componentId: component.id,
@@ -45,16 +43,16 @@ export function ComponentsContainer({
           className="w-full"
           disabled={disabled}
         >
-          Добавить
+          Добавить / изменить
         </Button>
-      </div>
 
-      <ComponentsDialog
-        isOpen={isComponentsDialogOpen}
-        onOpenChange={setIsComponentsDialogOpen}
-        initiallySelected={value?.map((rc) => rc.component)}
-        onConfirm={(selectedComponents) => onConfirm(selectedComponents)}
-      />
+        <ComponentsDialog
+          isOpen={isComponentsDialogOpen}
+          onOpenChange={setIsComponentsDialogOpen}
+          initiallySelected={value?.map((item) => item.component) || []}
+          onConfirm={(selectedComponents) => onConfirm(selectedComponents)}
+        />
+      </div>
     </>
   )
 }

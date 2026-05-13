@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Components } from '@prisma/client'
+import { Component } from '@prisma/client'
 
 import { useGetComponents } from '@/entities/component'
 import { useDebounce, useIntersection } from '@/shared/lib'
@@ -17,10 +17,10 @@ import { ComponentsDialogList } from './components-dialog-list'
 const COMPONENTS_PER_PAGE = 6
 
 interface ComponentsDialogProps {
-  onConfirm: (components: Components[]) => void
+  onConfirm: (components: Component[]) => void
   isOpen: boolean
   onOpenChange: (isOpen: boolean) => void
-  initiallySelected?: Components[]
+  initiallySelected?: Component[]
 }
 
 export function ComponentsDialog({
@@ -32,9 +32,7 @@ export function ComponentsDialog({
   const [searchValue, setSearchValue] = useState<string>('')
   const debouncedSearch = useDebounce<string>(searchValue, 1_000)
 
-  const [selected, setSelected] = useState<Components[]>(
-    initiallySelected ?? [],
-  )
+  const [selected, setSelected] = useState<Component[]>(initiallySelected ?? [])
 
   const {
     data,
@@ -49,7 +47,7 @@ export function ComponentsDialog({
     itemsPerPage: COMPONENTS_PER_PAGE,
   })
 
-  const toggleSelect = (component: Components) => {
+  const toggleSelect = (component: Component) => {
     setSelected((prev) => {
       const isSelected = prev.some((c) => c.id === component.id)
       return isSelected
