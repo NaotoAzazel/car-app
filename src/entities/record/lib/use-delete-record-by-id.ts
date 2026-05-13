@@ -1,12 +1,12 @@
 'use client'
 
-import { Records } from '@prisma/client'
+import { Record } from '@prisma/client'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 
 import { redirects } from '@/shared/constants'
 
-import { deleteRecordByIdRequest } from '../api'
+import { deleteRecordById as deleteRecordByIdFunc } from '../api'
 import { RECORD_BASE_QUERY_KEY } from './query-keys'
 
 export function useDeleteRecordById() {
@@ -14,14 +14,14 @@ export function useDeleteRecordById() {
   const router = useRouter()
 
   const { mutateAsync, isPending } = useMutation({
-    mutationFn: deleteRecordByIdRequest,
+    mutationFn: deleteRecordByIdFunc,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [RECORD_BASE_QUERY_KEY] })
       router.push(`${redirects.toRecordsPage}`)
     },
   })
 
-  const deleteRecordById = async (id: Records['id']) => {
+  const deleteRecordById = async (id: Record['id']) => {
     await mutateAsync(id)
   }
 

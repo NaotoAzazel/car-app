@@ -1,22 +1,22 @@
 'use server'
 
-import { Components, Prisma } from '@prisma/client'
+import { Component, Prisma } from '@prisma/client'
 
 import { db } from '@/shared/lib'
 
-export async function createComponent(component: Omit<Components, 'id'>) {
-  return await db.components.create({ data: component })
+export async function createComponent(component: Omit<Component, 'id'>) {
+  return await db.component.create({ data: component })
 }
 
-export async function deleteComponentById(id: Components['id']) {
-  await db.recordsComponents.deleteMany({
+export async function deleteComponentById(id: Component['id']) {
+  await db.recordsToComponents.deleteMany({
     where: { componentId: id },
   })
-  return await db.components.delete({ where: { id } })
+  return await db.component.delete({ where: { id } })
 }
 
 export async function getComponents() {
-  return await db.components.findMany()
+  return await db.component.findMany()
 }
 
 interface getComponentsForPaginationParams {
@@ -39,11 +39,11 @@ export async function getComponentsForPagination({
     },
   }
 
-  const totalItems = await db.components.count({
+  const totalItems = await db.component.count({
     where: whereClause,
   })
 
-  const components = await db.components.findMany({
+  const components = await db.component.findMany({
     where: whereClause,
     take: itemsPerPage,
     skip,

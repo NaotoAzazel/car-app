@@ -1,4 +1,4 @@
-import { RecordTags, RecordTypes } from '@prisma/client'
+import { RecordTags } from '@prisma/client'
 import { z } from 'zod'
 
 const TITLE_MIN_LENGTH = 1
@@ -32,12 +32,13 @@ const componentsSchema = z.object({
     name: z.string(),
     cost: z.number(),
     isLiquid: z.boolean(),
+    code: z.string(),
   }),
 })
 
 export type ComponentsSchema = z.infer<typeof componentsSchema>
 
-export const additionalSpendsSchema = z.object({
+export const additionalSpend = z.object({
   id: z.number(),
   name: z.string().min(1),
   cost: z.coerce
@@ -49,7 +50,19 @@ export const additionalSpendsSchema = z.object({
     ),
 })
 
-export type AdditionalSpendsSchema = z.infer<typeof additionalSpendsSchema>
+const createAdditionalSpendSchema = additionalSpend.omit({ id: true })
+
+export type CreateAdditionalSpendSchema = z.infer<
+  typeof createAdditionalSpendSchema
+>
+
+export const additionalSpendsSchema = z.object({
+  additionalSpendId: z.number(),
+  recordId: z.number(),
+  additionalSpend,
+})
+
+export type AdditionalSpendSchema = z.infer<typeof additionalSpend>
 
 export const recordSchema = z.object({
   ...titleValidation,
@@ -59,17 +72,18 @@ export const recordSchema = z.object({
       MILEAGE_MIN_LENGTH,
       `Пробег не может быть меньше ${MILEAGE_MIN_LENGTH}`,
     ),
-  recordType: z.nativeEnum(RecordTypes).nullable(),
+  recordTypeId: z.number().nullable(),
   createdAt: z.date(),
-  components: z.array(componentsSchema),
+  recordsToComponents: z.array(componentsSchema),
+  recordToAdditionalSpends: z.array(additionalSpendsSchema),
   tags: z.array(z.nativeEnum(RecordTags)),
-  additionalSpends: z.array(additionalSpendsSchema),
 })
 
 export type RecordSchema = z.infer<typeof recordSchema>
 
 export const createRecordSchema = recordSchema.omit({
-  components: true,
+  recordsToComponents: true,
+  recordToAdditionalSpends: true,
 })
 export type CreateRecordRequest = z.infer<typeof createRecordSchema>
 

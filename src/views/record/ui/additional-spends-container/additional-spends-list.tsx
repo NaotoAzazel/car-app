@@ -1,6 +1,6 @@
 'use client'
 
-import { AdditionalSpendsSchema } from '@/entities/record'
+import { RecordSchema } from '@/entities/record'
 import { formatCurrency } from '@/shared/lib'
 import { ScrollArea } from '@/shared/ui'
 
@@ -9,7 +9,7 @@ import { ListItem } from '../list-item'
 const VISIBLE_COUNT = 4
 
 interface AdditionalSpendsListProps {
-  additionalSpends: AdditionalSpendsSchema[]
+  additionalSpends: RecordSchema['recordToAdditionalSpends']
   onDelete: (id: number) => void
 }
 
@@ -32,28 +32,28 @@ export function AdditionalSpendsList({
   })
 
   const totalCost = additionalSpends.reduce((sum, spend) => {
-    return sum + spend.cost
+    return sum + spend.additionalSpend.cost
   }, 0)
 
   return (
     <div className="flex flex-col space-y-4 w-full">
       <ScrollArea className="h-72 w-full rounded-md" type="always">
-        {additionalSpends.map(({ id, name, cost }) => (
-          <ListItem key={id} className="mt-1">
+        {additionalSpends.map((spend) => (
+          <ListItem key={spend.additionalSpend.id} className="mt-1">
             <div>
               <p className="flex flex-1 break-all break-words items-center">
-                {name}
+                {spend.additionalSpend.name}
               </p>
               <button
                 type="button"
                 className="text-muted-foreground text-xs hover:underline hover:cursor-pointer"
-                onClick={() => onDelete(id)}
+                onClick={() => onDelete(spend.additionalSpend.id)}
               >
                 Удалить
               </button>
             </div>
             <span className="text-muted-foreground flex items-center">
-              {formatCurrency(Number(cost))}
+              {formatCurrency(Number(spend.additionalSpend.cost))}
             </span>
           </ListItem>
         ))}

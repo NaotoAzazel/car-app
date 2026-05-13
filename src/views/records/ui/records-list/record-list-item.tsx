@@ -1,13 +1,9 @@
 'use client'
 
-import { RecordTags, RecordTypes } from '@prisma/client'
+import { RecordTags } from '@prisma/client'
 import Link from 'next/link'
 
-import {
-  AdditionalSpendsSchema,
-  ComponentsSchema,
-  recordTypesRu,
-} from '@/entities/record'
+import { RecordSchema } from '@/entities/record'
 import { redirects } from '@/shared/constants'
 import { formatCurrency, formatDate } from '@/shared/lib'
 import { TagsList } from '@/shared/ui'
@@ -15,31 +11,37 @@ import { TagsList } from '@/shared/ui'
 interface RecordListItemProps {
   recordId: number
   title: string
-  type: RecordTypes | null
+  typeName: string | undefined
   tags: RecordTags[]
-  components: ComponentsSchema[]
-  additionalSpends: AdditionalSpendsSchema[]
+  components: RecordSchema['recordsToComponents']
+  additionalSpends: RecordSchema['recordToAdditionalSpends']
   createdAt: Date
 }
 
 export function RecordListItem({
   recordId,
   title,
-  type,
+  typeName,
   tags,
   components,
   additionalSpends,
   createdAt,
 }: RecordListItemProps) {
-  const totalComponentsCost = components.reduce((sum, component) => {
-    return sum + component.component.cost
-  }, 0)
+  const totalComponentsCost = components.reduce(
+    (sum, component) => sum + component.component.cost,
+    0,
+  )
 
-  const totalAdditionalSpendsCost = additionalSpends.reduce((sum, spend) => {
-    return sum + spend.cost
-  }, 0)
+  const totalAdditionalSpendsCost = additionalSpends.reduce(
+    (sum, spend) => sum + spend.additionalSpend.cost,
+    0,
+  )
 
   const totalCost = totalComponentsCost + totalAdditionalSpendsCost
+
+  if (!typeName) {
+    typeName = 'Тип не указан'
+  }
 
   return (
     <Link
@@ -47,7 +49,7 @@ export function RecordListItem({
       className="border rounded-md p-4 hover:bg-input/30 hover:border-primary/50 duration-200 flex flex-col space-y-2"
     >
       <div className="flex justify-between text-xs text-muted-foreground">
-        <span>{type ? recordTypesRu[type] : 'Тип не указан'}</span>
+        <span>{typeName}</span>
         <span>{formatDate(createdAt)}</span>
       </div>
 

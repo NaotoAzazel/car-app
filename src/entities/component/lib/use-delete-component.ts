@@ -1,4 +1,4 @@
-import { Components } from '@prisma/client'
+import { Component } from '@prisma/client'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { deleteComponentByIdRequest } from '../api'
@@ -16,7 +16,7 @@ export function useDeleteComponent() {
     },
   })
 
-  const deleteComponent = async (id: Components['id']) => {
+  const deleteComponent = async (id: Component['id']) => {
     await mutateAsync(id)
   }
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { Records } from '@prisma/client'
+import { Record } from '@prisma/client'
 import { toast } from 'sonner'
 
 import { useDeleteRecordById } from '@/entities/record/lib/use-delete-record-by-id'
@@ -14,7 +14,7 @@ import {
 } from '@/shared/ui'
 
 interface ActionsDropdownProps {
-  recordId: Records['id']
+  recordId: Record['id']
 }
 
 export function ActionsDropdown({ recordId }: ActionsDropdownProps) {

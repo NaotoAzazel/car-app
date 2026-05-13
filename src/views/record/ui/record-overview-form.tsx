@@ -8,7 +8,6 @@ import {
   getRecordById,
   recordSchema,
   RecordSchema,
-  RecordsComponentWithData,
   useUpdateRecordById,
 } from '@/entities/record'
 import {
@@ -42,7 +41,8 @@ export function RecordOverviewForm({ record }: RecordOverviewFormProps) {
     resolver: zodResolver(recordSchema),
     defaultValues: {
       ...record,
-      components: record?.RecordsComponents,
+      recordsToComponents: record?.recordsToComponents || [],
+      recordToAdditionalSpends: record?.recordToAdditionalSpends || [],
     },
   })
 
@@ -84,7 +84,7 @@ export function RecordOverviewForm({ record }: RecordOverviewFormProps) {
           />
           <FormField
             control={form.control}
-            name="recordType"
+            name="recordTypeId"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-lg font-heading">Тип</FormLabel>
@@ -103,7 +103,7 @@ export function RecordOverviewForm({ record }: RecordOverviewFormProps) {
         <FormSection title="Компоненты, дополнительные траты, тэги">
           <FormField
             control={form.control}
-            name="components"
+            name="recordsToComponents"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-lg font-heading">
@@ -112,7 +112,7 @@ export function RecordOverviewForm({ record }: RecordOverviewFormProps) {
                 <FormControl>
                   <ComponentsContainer
                     recordId={record!.id}
-                    value={field.value as RecordsComponentWithData[]}
+                    value={field.value}
                     onChange={field.onChange}
                     disabled={isPending}
                   />
@@ -123,7 +123,7 @@ export function RecordOverviewForm({ record }: RecordOverviewFormProps) {
           />
           <FormField
             control={form.control}
-            name="additionalSpends"
+            name="recordToAdditionalSpends"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-lg font-heading">
@@ -134,6 +134,7 @@ export function RecordOverviewForm({ record }: RecordOverviewFormProps) {
                     value={field.value}
                     onChange={field.onChange}
                     disabled={isPending}
+                    recordId={record!.id}
                   />
                 </FormControl>
                 <FormMessage />

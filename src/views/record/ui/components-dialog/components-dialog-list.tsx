@@ -1,4 +1,4 @@
-import { Components } from '@prisma/client'
+import { Component } from '@prisma/client'
 
 import { cn } from '@/shared/lib'
 import { Icons, ScrollArea } from '@/shared/ui'
@@ -7,13 +7,13 @@ import { ComponentListItem } from '../components-container/component-list-item'
 import { ListItem } from '../list-item'
 
 interface ComponentsDialogListProps {
-  data?: Components[]
+  data?: Component[]
   isLoading: boolean
   isError: boolean
   isFetchingNextPage: boolean
   searchValue: string
-  selected: Components[]
-  onToggle: (component: Components) => void
+  selected: Component[]
+  onToggle: (component: Component) => void
   cursorRef: (el: HTMLDivElement | null) => void
 }
 
