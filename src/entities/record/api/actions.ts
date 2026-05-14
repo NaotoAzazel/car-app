@@ -277,7 +277,7 @@ export async function getMonthsSpendsByYear(year: number) {
   FROM (
     SELECT 
       r.id,
-      EXTRACT(MONTH FROM r."createdAt")::int AS month,
+      EXTRACT(MONTH FROM (r."createdAt" AT TIME ZONE 'UTC' AT TIME ZONE 'Europe/Kiev'))::int AS month,
       COALESCE((
         SELECT SUM(c.cost)
         FROM "RecordsToComponents" rc
@@ -291,7 +291,7 @@ export async function getMonthsSpendsByYear(year: number) {
         WHERE ras."recordId" = r.id
       ), 0) AS additional_sum
     FROM "Record" r
-    WHERE EXTRACT(YEAR FROM r."createdAt") = ${year}
+    WHERE EXTRACT(YEAR FROM (r."createdAt" AT TIME ZONE 'UTC' AT TIME ZONE 'Europe/Kiev')) = ${year}
   ) t
   GROUP BY month
   ORDER BY month
