@@ -3,6 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
+import { useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
@@ -17,22 +18,24 @@ import {
   FormMessage,
   Icons,
   Input,
+  LangSelect,
 } from '@/shared/ui'
 
 import { loginSchema, LoginSchema } from '../lib/validation-schema'
 
 export function LoginPage() {
   const router = useRouter()
+  const t = useTranslations('login-page')
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (password: string) => {
       await axios.post('/api/login', { password })
     },
     onSuccess: () => {
-      toast.success('Авторизация успешная')
+      toast.success(t('authorization-success'))
       router.replace('/')
     },
-    onError: () => toast.error('Неверные данные для авторизации'),
+    onError: () => toast.error(t('incorrect-data')),
   })
 
   const form = useForm<LoginSchema>({
@@ -49,7 +52,7 @@ export function LoginPage() {
   return (
     <div className="h-screen w-full flex items-center justify-center">
       <div className="flex flex-col gap-8 items-center justify-center">
-        <p className="font-heading font-bold text-3xl">Авторизация</p>
+        <p className="font-heading font-bold text-3xl">{t('title')}</p>
         <Form {...form}>
           <form className="grid gap-3" onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
@@ -57,7 +60,7 @@ export function LoginPage() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Пароль</FormLabel>
+                  <FormLabel>{t('password-field')}</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isPending}
@@ -76,8 +79,9 @@ export function LoginPage() {
               ) : (
                 <Icons.login className="mr-1 size-4" />
               )}
-              Продолжить
+              {t('continue-button')}
             </Button>
+            <LangSelect />
           </form>
         </Form>
       </div>

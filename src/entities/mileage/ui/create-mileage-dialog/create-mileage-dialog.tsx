@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { usePathname, useRouter } from 'next/navigation'
@@ -31,6 +32,8 @@ import { createMileageSchema, CreateMileageSchema } from '../../model'
 import { MileageInfoCard } from './mileage-info-card'
 
 export function CreateMileageDialog() {
+  const t = useTranslations('mileage.create-dialog')
+
   const router = useRouter()
   const pathname = usePathname()
 
@@ -75,9 +78,9 @@ export function CreateMileageDialog() {
           setIsOpen(false)
           form.reset()
 
-          return `Пробег успешно записан`
+          return t('mileage-created')
         },
-        error: 'Возникла ошибка при сохранении пробега, проверьте консоль',
+        error: t('mileage-create-error'),
       })
     } catch (error) {
       console.error('CreateMileageDialog', error)
@@ -89,17 +92,15 @@ export function CreateMileageDialog() {
       <DialogTrigger asChild>
         <Button className="justify-start" variant="outline" size="sm">
           <Icons.gauge className="size-4" />
-          Создание записи о пробеге
+          {t('create-mileage-record')}
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader className="gap-1">
           <DialogTitle className="font-heading text-xl">
-            Создание записи о пробеге
+            {t('dialog-title')}
           </DialogTitle>
-          <DialogDescription>
-            Введите число текущего пробега для создания
-          </DialogDescription>
+          <DialogDescription>{t('dialog-description')}</DialogDescription>
         </DialogHeader>
 
         <MileageInfoCard isLoadTodayMileage={isOpen} />
@@ -111,7 +112,7 @@ export function CreateMileageDialog() {
               name="mileage"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Пробег (км)</FormLabel>
+                  <FormLabel>{t('mileage-field-label')}</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isPending}
@@ -128,14 +129,14 @@ export function CreateMileageDialog() {
             <DialogFooter>
               <DialogClose asChild>
                 <Button variant="outline" disabled={isPending}>
-                  Отмена
+                  {t('cancel-button')}
                 </Button>
               </DialogClose>
               <Button disabled={isPending} type="submit">
                 {isPending && (
                   <Icons.loader className="mr-2 size-4 animate-spin" />
                 )}
-                Создать
+                {t('create-button')}
               </Button>
             </DialogFooter>
           </form>

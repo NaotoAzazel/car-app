@@ -1,11 +1,16 @@
+import { hasLocale } from 'next-intl'
 import type { Metadata } from 'next'
 
 import '@/shared/globals.css'
 
+import { setRequestLocale } from 'next-intl/server'
+import { notFound } from 'next/navigation'
+
 import { cn, fontHeading, fontText } from '@/shared/lib'
 import { Toaster } from '@/shared/ui'
 
-import { Providers } from './_providers'
+import { Providers } from '../_providers'
+import { routing } from '../../i18n/routing'
 
 export const metadata: Metadata = {
   title: 'Машина',
@@ -22,11 +27,25 @@ export const metadata: Metadata = {
   manifest: '/site.webmanifest',
 }
 
-export default function RootLayout({
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }))
+}
+
+export default async function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode
+  params: Promise<{ locale: string }>
 }>) {
+  const { locale } = await params
+
+  if (!hasLocale(routing.locales, locale)) {
+    notFound()
+  }
+
+  setRequestLocale(locale)
+
   return (
     <html lang="en" className="dark">
       <body

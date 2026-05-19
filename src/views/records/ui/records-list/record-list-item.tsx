@@ -1,7 +1,8 @@
 'use client'
 
+import { Link } from '@/i18n/navigation'
 import { RecordTags } from '@prisma/client'
-import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 import { RecordSchema } from '@/entities/record'
 import { redirects } from '@/shared/constants'
@@ -27,6 +28,8 @@ export function RecordListItem({
   additionalSpends,
   createdAt,
 }: RecordListItemProps) {
+  const t = useTranslations('records.list.item')
+
   const totalComponentsCost = components.reduce(
     (sum, component) => sum + component.component.cost,
     0,
@@ -40,7 +43,7 @@ export function RecordListItem({
   const totalCost = totalComponentsCost + totalAdditionalSpendsCost
 
   if (!typeName) {
-    typeName = 'Тип не указан'
+    typeName = t('type-not-found')
   }
 
   return (
@@ -65,7 +68,7 @@ export function RecordListItem({
       {tags.length ? (
         <TagsList tags={tags} />
       ) : (
-        <p className="text-muted-foreground text-sm">Тэги не добавлены</p>
+        <p className="text-muted-foreground text-sm">{t('tags-empty')}</p>
       )}
     </Link>
   )

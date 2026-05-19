@@ -1,5 +1,7 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
+
 import { RecordSchema } from '@/entities/record'
 import { formatCurrency } from '@/shared/lib'
 import { ScrollArea } from '@/shared/ui'
@@ -17,11 +19,13 @@ export function AdditionalSpendsList({
   additionalSpends,
   onDelete,
 }: AdditionalSpendsListProps) {
+  const t = useTranslations('record.overviewForm.additionalSpendsContainer')
+
   if (!additionalSpends.length) {
     return (
       <div className="flex items-center justify-center">
         <span className="text-sm text-muted-foreground py-10">
-          Дополнительные траты не добавлены
+          {t('additional-spends-empty')}
         </span>
       </div>
     )
@@ -63,7 +67,7 @@ export function AdditionalSpendsList({
         ))}
       </ScrollArea>
       <div className="flex justify-between">
-        <span className="text-muted-foreground">Общяя сумма</span>
+        <span className="text-muted-foreground">{t('sum')}</span>
         <span className="font-semibold">{formatCurrency(totalCost)}</span>
       </div>
     </div>

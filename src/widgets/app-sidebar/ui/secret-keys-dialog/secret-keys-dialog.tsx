@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
+import { useTranslations } from 'next-intl'
 
 import {
   Button,
@@ -15,6 +16,8 @@ import {
 import { SecretKeysDialogContent } from './secret-keys-dialog-content'
 
 export function SecretKeysDialog() {
+  const t = useTranslations('appSidebar.secretKeysDialog')
+
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
   const { data, isLoading, isError } = useQuery({
@@ -29,14 +32,12 @@ export function SecretKeysDialog() {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Секретные ключи</Button>
+        <Button variant="outline">{t('button-label')}</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle>Секретные ключи</DialogTitle>
-          <DialogDescription>
-            Секретные ключи для доступа к API.
-          </DialogDescription>
+          <DialogTitle>{t('dialog-title')}</DialogTitle>
+          <DialogDescription>{t('dialog-description')}</DialogDescription>
         </DialogHeader>
 
         <SecretKeysDialogContent

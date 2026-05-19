@@ -1,6 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
@@ -41,6 +42,8 @@ export function CreateRecordTypeDialog({
   onOpenChange,
   showTrigger = true,
 }: CreateRecordTypeDialogProps) {
+  const t = useTranslations('maintenance.createRecordTypeDialog')
+
   const { create, isPending } = useCreateRecordType()
 
   const form = useForm<CreateRecordTypeFormSchema>({
@@ -57,9 +60,9 @@ export function CreateRecordTypeDialog({
           onOpenChange?.(false)
           form.reset()
 
-          return `Тип записи успешно создан`
+          return t('record-type-created')
         },
-        error: 'Возникла ошибка при создании типа записи, проверьте консоль',
+        error: t('record-type-create-error'),
       })
     } catch (error) {
       console.error('CreateRecordTypeDialog', error)
@@ -70,17 +73,15 @@ export function CreateRecordTypeDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       {showTrigger && (
         <DialogTrigger asChild>
-          <Button>Добавить тип</Button>
+          <Button>{t('create-new-type')}</Button>
         </DialogTrigger>
       )}
       <DialogContent>
         <DialogHeader className="gap-1">
           <DialogTitle className="font-heading text-xl">
-            Создание типа записи
+            {t('dialog-title')}
           </DialogTitle>
-          <DialogDescription>
-            Введите название типа записи для создания
-          </DialogDescription>
+          <DialogDescription>{t('dialog-description')}</DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
@@ -90,11 +91,11 @@ export function CreateRecordTypeDialog({
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Название</FormLabel>
+                  <FormLabel>{t('name-field-label')}</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isPending}
-                      placeholder="Ремонт"
+                      placeholder={t('name-field-placeholder')}
                       {...field}
                     />
                   </FormControl>
@@ -102,14 +103,14 @@ export function CreateRecordTypeDialog({
                   <DialogFooter>
                     <DialogClose asChild>
                       <Button variant="outline" disabled={isPending}>
-                        Отмена
+                        {t('cancel-button')}
                       </Button>
                     </DialogClose>
                     <Button disabled={isPending} type="submit">
                       {isPending && (
                         <Icons.loader className="mr-2 size-4 animate-spin" />
                       )}
-                      Создать
+                      {t('create-button')}
                     </Button>
                   </DialogFooter>
                 </FormItem>

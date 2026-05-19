@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Mileage } from '@prisma/client'
+import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 
 import { cn, formatDate } from '@/shared/lib'
@@ -15,6 +16,8 @@ interface ContentItemProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export function ContentItem({ mileageItem, diff, ...props }: ContentItemProps) {
+  const t = useTranslations('mileage.history-dialog.content-item')
+
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const { deleteMileage, isPending } = useDeleteMileage()
 
@@ -23,12 +26,12 @@ export function ContentItem({ mileageItem, diff, ...props }: ContentItemProps) {
   const handleMileageDelete = async () => {
     try {
       toast.promise(deleteMileage(id), {
-        loading: 'Удаление записи о пробеге...',
+        loading: t('deleating-mileage'),
         success: () => {
           setIsOpen(false)
-          return `Запись успешно удалена`
+          return t('mileage-deleated')
         },
-        error: 'Возникла ошибка при удалении записи, проверьте консоль',
+        error: t('delete-mileage-error'),
       })
     } catch (error) {
       console.error('ContentItem', error)
@@ -64,7 +67,7 @@ export function ContentItem({ mileageItem, diff, ...props }: ContentItemProps) {
         <div className="overflow-hidden border-t bg-muted/30">
           <div className="flex justify-end gap-2 p-2">
             <Button variant="outline" size="sm" disabled>
-              Редактировать
+              {t('edit-mileage')}
             </Button>
 
             <Button
@@ -74,7 +77,7 @@ export function ContentItem({ mileageItem, diff, ...props }: ContentItemProps) {
               onClick={handleMileageDelete}
             >
               {isPending && <Icons.loader className="size-4 animate-spin" />}
-              Удалить
+              {t('delete-mileage')}
             </Button>
           </div>
         </div>

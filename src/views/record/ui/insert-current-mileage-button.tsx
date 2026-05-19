@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import { UseFormReturn } from 'react-hook-form'
 
 import { useGetLatestMileage } from '@/entities/mileage'
@@ -13,13 +14,15 @@ interface InsertCurrentMileageButtonProps {
 export function InsertCurrentMileageButton({
   form,
 }: InsertCurrentMileageButtonProps) {
+  const t = useTranslations('record.overviewForm.insertCurrentMileageButton')
+
   const { data, isError, isLoading } = useGetLatestMileage()
 
   if (isLoading) {
     return (
       <Button disabled variant="secondary">
         <Icons.loader className="size-4 animate-spin" />
-        Загрузка записей о пробеге...
+        {t('loading')}
       </Button>
     )
   }
@@ -27,7 +30,7 @@ export function InsertCurrentMileageButton({
   if (isError) {
     return (
       <Button disabled variant="destructive">
-        Ошибка загрузки записей о пробеге
+        {t('error')}
       </Button>
     )
   }
@@ -35,7 +38,7 @@ export function InsertCurrentMileageButton({
   if (!data?.length) {
     return (
       <Button disabled variant="secondary">
-        Не удалось найти записи о пробеге
+        {t('noRecords')}
       </Button>
     )
   }
@@ -46,7 +49,7 @@ export function InsertCurrentMileageButton({
       onClick={() => form.setValue('mileage', data[0].mileage)}
       type="button"
     >
-      Вставить текущий пробег ({data[0].mileage})
+      {t('insertCurrentMileage')} ({data[0].mileage})
     </Button>
   )
 }

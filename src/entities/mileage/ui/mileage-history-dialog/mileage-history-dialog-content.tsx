@@ -3,6 +3,7 @@
 import { Dispatch, SetStateAction, useState } from 'react'
 import { Mileage } from '@prisma/client'
 import { QueryObserverResult, RefetchOptions } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
 import { DateRange } from 'react-day-picker'
 
 import { Button, Icons, ScrollArea } from '@/shared/ui'
@@ -32,6 +33,8 @@ export function MileageHistoryDialogContent({
   setDraftRange,
   setAppliedRange,
 }: MileageHistoryDialogContent) {
+  const t = useTranslations('mileage.history-dialog.content')
+
   const [isLocalLoading, setIsLocalLoading] = useState<boolean>(false)
 
   if (isError) {
@@ -41,18 +44,17 @@ export function MileageHistoryDialogContent({
 
         <div className="space-y-1">
           <p className="text-md md:text-sm font-medium text-destructive">
-            Возникла ошибка
+            {t('load-error')}
           </p>
           <p className="text-sm md:text-xs text-muted-foreground">
-            Возникла ошибка загрузки данных. Попробуйте перезагрузить страницу
-            или обновить данные.
+            {t('load-error-description')}
           </p>
         </div>
 
         <div className="flex gap-2 mt-1">
           <Button size="sm" onClick={() => refetch()} disabled={isLoading}>
             {isLoading && <Icons.loader className="size-4 mr-2" />}
-            Обновить данные
+            {t('retry')}
           </Button>
         </div>
       </div>
@@ -88,10 +90,9 @@ export function MileageHistoryDialogContent({
         <Icons.history className="size-8 text-muted-foreground" />
 
         <div className="space-y-1">
-          <p className="text-sm font-medium">Записей о пробеге не найдено</p>
+          <p className="text-sm font-medium">{t('no-mileage')}</p>
           <p className="text-xs text-muted-foreground">
-            За выбранный период нет данных. Попробуйте изменить диапазон дат или
-            показать последнюю неделю с записями.
+            {t('no-mileage-description')}
           </p>
         </div>
 
@@ -104,7 +105,7 @@ export function MileageHistoryDialogContent({
             {isLocalLoading && (
               <Icons.loader className="size-4 mr-2 animate-spin" />
             )}
-            Показать последний месяц
+            {t('show-last-month')}
           </Button>
         </div>
       </div>

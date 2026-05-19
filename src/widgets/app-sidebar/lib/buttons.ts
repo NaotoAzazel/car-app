@@ -2,9 +2,27 @@ import { redirects } from '@/shared/constants'
 
 import { MainNavItem } from '../model'
 
-export const MAIN_NAV_BUTTONS: MainNavItem[] = [
-  { title: 'Обслуживание', url: '/', icon: 'wrench' },
-  { title: 'Отчеты', url: redirects.toReportPage, icon: 'chart' },
-  { title: 'История', url: redirects.toRecordsPage, icon: 'history' },
-  { title: 'Компоненты', url: redirects.toComponentsPage, icon: 'component' },
+export const getMainNavButtons = (
+  t: (key: string) => string,
+): MainNavItem[] => [
+  {
+    title: t('appSidebar.navigation.maintenance'),
+    url: '/',
+    icon: 'wrench',
+  },
+  {
+    title: t('appSidebar.navigation.reports'),
+    url: redirects.toReportPage,
+    icon: 'chart',
+  },
+  {
+    title: t('appSidebar.navigation.history'),
+    url: redirects.toRecordsPage,
+    icon: 'history',
+  },
+  {
+    title: t('appSidebar.navigation.components'),
+    url: redirects.toComponentsPage,
+    icon: 'component',
+  },
 ]

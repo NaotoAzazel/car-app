@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useTransition } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
@@ -31,6 +32,8 @@ import { useCreateComponent } from '../lib'
 import { createComponentSchema, CreateComponentSchema } from '../model'
 
 export function CreateComponentDialog() {
+  const t = useTranslations('components.create-dialog')
+
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
   const { create, isPending } = useCreateComponent()
@@ -52,9 +55,9 @@ export function CreateComponentDialog() {
           setIsOpen(false)
           form.reset()
 
-          return `Компонент был успешно создан`
+          return t('component-created')
         },
-        error: 'Возникла ошибка при создании компонента, проверьте консоль',
+        error: t('component-create-failed'),
       })
     } catch (error) {
       console.error('CreateComponentDialog', error)
@@ -66,15 +69,13 @@ export function CreateComponentDialog() {
       <DialogTrigger asChild>
         <Button>
           <Icons.circlePlus className="size-4" />
-          Компонент
+          {t('add-component')}
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Добавление компонента</DialogTitle>
-          <DialogDescription>
-            Заполните данные, чтобы добавить новый компонент в систему
-          </DialogDescription>
+          <DialogTitle>{t('dialog-title')}</DialogTitle>
+          <DialogDescription>{t('dialog-description')}</DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
@@ -84,11 +85,11 @@ export function CreateComponentDialog() {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Название</FormLabel>
+                  <FormLabel>{t('component-name')}</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isPending}
-                      placeholder="Моторное масло Fuchs"
+                      placeholder={t('component-name-placeholder')}
                       {...field}
                     />
                   </FormControl>
@@ -101,7 +102,7 @@ export function CreateComponentDialog() {
               name="cost"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Цена (грн)</FormLabel>
+                  <FormLabel>{t('component-cost')}</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isPending}
@@ -120,7 +121,7 @@ export function CreateComponentDialog() {
               name="code"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Код</FormLabel>
+                  <FormLabel>{t('component-code')}</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isPending}
@@ -138,9 +139,9 @@ export function CreateComponentDialog() {
               render={({ field }) => (
                 <FormItem className="flex flex-row items-center justify-between border p-3 bg-input/30 rounded-md">
                   <div className="space-y-1">
-                    <FormLabel>Жидкий компонент</FormLabel>
+                    <FormLabel>{t('is-component-liquid')}</FormLabel>
                     <FormDescription>
-                      Укажите, если компонент представляет собой жидкость
+                      {t('is-component-liquid-description')}
                     </FormDescription>
                   </div>
                   <FormControl>
@@ -157,14 +158,14 @@ export function CreateComponentDialog() {
             <DialogFooter>
               <DialogClose asChild>
                 <Button variant="outline" disabled={isPending}>
-                  Отмена
+                  {t('cancel-button')}
                 </Button>
               </DialogClose>
               <Button disabled={isPending} type="submit">
                 {isPending && (
                   <Icons.loader className="mr-2 size-4 animate-spin" />
                 )}
-                Создать
+                {t('create-button')}
               </Button>
             </DialogFooter>
           </form>

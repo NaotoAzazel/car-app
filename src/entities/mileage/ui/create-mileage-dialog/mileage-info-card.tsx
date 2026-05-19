@@ -1,6 +1,7 @@
 'use client'
 
 import { DateTime } from 'luxon'
+import { useTranslations } from 'next-intl'
 
 import { cn } from '@/shared/lib'
 import {
@@ -14,17 +15,28 @@ import {
 
 import { useGetLatestMileage } from '../../lib'
 
-const statusMap = {
+export const statusVisualMap = {
   RECORD_FOUND: {
     icon: Icons.alertTriangle,
-    text: 'Сегодня уже была добавлена запись о пробеге',
     color: 'text-yellow-500',
   },
   NO_DATA: {
     icon: Icons.checkCircle,
-    text: 'За этот день записей о пробеге не найдено',
     color: 'text-green-500',
   },
+} as const
+
+export const getStatusMap = (t: (key: string) => string) => {
+  return {
+    RECORD_FOUND: {
+      ...statusVisualMap.RECORD_FOUND,
+      text: t('MileageStatus.RECORD_FOUND'),
+    },
+    NO_DATA: {
+      ...statusVisualMap.NO_DATA,
+      text: t('MileageStatus.NO_DATA'),
+    },
+  } as const
 }
 
 interface MileageInfoCardProps {
@@ -32,6 +44,11 @@ interface MileageInfoCardProps {
 }
 
 export function MileageInfoCard({ isLoadTodayMileage }: MileageInfoCardProps) {
+  const t = useTranslations('record.mileage-info-card')
+
+  const tGlobal = useTranslations()
+  const statusMap = getStatusMap(tGlobal)
+
   const startOfDay = DateTime.now()
     .setZone('Europe/Kyiv')
     .startOf('day')
@@ -65,10 +82,8 @@ export function MileageInfoCard({ isLoadTodayMileage }: MileageInfoCardProps) {
     return (
       <Card>
         <CardHeader>
-          <CardDescription>Возникла ошибка</CardDescription>
-          <CardTitle className="text-destructive">
-            Не удалось загрузить данные
-          </CardTitle>
+          <CardDescription>{t('card-description')}</CardDescription>
+          <CardTitle className="text-destructive">\{t('card-title')}</CardTitle>
         </CardHeader>
       </Card>
     )
@@ -90,13 +105,13 @@ export function MileageInfoCard({ isLoadTodayMileage }: MileageInfoCardProps) {
         <CardDescription>
           {hasCurrMileage ? (
             <>
-              Текущий пробег:{' '}
+              {t('current-mileage')}:{' '}
               <span className="font-semibold">
-                {currMileage[0].mileage.toLocaleString()} км
+                {currMileage[0].mileage.toLocaleString()} {t('km')}
               </span>
             </>
           ) : (
-            'Предыдущих записей о пробеге не найдено'
+            t('no-previous-mileage-records')
           )}
         </CardDescription>
       </CardHeader>

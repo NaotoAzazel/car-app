@@ -1,3 +1,5 @@
+import { useTranslations } from 'next-intl'
+
 import { RecordSchema } from '@/entities/record'
 import { formatCurrency } from '@/shared/lib'
 import { ScrollArea } from '@/shared/ui'
@@ -12,6 +14,10 @@ interface ComponentsListProps {
 }
 
 export function ComponentsList({ components }: ComponentsListProps) {
+  const t = useTranslations(
+    'record.overviewForm.componentsContainer.componentsList',
+  )
+
   const totalCost = components.reduce((sum, component) => {
     return sum + component.component.cost
   }, 0)
@@ -25,7 +31,7 @@ export function ComponentsList({ components }: ComponentsListProps) {
   if (components.length === 0) {
     return (
       <span className="text-sm text-muted-foreground py-10">
-        Компоненты не добавлены
+        {t('components-empty')}
       </span>
     )
   }
@@ -47,7 +53,7 @@ export function ComponentsList({ components }: ComponentsListProps) {
         ))}
       </ScrollArea>
       <div className="flex justify-between">
-        <span className="text-muted-foreground">Общяя сумма</span>
+        <span className="text-muted-foreground">{t('sum')}</span>
         <span className="font-semibold">{formattedCost}</span>
       </div>
     </div>

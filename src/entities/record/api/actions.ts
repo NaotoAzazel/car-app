@@ -2,7 +2,6 @@
 
 import { Prisma, Record, RecordTags } from '@prisma/client'
 
-import { MONTHS_RU } from '@/shared/constants'
 import { db } from '@/shared/lib'
 
 import { CreateRecordRequest, UpdateRecordRequest } from '../model'
@@ -271,43 +270,39 @@ export async function avgSpendsInMonth() {
 
 export async function getMonthsSpendsByYear(year: number) {
   const rawData = await db.$queryRaw<{ month: number; spend: number }[]>`
-  SELECT 
-    month,
-    SUM(component_sum + additional_sum)::int AS spend
-  FROM (
     SELECT 
-      r.id,
-      EXTRACT(MONTH FROM (r."createdAt" AT TIME ZONE 'UTC' AT TIME ZONE 'Europe/Kiev'))::int AS month,
-      COALESCE((
-        SELECT SUM(c.cost)
-        FROM "RecordsToComponents" rc
-        JOIN "Component" c ON c.id = rc."componentId"
-        WHERE rc."recordId" = r.id
-      ), 0) AS component_sum,
-      COALESCE((
-        SELECT SUM(s.cost)
-        FROM "RecordToAdditionalSpend" ras
-        JOIN "AdditionalSpend" s ON s.id = ras."additionalSpendId"
-        WHERE ras."recordId" = r.id
-      ), 0) AS additional_sum
-    FROM "Record" r
-    WHERE EXTRACT(YEAR FROM (r."createdAt" AT TIME ZONE 'UTC' AT TIME ZONE 'Europe/Kiev')) = ${year}
-  ) t
-  GROUP BY month
-  ORDER BY month
-`
-
-  if (!rawData.length) {
-    return MONTHS_RU.map((month) => ({ month, spend: 0 }))
-  }
+      month,
+      SUM(component_sum + additional_sum)::int AS spend
+    FROM (
+      SELECT 
+        r.id,
+        EXTRACT(MONTH FROM (r."createdAt" AT TIME ZONE 'UTC' AT TIME ZONE 'Europe/Kiev'))::int AS month,
+        COALESCE((
+          SELECT SUM(c.cost)
+          FROM "RecordsToComponents" rc
+          JOIN "Component" c ON c.id = rc."componentId"
+          WHERE rc."recordId" = r.id
+        ), 0) AS component_sum,
+        COALESCE((
+          SELECT SUM(s.cost)
+          FROM "RecordToAdditionalSpend" ras
+          JOIN "AdditionalSpend" s ON s.id = ras."additionalSpendId"
+          WHERE ras."recordId" = r.id
+        ), 0) AS additional_sum
+      FROM "Record" r
+      WHERE EXTRACT(YEAR FROM (r."createdAt" AT TIME ZONE 'UTC' AT TIME ZONE 'Europe/Kiev')) = ${year}
+    ) t
+    GROUP BY month
+    ORDER BY month
+  `
 
   const monthMap = new Map<number, number>()
   rawData.forEach((row) => {
     monthMap.set(row.month, Number(row.spend))
   })
 
-  return MONTHS_RU.map((month, i) => ({
-    month,
+  return Array.from({ length: 12 }, (_, i) => ({
+    month: i + 1,
     spend: monthMap.get(i + 1) ?? 0,
   }))
 }

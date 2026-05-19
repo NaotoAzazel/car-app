@@ -2,8 +2,9 @@
 
 import { useState } from 'react'
 import { RecordTags } from '@prisma/client'
+import { useTranslations } from 'next-intl'
 
-import { recordTagsRu } from '@/entities/record'
+import { getRecordTagsLabels } from '@/entities/record'
 import { cn, useDebounce } from '@/shared/lib'
 import {
   Button,
@@ -30,6 +31,11 @@ export function TagsDialog({
   isOpen,
   initiallySelected,
 }: TagsDialogProps) {
+  const tTags = useTranslations('RecordTags')
+  const tagsLabels = getRecordTagsLabels(tTags)
+
+  const t = useTranslations('record.tagsDialog')
+
   const [searchValue, setSearchValue] = useState<string>('')
   const debouncedSearch = useDebounce<string>(searchValue, 300)
 
@@ -37,7 +43,7 @@ export function TagsDialog({
     initiallySelected ?? [],
   )
 
-  const tagsEntries = Object.entries(recordTagsRu) as [RecordTags, string][]
+  const tagsEntries = Object.entries(tagsLabels) as [RecordTags, string][]
 
   const filteredTags = tagsEntries.filter(([, value]) =>
     value.toLowerCase().includes(debouncedSearch.toLowerCase()),
@@ -57,13 +63,13 @@ export function TagsDialog({
       <DialogContent>
         <DialogHeader>
           <DialogHeader>
-            <DialogTitle>Выбор тэгов</DialogTitle>
+            <DialogTitle>{t('chooce-tags')}</DialogTitle>
           </DialogHeader>
         </DialogHeader>
 
         <div className="grid gap-2">
           <Input
-            placeholder="Поиск..."
+            placeholder={t('search-input-placeholder')}
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
           />
@@ -91,7 +97,7 @@ export function TagsDialog({
               onOpenChange(false)
             }}
           >
-            Применить изменения
+            {t('save-changes')}
           </Button>
         </div>
       </DialogContent>

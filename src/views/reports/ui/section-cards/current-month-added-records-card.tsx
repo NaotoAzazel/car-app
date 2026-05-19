@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo } from 'react'
+import { useTranslations } from 'next-intl'
 
 import { useGetRecordsCountByMonth } from '@/entities/record'
 import {
@@ -18,6 +19,8 @@ import {
 import { ErrorCard } from './error-card'
 
 export function CurrentMonthAddedRecordsCard() {
+  const t = useTranslations('reports.current-month-added-records-card')
+
   const currentMonth = new Date().getMonth()
   const previousMonth = (currentMonth - 1 + 12) % 12
 
@@ -45,7 +48,9 @@ export function CurrentMonthAddedRecordsCard() {
     const isUp = change > 0
     return {
       change,
-      changeText: isUp ? `Больше на ${change}` : `Меньше на ${-change}`,
+      changeText: isUp
+        ? `${t('more-than')} ${change}`
+        : `${t('small-than')} ${-change}`,
       Icon: isUp ? Icons['trendingUp'] : Icons['trendingDown'],
     }
   }, [currCount, prevCount])
@@ -60,7 +65,7 @@ export function CurrentMonthAddedRecordsCard() {
   return (
     <Card className="@container/card">
       <CardHeader>
-        <CardDescription>Записей за текущий месяц</CardDescription>
+        <CardDescription>{t('card-description')}</CardDescription>
         <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
           {currCount}
         </CardTitle>
@@ -75,9 +80,7 @@ export function CurrentMonthAddedRecordsCard() {
         <div className="line-clamp-1 flex gap-2 font-medium items-center">
           {changeText} <Icon className="size-4" />
         </div>
-        <div className="text-muted-foreground">
-          По сравнению с прошлым месяцем
-        </div>
+        <div className="text-muted-foreground">{t('compare-prev-year')}</div>
       </CardFooter>
     </Card>
   )

@@ -1,6 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
@@ -35,6 +36,8 @@ interface RecordOverviewFormProps {
 }
 
 export function RecordOverviewForm({ record }: RecordOverviewFormProps) {
+  const t = useTranslations('record.overviewForm')
+
   const { update, isPending } = useUpdateRecordById()
 
   const form = useForm<RecordSchema>({
@@ -49,8 +52,8 @@ export function RecordOverviewForm({ record }: RecordOverviewFormProps) {
   const onSubmit = async (data: RecordSchema) => {
     try {
       toast.promise(update({ id: record!.id, ...data }), {
-        success: () => `Запись была успешно сохранена`,
-        error: 'Возникла ошибка при сохранении записи, проверьте консоль',
+        success: () => t('record-created-success'),
+        error: () => t('record-created-error'),
       })
     } catch (error) {
       console.error('RecordOverviewForm', error)
@@ -63,18 +66,20 @@ export function RecordOverviewForm({ record }: RecordOverviewFormProps) {
         className="flex flex-col space-y-8"
         onSubmit={form.handleSubmit(onSubmit)}
       >
-        <FormSection title="Название и тип">
+        <FormSection title={t('name-and-type-form-section')}>
           <FormField
             control={form.control}
             name="title"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-lg font-heading">Название</FormLabel>
+                <FormLabel className="text-lg font-heading">
+                  {t('title-label')}
+                </FormLabel>
                 <FormControl>
                   <Input
                     className="h-10"
                     disabled={isPending}
-                    placeholder="Замена масла, масляного фильтра"
+                    placeholder={t('title-field-placeholder')}
                     {...field}
                   />
                 </FormControl>
@@ -87,7 +92,9 @@ export function RecordOverviewForm({ record }: RecordOverviewFormProps) {
             name="recordTypeId"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-lg font-heading">Тип</FormLabel>
+                <FormLabel className="text-lg font-heading">
+                  {t('record-type-label')}
+                </FormLabel>
                 <FormControl>
                   <RecordTypeSelect
                     field={field}
@@ -100,14 +107,14 @@ export function RecordOverviewForm({ record }: RecordOverviewFormProps) {
             )}
           />
         </FormSection>
-        <FormSection title="Компоненты, дополнительные траты, тэги">
+        <FormSection title={t('components-additional-spends-tags-section')}>
           <FormField
             control={form.control}
             name="recordsToComponents"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-lg font-heading">
-                  Компоненты
+                  {t('components-label')}
                 </FormLabel>
                 <FormControl>
                   <ComponentsContainer
@@ -127,7 +134,7 @@ export function RecordOverviewForm({ record }: RecordOverviewFormProps) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-lg font-heading">
-                  Дополнительные траты
+                  {t('additional-spends-label')}
                 </FormLabel>
                 <FormControl>
                   <AdditionalSpendsContainer
@@ -146,7 +153,9 @@ export function RecordOverviewForm({ record }: RecordOverviewFormProps) {
             name="tags"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-lg font-heading">Тэги</FormLabel>
+                <FormLabel className="text-lg font-heading">
+                  {t('tags-label')}
+                </FormLabel>
                 <FormControl>
                   <TagsContainer
                     value={field.value}
@@ -159,14 +168,14 @@ export function RecordOverviewForm({ record }: RecordOverviewFormProps) {
             )}
           />
         </FormSection>
-        <FormSection title="Дата создания и пробег">
+        <FormSection title={t('createdAt-and-mileage-section')}>
           <FormField
             control={form.control}
             name="createdAt"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-lg font-heading">
-                  Дата создания
+                  {t('createdAt-field-label')}
                 </FormLabel>
                 <DatePickerPopover disabled={isPending} field={field} />
                 <FormMessage />
@@ -179,7 +188,7 @@ export function RecordOverviewForm({ record }: RecordOverviewFormProps) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-lg font-heading">
-                  Пробег (километры)
+                  {t('mileage-field-label')}
                 </FormLabel>
                 <Input
                   className="h-10"
@@ -197,7 +206,7 @@ export function RecordOverviewForm({ record }: RecordOverviewFormProps) {
         </FormSection>
         <Button type="submit" disabled={isPending}>
           {isPending && <Icons.loader className="mr-2 size-4 animate-spin" />}
-          <span>Сохранить</span>
+          <span>{t('save-changes')}</span>
         </Button>
       </form>
     </Form>

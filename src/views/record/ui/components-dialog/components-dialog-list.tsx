@@ -1,4 +1,5 @@
 import { Component } from '@prisma/client'
+import { useTranslations } from 'next-intl'
 
 import { cn } from '@/shared/lib'
 import { Icons, ScrollArea } from '@/shared/ui'
@@ -27,6 +28,10 @@ export function ComponentsDialogList({
   onToggle,
   cursorRef,
 }: ComponentsDialogListProps) {
+  const t = useTranslations(
+    'record.overviewForm.componentsContainer.componentsDialog',
+  )
+
   const isInitialLoading = isLoading && !data
   const hasNoResults = data?.length === 0 && !isFetchingNextPage
 
@@ -43,7 +48,7 @@ export function ComponentsDialogList({
   if (isError) {
     return (
       <div className="text-destructive text-sm text-center py-4">
-        Ошибка загрузки компонентов
+        {t('components-load-error')}
       </div>
     )
   }
@@ -52,8 +57,8 @@ export function ComponentsDialogList({
     return (
       <div className="text-muted-foreground text-sm text-center py-4">
         {searchValue.length > 0
-          ? `Ничего не найдено по запросу «${searchValue}»`
-          : 'Компоненты не найдены'}
+          ? `${t('no-results-for')} «${searchValue}»`
+          : t('no-components-found')}
       </div>
     )
   }
@@ -80,7 +85,7 @@ export function ComponentsDialogList({
           {isFetchingNextPage && (
             <div className="text-muted-foreground flex items-center">
               <Icons.loader className="mr-2 size-4 animate-spin" />
-              <span className="text-sm">Загрузка...</span>
+              <span className="text-sm">{t('loading')}</span>
             </div>
           )}
         </div>

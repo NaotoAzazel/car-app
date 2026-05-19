@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 
 import { Button, Icons, Input, Label } from '@/shared/ui'
@@ -11,6 +12,8 @@ interface KeyFieldProps {
 }
 
 export function KeyField({ label, value }: KeyFieldProps) {
+  const t = useTranslations('appSidebar.secretKeysDialog.keyField')
+
   const [isVisible, setIsVisible] = useState(false)
   const [isCopied, setIsCopied] = useState(false)
 
@@ -18,11 +21,11 @@ export function KeyField({ label, value }: KeyFieldProps) {
     try {
       await navigator.clipboard.writeText(value)
       setIsCopied(true)
-      toast.success('Ключ скопирован')
+      toast.success(t('key-copied'))
 
       setTimeout(() => setIsCopied(false), 2000)
     } catch (err) {
-      toast.error('Не удалось скопировать')
+      toast.error(t('copy-error'))
     }
   }
 

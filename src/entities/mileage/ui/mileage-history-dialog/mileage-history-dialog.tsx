@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { startOfMonth } from 'date-fns'
+import { useTranslations } from 'next-intl'
 import { DateRange } from 'react-day-picker'
 
 import {
@@ -19,6 +20,8 @@ import { DatePicker } from './date-picker/date-picker'
 import { MileageHistoryDialogContent } from './mileage-history-dialog-content'
 
 export function MileageHistoryDialog() {
+  const t = useTranslations('mileage.history-dialog')
+
   const [draftRange, setDraftRange] = useState<DateRange>({
     from: startOfMonth(new Date()),
     to: new Date(),
@@ -42,16 +45,14 @@ export function MileageHistoryDialog() {
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button variant="secondary">История пробега</Button>
+        <Button variant="secondary">{t('mileage-history')}</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader className="gap-1">
           <DialogTitle className="font-heading text-xl">
-            История пробега
+            {t('dialog-title')}
           </DialogTitle>
-          <DialogDescription>
-            Здесь отображаются записи о пробеге
-          </DialogDescription>
+          <DialogDescription>{t('card-description')}</DialogDescription>
         </DialogHeader>
 
         <DatePicker

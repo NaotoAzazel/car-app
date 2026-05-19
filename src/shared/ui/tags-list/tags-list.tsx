@@ -1,12 +1,16 @@
 import { RecordTags } from '@prisma/client'
+import { useTranslations } from 'next-intl'
 
-import { recordTagsRu } from '@/entities/record'
+import { getRecordTagsLabels } from '@/entities/record'
 
 interface TagsListProps {
   tags: RecordTags[]
 }
 
 export function TagsList({ tags }: TagsListProps) {
+  const tTags = useTranslations('RecordTags')
+  const tagsLabels = getRecordTagsLabels(tTags)
+
   return (
     <div className="flex flex-wrap gap-1 max-w-max">
       {tags.map((tag) => (
@@ -14,7 +18,7 @@ export function TagsList({ tags }: TagsListProps) {
           key={tag}
           className="h-8 px-3 border items-center rounded-md flex text-sm bg-input/20 whitespace-nowrap"
         >
-          {recordTagsRu[tag]}
+          {tagsLabels[tag]}
         </div>
       ))}
     </div>

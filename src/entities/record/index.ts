@@ -15,7 +15,7 @@ export {
 export {
   AVARAGE_SPENDS_IN_MONTH,
   RECORD_BASE_QUERY_KEY,
-  recordTagsRu,
+  getRecordTagsLabels,
   TOTAL_SPENDS,
   useGetLatestRecordByTag,
   useGetMonthsSpends,

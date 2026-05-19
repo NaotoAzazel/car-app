@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo } from 'react'
+import { useTranslations } from 'next-intl'
 
 import { useGetSpendsByMonthYear } from '@/entities/record'
 import { formatCurrency } from '@/shared/lib'
@@ -19,6 +20,8 @@ import {
 import { ErrorCard } from './error-card'
 
 export function CurrentMonthSpendsCard() {
+  const t = useTranslations('reports.current-month-spends-card')
+
   const now = new Date()
   const currMonth = now.getMonth()
   const currYear = now.getFullYear()
@@ -59,8 +62,8 @@ export function CurrentMonthSpendsCard() {
     return {
       percentChange,
       changeText: isUp
-        ? `Больше на ${percentChange.toFixed(1)}%`
-        : `Меньше на ${Math.abs(percentChange).toFixed(1)}%`,
+        ? `${t('more-than')} ${percentChange.toFixed(1)}%`
+        : `${t('small-than')} ${Math.abs(percentChange).toFixed(1)}%`,
       Icon: isUp ? Icons['trendingUp'] : Icons['trendingDown'],
     }
   }, [currMonthSpends, prevMonthSpends])
@@ -76,7 +79,7 @@ export function CurrentMonthSpendsCard() {
   return (
     <Card className="@container/card">
       <CardHeader>
-        <CardDescription>Траты за текущий месяц</CardDescription>
+        <CardDescription>{t('card-description')}</CardDescription>
         <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
           {formatCurrency(currMonthSpends)}
         </CardTitle>
@@ -91,9 +94,7 @@ export function CurrentMonthSpendsCard() {
         <div className="line-clamp-1 flex gap-2 font-medium items-center">
           {changeText} <Icon className="size-4" />
         </div>
-        <div className="text-muted-foreground">
-          По сравнению с прошлым месяцем
-        </div>
+        <div className="text-muted-foreground">{t('compare-prev-month')}</div>
       </CardFooter>
     </Card>
   )

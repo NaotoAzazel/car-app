@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Component } from '@prisma/client'
+import { useTranslations } from 'next-intl'
 
 import { formatCurrency } from '@/shared/lib'
 import { Button, Icons } from '@/shared/ui'
@@ -13,6 +14,8 @@ export function ComponentListItem({
   component,
   onDelete,
 }: ComponentListItemProps) {
+  const t = useTranslations('components.componentListItem')
+
   const [confirmingDelete, setConfirmingDelete] = useState<boolean>(false)
   const { name, cost, code, isLiquid } = component
 
@@ -32,7 +35,7 @@ export function ComponentListItem({
       >
         <div className="flex items-center justify-between flex-row gap-2">
           <p className="text-sm font-medium text-destructive">
-            Удалить компонент?
+            {t('delete-confirmation')}
           </p>
           <div className="flex items-center gap-2">
             <Button
@@ -42,7 +45,7 @@ export function ComponentListItem({
               }}
               variant="secondary"
             >
-              Отмена
+              {t('delete-cancel')}
             </Button>
           </div>
         </div>

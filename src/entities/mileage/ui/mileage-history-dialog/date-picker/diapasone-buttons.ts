@@ -8,33 +8,33 @@ export enum DIAPASONE_BUTTONS_VALUES {
   'LAST_MONTH',
 }
 
-export const DIAPASONE_BUTTONS = [
+export const getDiapasoneButtons = (t: (key: string) => string) => [
   {
-    title: 'Сегодня',
+    title: t('mileage.history-dialog.date-picker.ranges.TODAY'),
     value: DIAPASONE_BUTTONS_VALUES.TODAY,
   },
   {
-    title: 'Сегодня и вчера',
+    title: t('mileage.history-dialog.date-picker.ranges.TODAY_AND_YESTERDAY'),
     value: DIAPASONE_BUTTONS_VALUES.TODAY_AND_YESTERDAY,
   },
   {
-    title: 'Вчера',
+    title: t('mileage.history-dialog.date-picker.ranges.YESTERDAY'),
     value: DIAPASONE_BUTTONS_VALUES.YESTERDAY,
   },
   {
-    title: 'Эта неделя',
+    title: t('mileage.history-dialog.date-picker.ranges.THIS_WEEK'),
     value: DIAPASONE_BUTTONS_VALUES.THIS_WEEK,
   },
   {
-    title: 'Прошлая неделя',
+    title: t('mileage.history-dialog.date-picker.ranges.LAST_WEEK'),
     value: DIAPASONE_BUTTONS_VALUES.LAST_WEEK,
   },
   {
-    title: 'Этот месяц',
+    title: t('mileage.history-dialog.date-picker.ranges.THIS_MONTH'),
     value: DIAPASONE_BUTTONS_VALUES.THIS_MONTH,
   },
   {
-    title: 'Прошлый месяц',
+    title: t('mileage.history-dialog.date-picker.ranges.LAST_MONTH'),
     value: DIAPASONE_BUTTONS_VALUES.LAST_MONTH,
   },
 ]

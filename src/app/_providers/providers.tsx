@@ -1,3 +1,5 @@
+import { NextIntlClientProvider } from 'next-intl'
+
 import { SidebarProvider } from '@/shared/ui'
 
 import { ServiceWorkerRegister } from './service-worker-register'
@@ -10,17 +12,19 @@ interface ProvidersProps {
 export function Providers({ children }: ProvidersProps) {
   return (
     <TanstackProvider>
-      <SidebarProvider
-        style={
-          {
-            '--sidebar-width': 'calc(var(--spacing) * 72)',
-            '--header-height': 'calc(var(--spacing) * 12)',
-          } as React.CSSProperties
-        }
-      >
-        {children}
-        <ServiceWorkerRegister />
-      </SidebarProvider>
+      <NextIntlClientProvider>
+        <SidebarProvider
+          style={
+            {
+              '--sidebar-width': 'calc(var(--spacing) * 72)',
+              '--header-height': 'calc(var(--spacing) * 12)',
+            } as React.CSSProperties
+          }
+        >
+          {children}
+          <ServiceWorkerRegister />
+        </SidebarProvider>
+      </NextIntlClientProvider>
     </TanstackProvider>
   )
 }

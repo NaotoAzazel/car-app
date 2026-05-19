@@ -1,0 +1,350 @@
+{
+  "components": {
+    "componentListItem": {
+      "delete-cancel": "Скасування",
+      "delete-confirmation": "Видалити компонент?"
+    },
+    "componentsList": {
+      "component-create-error": "Виникла помилка при видаленні компонента, перевірте консоль",
+      "component-deleated": "Компонент був успішно видалений",
+      "components-loading": "Завантаження...",
+      "components-not-found": "Компоненти не знайдено",
+      "compponent-deleating": "Видалення компонента...",
+      "nothing-found": "Нічого не знайдено за запитом"
+    },
+    "create-dialog": {
+      "add-component": "Компонент",
+      "cancel-button": "Скасування",
+      "component-code": "Код",
+      "component-cost": "Ціна (грн)",
+      "component-created": "Компонент був успішно створений",
+      "component-create-failed": "Виникла помилка при створенні компонента, перевірте консоль",
+      "component-name": "Назва",
+      "component-name-placeholder": "Моторна олія Fuchs",
+      "create-button": "Створити",
+      "dialog-description": "Заповніть дані, щоб додати новий компонент у систему",
+      "dialog-title": "Додавання компонента",
+      "is-component-liquid": "Рідкий компонент",
+      "is-component-liquid-description": "Вкажіть, якщо компонент є рідиною"
+    },
+    "search-placeholder": "Пошук за назвою...",
+    "title": "Компоненти"
+  },
+  "login-page": {
+    "authorization-success": "Авторизація успішна",
+    "continue-button": "Продовжити",
+    "incorrect-data": "Невірні дані для авторизації",
+    "password-field": "Пароль",
+    "title": "Авторизація"
+  },
+  "maintenance": {
+    "cardsHolder": {
+      "engine-section-title": "Двигун",
+      "load-error": "Не вдалося завантажити пробіг, або даних про пробіг не знайдено",
+      "loading": "Завантажуємо пробіг...",
+      "other-section-title": "Інше",
+      "salon-section-title": "Салон",
+      "suspension-section-title": "Підвіска",
+      "transmission-section-title": "Трансмісія"
+    },
+    "maintenanceCard": {
+      "every-replacement": "Кожна заміна здійснюється",
+      "km": "км",
+      "load-error": "Не вдалося завантажити дані",
+      "replacement-soon": "Потрібна термінова заміна",
+      "to-replacement": "До заміни"
+    },
+    "title": "Обслуговування",
+    "recordTypeSelect": {
+      "types-load-error": "Помилка завантаження типів",
+      "type-not-chooce": "Не вибрано",
+      "types-not-found": "Типів записів не знайдено",
+      "types-not-found-description": "Додати новий тип, щоб почати створювати записи з ним",
+      "add-type": "Додати тип запису"
+    },
+    "createRecordTypeDialog": {
+      "record-type-created": "Тип запису успішно створено",
+      "record-type-create-error": "Виникла помилка при створенні типу запису, перевірте консоль",
+      "dialog-title": "Створення типу запису",
+      "dialog-description": "Введіть назву типу запису для створення",
+      "name-field-label": "Назва",
+      "name-field-placeholder": "Ремонт",
+      "cancel-button": "Скасування",
+      "create-button": "Створити",
+      "create-new-type": "Додати тип"
+    }
+  },
+  "RecordTags": {
+    "ENGINE_OIL_CHANGE": "Заміна моторної оливи",
+    "OIL_FILTER_REPLACEMENT": "Заміна масляного фільтра",
+    "GEARBOX_OIL_CHANGE": "Заміна оливи в коробці передач",
+    "BRAKE_PADS_REPLACEMENT": "Заміна гальмівних колодок",
+    "BRAKE_DISKS_REPLACEMENT": "Заміна гальмівних дисків",
+    "ENGINE_AIR_FILTER_REPLACEMENT": "Заміна повітряного фільтра двигуна",
+    "CABIN_FILTER_REPLACEMENT": "Заміна салонного фільтра",
+    "BALL_BEARINGS_REPLACEMENT": "Заміна шарових опор",
+    "FRONT_ARM_SILENT_BLOCKS_REPLACEMENT": "Заміна сайлентблоків передніх важелів",
+    "REAR_ARM_SILENT_BLOCKS_REPLACEMENT": "Заміна сайлентблоків задніх важелів",
+    "FRONT_SHOCK_ABSORBERS_REPLACEMENT": "Заміна передніх амортизаторів",
+    "REAR_SHOCK_ABSORBERS_REPLACEMENT": "Заміна задніх амортизаторів",
+    "SPARK_PLUGS_REPLACEMENT": "Заміна свічок запалювання",
+    "FUEL_FILTER_REPLACEMENT": "Заміна паливного фільтра",
+    "TIMING_BELT_REPLACEMENT": "Заміна ременя ГРМ",
+    "ROLLERS_AND_PUMP_REPLACEMENT": "Заміна роликів та помпи",
+    "POWER_STEERING_FLUID_CHANGE": "Заміна рідини ГУР"
+  },
+  "CardStatus": {
+    "NO_DATA": "Немає даних",
+    "ALL_GOOD": "Все в порядку",
+    "AVG_CONDITION": "Середній стан",
+    "VERY_BAD": "Дуже погано"
+  },
+  "record": {
+    "overviewForm": {
+      "record-created-success": "Запис було успішно збережено",
+      "record-created-error": "Виникла помилка при збереженні запису, перевірте консоль",
+      "name-and-type-form-section": "Назва та тип",
+      "title-label": "Назва",
+      "title-field-placeholder": "Заміна олії, масляного фільтра",
+      "record-type-label": "Тип",
+      "components-additional-spends-tags-section": "Компоненти, додаткові витрати, теги",
+      "components-label": "Компоненти",
+      "additional-spends-label": "Додаткові витрати",
+      "tags-label": "Теги",
+      "createdAt-and-mileage-section": "Дата створення та пробіг",
+      "createdAt-field-label": "Дата створення",
+      "mileage-field-label": "Пробіг (кілометри)",
+      "insertCurrentMileageButton": {
+        "loading": "Завантаження записів про пробіг...",
+        "error": "Помилка завантаження записів про пробіг",
+        "noRecords": "Не вдалося знайти запису про пробіг",
+        "insertCurrentMileage": "Вставити поточний пробіг"
+      },
+      "componentsContainer": {
+        "add-or-change": "Додати / змінити",
+        "componentsDialog": {
+          "chooce-component": "Вибір компонентів",
+          "search-input-placeholder": "Пошук...",
+          "components-load-error": "Помилка завантаження компонентів",
+          "no-results-for": "Нічого не знайдено за запитом",
+          "no-components-found": "Компоненти не знайдено",
+          "loading": "Завантаження...",
+          "apply-changes-button": "Застосувати зміни"
+        },
+        "componentsList": {
+          "components-empty": "Компоненти не додані",
+          "sum": "Загальна сума"
+        }
+      },
+      "additionalSpendsContainer": {
+        "additional-spends-empty": "Додаткові витрати не додані",
+        "sum": "Загальна сума"
+      },
+      "additionalSpendsDialog": {
+        "additional-spend-added": "Дод. \nвитрата успішно додана",
+        "add-additional-spend": "Додати",
+        "dialog-title": "Додавання додаткової витрати",
+        "dialog-description": "Заповніть поля для додавання додаткової витрати",
+        "name-field-label": "Назва",
+        "name-field-placeholder": "Встановлення на СТО",
+        "cost-field-label": "Ціна (грн)",
+        "cancel-button": "Скасування",
+        "save-button": "Зберегти"
+      },
+      "tagsContainer": {
+        "tags-empty": "Теги не додані",
+        "add-button": "Додати"
+      },
+      "save-changes": "Зберегти"
+    },
+    "tagsDialog": {
+      "chooce-tags": "Вибір тегів",
+      "search-input-placeholder": "Пошук...",
+      "save-changes": "Застосувати зміни"
+    },
+    "overviewPage": {
+      "load-error": "Виникла помилка під час завантаження запису",
+      "title": "Редагування запису",
+      "actionsDropdown": {
+        "deleteing-record": "Видалення запису...",
+        "record-deleated": "Запис було успішно видалено",
+        "create-record-error": "Виникла помилка при видаленні запису, перевірте консоль",
+        "delete-record": "Видалити"
+      }
+    },
+    "mileage-info-card": {
+      "card-description": "Виникла помилка",
+      "card-title": "Неможливо завантажити дані",
+      "current-mileage": "Поточний пробіг",
+      "km": "км",
+      "no-previous-mileage-records": "Попередніх записів про пробіг не знайдено"
+    },
+    "create-dialog": {
+      "record-created": "Запис було успішно створено",
+      "create-record-error": "Виникла помилка під час створення запису, перевірте консоль",
+      "add-record": "Додати запис",
+      "dialog-title": "Створення запису",
+      "dialog-description": "Введіть назву запису для створення",
+      "title-field-label": "Назва",
+      "title-input-placeholder": "Заміна олії, масляного фільтра",
+      "cancel-button": "Скасування",
+      "create-button": "Створити"
+    }
+  },
+  "records": {
+    "title": "Записи",
+    "search-input-placeholder": "Пошук за назвою...",
+    "list": {
+      "load-error": "Помилка завантаження записів",
+      "no-results-for-query": "Нічого не знайдено за запитом",
+      "no-records-found": "Записи не знайдено",
+      "item": {
+        "type-not-found": "Тип не вказано",
+        "tags-empty": "Тип не вказано"
+      },
+      "loading": "Завантаження..."
+    }
+  },
+  "reports": {
+    "total-spends-card": {
+      "card-description": "Загальна сума витрат",
+      "avg-month-spends": "У середньому витрат за місяць"
+    },
+    "error-card": {
+      "card-description": "Виникла помилка",
+      "card-title": "Неможливо завантажити дані"
+    },
+    "current-year-spends-card": {
+      "more-than": "Більше на",
+      "small-than": "Менше на",
+      "card-description": "Витрати за поточний рік",
+      "compared-to-last-year": "Порівняно з минулим роком"
+    },
+    "current-month-spends-card": {
+      "more-than": "Більше на",
+      "small-than": "Менше на",
+      "card-description": "Витрати за поточний місяць",
+      "compare-prev-month": "Порівняно з минулим місяцем"
+    },
+    "current-month-added-records-card": {
+      "more-than": "Більше на",
+      "small-than": "Менше на",
+      "card-description": "Записів за поточний місяць",
+      "compare-prev-year": "Порівняно з минулим місяцем"
+    },
+    "year-spends-chart": {
+      "card-title": "Графік витрат",
+      "selected-year": "рік",
+      "no-data": "Дані не знайдені"
+    },
+    "year-select": {
+      "no-data": "Без даних",
+      "items": {
+        "loading": "Завантаження...",
+        "load-error": "Помилка завантаження",
+        "year-suffix": "рік"
+      }
+    }
+  },
+  "charts": {
+    "spend": "Витрачено"
+  },
+  "months": {
+    "1": "Січень",
+    "2": "Лютий",
+    "3": "Березень",
+    "4": "Квітень",
+    "5": "Травень",
+    "6": "Червень",
+    "7": "Липень",
+    "8": "Серпень",
+    "9": "Вересень",
+    "10": "Жовтень",
+    "11": "Листопад",
+    "12": "Грудень"
+  },
+  "MileageStatus": {
+    "RECORD_FOUND": "Сьогодні вже було додано запис про пробіг",
+    "NO_DATA": "За цей день записів про пробіг не знайдено"
+  },
+  "mileage": {
+    "create-dialog": {
+      "mileage-created": "Пробіг успішно записаний",
+      "mileage-create-error": "Виникла помилка при збереженні пробігу, перевірте консоль",
+      "create-mileage-record": "Створення запису про пробіг",
+      "dialog-title": "Створення запису про пробіг",
+      "dialog-description": "Введіть число поточного пробігу для створення",
+      "mileage-field-label": "Пробіг (км)",
+      "cancel-button": "Скасування",
+      "create-button": "Створити"
+    },
+    "history-dialog": {
+      "mileage-history": "Історія пробігу",
+      "dialog-title": "Історія пробігу",
+      "card-description": "Тут відображаються записи про пробіг",
+      "date-picker": {
+        "pick-diapasone": "Виберіть діапазон",
+        "ranges": {
+          "TODAY": "Сьогодні",
+          "TODAY_AND_YESTERDAY": "Сьогодні та вчора",
+          "YESTERDAY": "Вчора",
+          "THIS_WEEK": "Цей тиждень",
+          "LAST_WEEK": "Минулий тиждень",
+          "THIS_MONTH": "Цей місяць",
+          "LAST_MONTH": "Минулий місяць"
+        }
+      },
+      "content": {
+        "load-error": "Виникла помилка",
+        "load-error-description": "Виникла помилка завантаження даних. \nСпробуйте перезавантажити сторінку або оновити дані",
+        "retry": "Оновити дані",
+        "no-mileage": "Записів про пробіг не знайдено",
+        "no-mileage-description": "За вибраний період даних немає. \nСпробуйте змінити діапазон дат або показати останній тиждень із записами",
+        "show-last-month": "Показати останній місяць"
+      },
+      "content-item": {
+        "deleating-mileage": "Видалення запису про пробіг...",
+        "mileage-deleated": "Запис успішно видалено",
+        "delete-mileage-error": "Виникла помилка при видаленні запису, перевірте консоль",
+        "edit-mileage": "Редагувати",
+        "delete-mileage": "Видалити"
+      }
+    }
+  },
+  "lang-select-button": {
+    "button-trigger-text": "Вибрати мову"
+  },
+  "subscription": {
+    "notificationStatusContainer": {
+      "notifications": "Повідомлення",
+      "turn-on": "Включено",
+      "prohibited": "Заборонено",
+      "disabled": "Вимкнено",
+      "turn-on-notification": "Включити повідомлення"
+    }
+  },
+  "appSidebar": {
+    "secretKeysDialog": {
+      "button-label": "Секретні ключі",
+      "dialog-title": "Секретні ключі",
+      "dialog-description": "Секретні ключі для доступу до API",
+      "loading": "Завантаження...",
+      "load-error": "Помилка під час завантаження ключів",
+      "keyField": {
+        "key-copied": "Ключ скопійовано",
+        "copy-error": "Не вдалося скопіювати"
+      }
+    },
+    "navigation": {
+      "maintenance": "Обслуговування",
+      "reports": "Звіти",
+      "history": "Історія",
+      "components": "Компоненти"
+    },
+    "logoutButton": {
+      "logout-successfully": "Вихід успішний",
+      "logout-error": "Виникла помилка при виході, перезавантажте сторінку",
+      "button-label": "Вийти"
+    }
+  }
+}

@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { RecordType } from '@prisma/client'
+import { useTranslations } from 'next-intl'
 import { ControllerRenderProps } from 'react-hook-form'
 
 import { RecordSchema } from '@/entities/record'
@@ -20,6 +21,8 @@ interface RecordTypeSelectProps {
 }
 
 export function RecordTypeSelect({ field, disabled }: RecordTypeSelectProps) {
+  const t = useTranslations('maintenance.recordTypeSelect')
+
   const [isCreateTypeDialogOpen, setIsCreateTypeDialogOpen] = useState(false)
 
   const { data: recordTypes, isLoading, isError } = useGetRecordTypes()
@@ -36,11 +39,11 @@ export function RecordTypeSelect({ field, disabled }: RecordTypeSelectProps) {
       >
         {isError ? (
           <SelectTrigger className="w-full" disabled>
-            <SelectValue placeholder="Ошибка загрузки типов" />
+            <SelectValue placeholder={t('types-load-error')} />
           </SelectTrigger>
         ) : (
           <SelectTrigger className="w-full" disabled={disabled}>
-            <SelectValue placeholder="Не выбрано" />
+            <SelectValue placeholder={t('type-not-chooce')} />
           </SelectTrigger>
         )}
         <SelectContent>

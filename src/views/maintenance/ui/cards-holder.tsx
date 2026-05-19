@@ -1,5 +1,7 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
+
 import { useGetLatestMileage } from '@/entities/mileage'
 import { formatDate } from '@/shared/lib'
 import { Icons } from '@/shared/ui'
@@ -10,13 +12,15 @@ import { LazySection } from './lazy-section'
 import { MaintenanceCard } from './maintenance-card/maintenance-card'
 
 export function CardsHolder() {
+  const t = useTranslations('maintenance.cardsHolder')
+
   const { data, isLoading, isError } = useGetLatestMileage()
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center my-20">
         <Icons.loader className="size-4 animate-spin mr-2" />
-        <span>Загружаем пробег...</span>
+        <span>{t('loading')}</span>
       </div>
     )
   }
@@ -24,9 +28,7 @@ export function CardsHolder() {
   if (isError || !data?.length) {
     return (
       <div className="flex items-center justify-center my-20">
-        <span className="text-destructive">
-          Не удалось загрузить пробег, или данных о пробеге не найдено
-        </span>
+        <span className="text-destructive">{t('load-error')}</span>
       </div>
     )
   }
@@ -45,29 +47,29 @@ export function CardsHolder() {
           </span>
         </div>
       </div>
-      <ItemSection title="Двигатель">
+      <ItemSection title={t('engine-section-title')}>
         {recordTagsGrouped.engine.map((tag) => (
           <MaintenanceCard currMileage={data[0].mileage} key={tag} tag={tag} />
         ))}
       </ItemSection>
       <LazySection
         currMileage={data[0].mileage}
-        title="Подвеска"
+        title={t('suspension-section-title')}
         tags={recordTagsGrouped.suspension}
       />
       <LazySection
         currMileage={data[0].mileage}
-        title="Трансмиссия"
+        title={t('transmission-section-title')}
         tags={recordTagsGrouped.transmission}
       />
       <LazySection
         currMileage={data[0].mileage}
-        title="Салон"
+        title={t('salon-section-title')}
         tags={recordTagsGrouped.salon}
       />
       <LazySection
         currMileage={data[0].mileage}
-        title="Другое"
+        title={t('other-section-title')}
         tags={recordTagsGrouped.other}
       />
     </div>

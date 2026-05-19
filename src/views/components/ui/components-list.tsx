@@ -1,5 +1,6 @@
 import { RecordListItemSkeleton } from '@/views/records/ui/records-list/record-list-item-skeleton'
 import { Component } from '@prisma/client'
+import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 
 import { useDeleteComponent, useGetComponents } from '@/entities/component'
@@ -15,6 +16,8 @@ interface ComponentsListProps {
 }
 
 export function ComponentsList({ searchValue }: ComponentsListProps) {
+  const t = useTranslations('components.componentsList')
+
   const { data, isLoading, isError, isFetchingNextPage, fetchNextPage } =
     useGetComponents({
       sortByName: searchValue,
@@ -33,9 +36,9 @@ export function ComponentsList({ searchValue }: ComponentsListProps) {
   const onComponentDelete = async (id: Component['id']) => {
     try {
       toast.promise(deleteComponent(id), {
-        loading: 'Удаление компонента...',
-        success: () => `Компонент был успешно удалена`,
-        error: 'Возникла ошибка при удалении компонента, проверьте консоль',
+        loading: t('compponent-deleating'),
+        success: () => t('component-deleated'),
+        error: t('component-create-error'),
       })
     } catch (error) {
       console.error('onComponentDelete', error)
@@ -63,8 +66,8 @@ export function ComponentsList({ searchValue }: ComponentsListProps) {
     return (
       <div className="text-muted-foreground text-sm text-center py-4">
         {searchValue.length > 0
-          ? `Ничего не найдено по запросу «${searchValue}»`
-          : 'Компоненты не найдены'}
+          ? `${t('nothing-found')} «${searchValue}»`
+          : t('components-not-found')}
       </div>
     )
   }
@@ -86,7 +89,7 @@ export function ComponentsList({ searchValue }: ComponentsListProps) {
           {isFetchingNextPage && (
             <div className="text-muted-foreground flex items-center">
               <Icons.loader className="mr-2 size-4 animate-spin" />
-              <span className="text-sm">Загрузка...</span>
+              <span className="text-sm">{t('components-loading')}</span>
             </div>
           )}
         </div>

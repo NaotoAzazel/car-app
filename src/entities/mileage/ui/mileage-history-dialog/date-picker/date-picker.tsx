@@ -13,7 +13,8 @@ import {
   subMonths,
   subWeeks,
 } from 'date-fns'
-import { ru } from 'date-fns/locale'
+import { ru, uk } from 'date-fns/locale'
+import { useLocale, useTranslations } from 'next-intl'
 import { DateRange } from 'react-day-picker'
 
 import {
@@ -28,9 +29,14 @@ import {
 import { isSameRange } from '../content-item/libs'
 import { DiapasoneButton } from './diapasone-button'
 import {
-  DIAPASONE_BUTTONS,
   DIAPASONE_BUTTONS_VALUES,
+  getDiapasoneButtons,
 } from './diapasone-buttons'
+
+const dateFnsLocales = {
+  ru: ru,
+  uk: uk,
+}
 
 interface CalendarProps {
   draftRange: DateRange
@@ -51,6 +57,13 @@ export function DatePicker({
   setDraftRange,
   setIsCalendarOpen,
 }: CalendarProps) {
+  const t = useTranslations('mileage.history-dialog.date-picker')
+  const currentLocale = useLocale() as 'ru' | 'uk'
+  const activeDateLocale = dateFnsLocales[currentLocale] ?? uk
+
+  const tGlobal = useTranslations()
+  const diapasoneButtons = getDiapasoneButtons(tGlobal)
+
   const [selectedDiapasone, setSelectedDiapasone] =
     useState<DIAPASONE_BUTTONS_VALUES | null>(
       DIAPASONE_BUTTONS_VALUES.THIS_MONTH,
@@ -137,11 +150,11 @@ export function DatePicker({
         <Button variant="outline" className="pl-3 text-left font-normal">
           {draftRange?.from && draftRange?.to ? (
             <>
-              {format(draftRange.from, 'PPP', { locale: ru })} -{' '}
-              {format(draftRange.to, 'PPP', { locale: ru })}
+              {format(draftRange.from, 'PPP', { locale: activeDateLocale })} -{' '}
+              {format(draftRange.to, 'PPP', { locale: activeDateLocale })}
             </>
           ) : (
-            <span>Выберите диапазон</span>
+            <span>{t('pick-diapasone')}</span>
           )}
           <Icons.calendar className="ml-auto size-4" />
         </Button>
@@ -151,7 +164,7 @@ export function DatePicker({
         align="center"
       >
         <Calendar
-          locale={ru}
+          locale={activeDateLocale}
           mode="range"
           selected={draftRange}
           onSelect={(range) => {
@@ -167,7 +180,7 @@ export function DatePicker({
         />
         <div className="flex flex-col p-3 gap-2">
           <div className="flex flex-wrap gap-1 max-w-max">
-            {DIAPASONE_BUTTONS.map((button) => (
+            {diapasoneButtons.map((button) => (
               <DiapasoneButton
                 key={button.value}
                 title={button.title}

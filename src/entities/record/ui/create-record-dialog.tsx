@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
@@ -29,6 +30,8 @@ import { useCreateRecord } from '../lib'
 import { createRecordFormSchema, CreateRecordFormSchema } from '../model'
 
 export function CreateRecordDialog() {
+  const t = useTranslations('record.create-dialog')
+
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
   const { create, isPending } = useCreateRecord()
@@ -47,9 +50,9 @@ export function CreateRecordDialog() {
           setIsOpen(false)
           form.reset()
 
-          return `Запись была успешно создана`
+          return t('record-created')
         },
-        error: 'Возникла ошибка при создании записи, проверьте консоль',
+        error: t('create-record-error'),
       })
     } catch (error) {
       console.error(error)
@@ -60,17 +63,15 @@ export function CreateRecordDialog() {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button className="w-full" size="sm">
-          Добавить запись
+          {t('add-record')}
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader className="gap-1">
           <DialogTitle className="font-heading text-xl">
-            Создание записи
+            {t('dialog-title')}
           </DialogTitle>
-          <DialogDescription>
-            Введите название записи для создания
-          </DialogDescription>
+          <DialogDescription>{t('dialog-description')}</DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
@@ -80,11 +81,11 @@ export function CreateRecordDialog() {
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Название</FormLabel>
+                  <FormLabel>{t('title-field-label')}</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isPending}
-                      placeholder="Замена масла, масляного фильтра"
+                      placeholder={t('title-input-placeholder')}
                       {...field}
                     />
                   </FormControl>
@@ -92,14 +93,14 @@ export function CreateRecordDialog() {
                   <DialogFooter>
                     <DialogClose asChild>
                       <Button variant="outline" disabled={isPending}>
-                        Отмена
+                        {t('cancel-button')}
                       </Button>
                     </DialogClose>
                     <Button disabled={isPending} type="submit">
                       {isPending && (
                         <Icons.loader className="mr-2 size-4 animate-spin" />
                       )}
-                      Создать
+                      {t('create-button')}
                     </Button>
                   </DialogFooter>
                 </FormItem>

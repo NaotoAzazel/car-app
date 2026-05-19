@@ -1,27 +1,33 @@
 import { RecordTags } from '@prisma/client'
 
-export const recordTagsRu = {
-  [RecordTags.ENGINE_OIL_CHANGE]: 'Замена моторного масла',
-  [RecordTags.OIL_FILTER_REPLACEMENT]: 'Замена масляного фильтра',
-  [RecordTags.GEARBOX_OIL_CHANGE]: 'Замена масла в коробке передач',
-  [RecordTags.BRAKE_PADS_REPLACEMENT]: 'Замена тормозных колодок',
-  [RecordTags.BRAKE_DISKS_REPLACEMENT]: 'Замена тормозных дисков',
-  [RecordTags.ENGINE_AIR_FILTER_REPLACEMENT]:
-    'Замена воздушного фильтра двигателя',
-  [RecordTags.CABIN_FILTER_REPLACEMENT]: 'Замена салонного фильтра',
-  [RecordTags.BALL_BEARINGS_REPLACEMENT]: 'Замена шаровых опор',
-  [RecordTags.FRONT_ARM_SILENT_BLOCKS_REPLACEMENT]:
-    'Замена сайлентблоков передних рычагов',
-  [RecordTags.REAR_ARM_SILENT_BLOCKS_REPLACEMENT]:
-    'Замена сайлентблоков задних рычагов',
-  [RecordTags.FRONT_SHOCK_ABSORBERS_REPLACEMENT]:
-    'Замена передних амортизаторов',
-  [RecordTags.REAR_SHOCK_ABSORBERS_REPLACEMENT]: 'Замена задних амортизаторов',
-  [RecordTags.SPARK_PLUGS_REPLACEMENT]: 'Замена свечей зажигания',
-  [RecordTags.FUEL_FILTER_REPLACEMENT]: 'Замена топливного фильтра',
-  [RecordTags.TIMING_BELT_REPLACEMENT]: 'Замена ремня ГРМ',
-  [RecordTags.ROLLERS_AND_PUMP_REPLACEMENT]: 'Замена роликов и помпы',
-  [RecordTags.POWER_STEERING_FLUID_CHANGE]: 'Замена жидкости ГУР',
-} as const
-
-export type RecordTagsRuKeys = keyof typeof recordTagsRu
+export const getRecordTagsLabels = (
+  t: (key: string) => string,
+): Record<RecordTags, string> => ({
+  [RecordTags.ENGINE_OIL_CHANGE]: t('ENGINE_OIL_CHANGE'),
+  [RecordTags.OIL_FILTER_REPLACEMENT]: t('OIL_FILTER_REPLACEMENT'),
+  [RecordTags.GEARBOX_OIL_CHANGE]: t('GEARBOX_OIL_CHANGE'),
+  [RecordTags.BRAKE_PADS_REPLACEMENT]: t('BRAKE_PADS_REPLACEMENT'),
+  [RecordTags.BRAKE_DISKS_REPLACEMENT]: t('BRAKE_DISKS_REPLACEMENT'),
+  [RecordTags.ENGINE_AIR_FILTER_REPLACEMENT]: t(
+    'ENGINE_AIR_FILTER_REPLACEMENT',
+  ),
+  [RecordTags.CABIN_FILTER_REPLACEMENT]: t('CABIN_FILTER_REPLACEMENT'),
+  [RecordTags.BALL_BEARINGS_REPLACEMENT]: t('BALL_BEARINGS_REPLACEMENT'),
+  [RecordTags.FRONT_ARM_SILENT_BLOCKS_REPLACEMENT]: t(
+    'FRONT_ARM_SILENT_BLOCKS_REPLACEMENT',
+  ),
+  [RecordTags.REAR_ARM_SILENT_BLOCKS_REPLACEMENT]: t(
+    'REAR_ARM_SILENT_BLOCKS_REPLACEMENT',
+  ),
+  [RecordTags.FRONT_SHOCK_ABSORBERS_REPLACEMENT]: t(
+    'FRONT_SHOCK_ABSORBERS_REPLACEMENT',
+  ),
+  [RecordTags.REAR_SHOCK_ABSORBERS_REPLACEMENT]: t(
+    'REAR_SHOCK_ABSORBERS_REPLACEMENT',
+  ),
+  [RecordTags.SPARK_PLUGS_REPLACEMENT]: t('SPARK_PLUGS_REPLACEMENT'),
+  [RecordTags.FUEL_FILTER_REPLACEMENT]: t('FUEL_FILTER_REPLACEMENT'),
+  [RecordTags.TIMING_BELT_REPLACEMENT]: t('TIMING_BELT_REPLACEMENT'),
+  [RecordTags.ROLLERS_AND_PUMP_REPLACEMENT]: t('ROLLERS_AND_PUMP_REPLACEMENT'),
+  [RecordTags.POWER_STEERING_FLUID_CHANGE]: t('POWER_STEERING_FLUID_CHANGE'),
+})
