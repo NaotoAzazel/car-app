@@ -1,6 +1,7 @@
 import { RecordTags } from '@prisma/client'
+import { useTranslations } from 'next-intl'
 
-import { recordTagsRu } from '@/entities/record'
+import { getRecordTagsLabels } from '@/entities/record'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/shared/ui'
 
 interface MaintenanceCardErrorProps {
@@ -8,12 +9,16 @@ interface MaintenanceCardErrorProps {
 }
 
 export function MaintenanceCardError({ tag }: MaintenanceCardErrorProps) {
+  const t = useTranslations('maintenance.maintenanceCard')
+  const tTags = useTranslations('RecordTags')
+  const tagsLabels = getRecordTagsLabels(tTags)
+
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
-        <CardTitle>{recordTagsRu[tag]}</CardTitle>
+        <CardTitle>{tagsLabels[tag]}</CardTitle>
         <CardDescription className="text-destructive">
-          Не удалось загрузить данные
+          {t('load-error')}
         </CardDescription>
       </CardHeader>
     </Card>

@@ -2,12 +2,14 @@
 
 import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
+import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 
 import { Button, Icons } from '@/shared/ui'
 
 export function LogoutButton() {
+  const t = useTranslations('appSidebar.logoutButton')
   const router = useRouter()
 
   const { mutate, isPending } = useMutation({
@@ -16,10 +18,9 @@ export function LogoutButton() {
     },
     onSuccess: () => {
       router.push('/login')
-      toast.success('Выход успешный')
+      toast.success(t('logout-successfully'))
     },
-    onError: () =>
-      toast.error('Возникла ошибка при выходе, перезагрузите страницу'),
+    onError: () => toast.error(t('logout-error')),
   })
 
   return (
@@ -34,7 +35,7 @@ export function LogoutButton() {
       ) : (
         <Icons.logout className="mr-1 size-4" />
       )}
-      Выйти
+      {t('button-label')}
     </Button>
   )
 }

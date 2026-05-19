@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { tr } from 'date-fns/locale'
+import { useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
@@ -39,6 +41,8 @@ export function AdditionalSpendsDialog({
   recordId,
   onCreated,
 }: AdditionalSpendsDialogProps) {
+  const t = useTranslations('record.overviewForm.additionalSpendsDialog')
+
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false)
 
   const { mutateAsync: create, isPending } = useCreateAndLinkSpend()
@@ -56,7 +60,7 @@ export function AdditionalSpendsDialog({
 
       setIsDialogOpen(false)
       form.reset()
-      toast.success('Доп. трата успешно добавлена')
+      toast.success(t('additional-spend-added'))
     } catch (error) {
       console.error('AdditionalSpendsDialog', error)
     }
@@ -71,16 +75,14 @@ export function AdditionalSpendsDialog({
           type="button"
           className="w-full"
         >
-          Добавить
+          {t('add-additional-spend')}
         </Button>
       </DialogTrigger>
       <DialogPortal>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Добавление дополнительной траты</DialogTitle>
-            <DialogDescription>
-              Заполните поля для добавление дополнительной траты
-            </DialogDescription>
+            <DialogTitle>{t('dialog-title')}</DialogTitle>
+            <DialogDescription>{t('dialog-description')}</DialogDescription>
           </DialogHeader>
 
           <Form {...form}>
@@ -96,11 +98,11 @@ export function AdditionalSpendsDialog({
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Название</FormLabel>
+                    <FormLabel>{t('name-field-label')}</FormLabel>
                     <FormControl>
                       <Input
                         disabled={isPending}
-                        placeholder="Установка на СТО"
+                        placeholder={t('name-field-placeholder')}
                         {...field}
                       />
                     </FormControl>
@@ -113,7 +115,7 @@ export function AdditionalSpendsDialog({
                 name="cost"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Цена (грн)</FormLabel>
+                    <FormLabel>{t('cost-field-label')}</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="2450"
@@ -130,7 +132,7 @@ export function AdditionalSpendsDialog({
               <DialogFooter>
                 <DialogClose asChild>
                   <Button variant="outline" type="button">
-                    Отмена
+                    {t('cancel-button')}
                   </Button>
                 </DialogClose>
 
@@ -138,7 +140,7 @@ export function AdditionalSpendsDialog({
                   {isPending && (
                     <Icons.loader className="mr-2 size-4 animate-spin" />
                   )}
-                  <span>Сохранить</span>
+                  <span>{t('save-button')}</span>
                 </Button>
               </DialogFooter>
             </form>

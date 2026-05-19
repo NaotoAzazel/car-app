@@ -1,4 +1,5 @@
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
+import { useTranslations } from 'next-intl'
 
 import {
   Sidebar,
@@ -9,10 +10,13 @@ import {
   SidebarMenuItem,
 } from '@/shared/ui'
 
-import { MAIN_NAV_BUTTONS } from '../lib'
+import { getMainNavButtons } from '../lib'
 import { MainNav } from './main-nav'
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const tGlobal = useTranslations()
+  const navItems = getMainNavButtons(tGlobal)
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -32,7 +36,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <MainNav items={MAIN_NAV_BUTTONS} />
+        <MainNav items={navItems} />
       </SidebarContent>
     </Sidebar>
   )

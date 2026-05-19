@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Component } from '@prisma/client'
+import { useTranslations } from 'next-intl'
 
 import { RecordSchema } from '@/entities/record'
 import { Button } from '@/shared/ui'
@@ -20,6 +21,8 @@ export function ComponentsContainer({
   disabled,
   recordId,
 }: ComponentContainerProps) {
+  const t = useTranslations('record.overviewForm.componentsContainer')
+
   const [isComponentsDialogOpen, setIsComponentsDialogOpen] =
     useState<boolean>(false)
 
@@ -43,7 +46,7 @@ export function ComponentsContainer({
           className="w-full"
           disabled={disabled}
         >
-          Добавить / изменить
+          {t('add-or-change')}
         </Button>
 
         <ComponentsDialog

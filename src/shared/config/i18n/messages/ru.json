@@ -1,0 +1,350 @@
+{
+  "components": {
+    "componentListItem": {
+      "delete-cancel": "Отмена",
+      "delete-confirmation": "Удалить компонент?"
+    },
+    "componentsList": {
+      "component-create-error": "Возникла ошибка при удалении компонента, проверьте консоль",
+      "component-deleated": "Компонент был успешно удален",
+      "components-loading": "Загрузка...",
+      "components-not-found": "Компоненты не найдены",
+      "compponent-deleating": "Удаление компонента...",
+      "nothing-found": "Ничего не найдено по запросу"
+    },
+    "create-dialog": {
+      "add-component": "Компонент",
+      "cancel-button": "Отмена",
+      "component-code": "Код",
+      "component-cost": "Цена (грн)",
+      "component-created": "Компонент был успешно создан",
+      "component-create-failed": "Возникла ошибка при создании компонента, проверьте консоль",
+      "component-name": "Название",
+      "component-name-placeholder": "Моторное масло Fuchs",
+      "create-button": "Создать",
+      "dialog-description": "Заполните данные, чтобы добавить новый компонент в систему",
+      "dialog-title": "Добавление компонента",
+      "is-component-liquid": "Жидкий компонент",
+      "is-component-liquid-description": "Укажите, если компонент представляет собой жидкость"
+    },
+    "search-placeholder": "Поиск по названию...",
+    "title": "Компоненты"
+  },
+  "login-page": {
+    "authorization-success": "Авторизация успешная",
+    "continue-button": "Продолжить",
+    "incorrect-data": "Неверные данные для авторизации",
+    "password-field": "Пароль",
+    "title": "Авторизация"
+  },
+  "maintenance": {
+    "cardsHolder": {
+      "engine-section-title": "Двигатель",
+      "load-error": "Не удалось загрузить пробег, или данных о пробеге не найдено",
+      "loading": "Загружаем пробег...",
+      "other-section-title": "Другое",
+      "salon-section-title": "Салон",
+      "suspension-section-title": "Подвеска",
+      "transmission-section-title": "Трансмиссия"
+    },
+    "maintenanceCard": {
+      "every-replacement": "Каждая замена осуществляется",
+      "km": "км",
+      "load-error": "Не удалось загрузить данные",
+      "replacement-soon": "Требуется срочная замена",
+      "to-replacement": "До замены"
+    },
+    "title": "Обслуживание",
+    "recordTypeSelect": {
+      "types-load-error": "Ошибка загрузки типов",
+      "type-not-chooce": "Не выбрано",
+      "types-not-found": "Типов записей не найдено",
+      "types-not-found-description": "Добавьте новый тип, чтобы начать создавать записи с ним",
+      "add-type": "Добавить тип записи"
+    },
+    "createRecordTypeDialog": {
+      "record-type-created": "Тип записи успешно создан",
+      "record-type-create-error": "Возникла ошибка при создании типа записи, проверьте консоль",
+      "dialog-title": "Создание типа записи",
+      "dialog-description": "Введите название типа записи для создания",
+      "name-field-label": "Название",
+      "name-field-placeholder": "Ремонт",
+      "cancel-button": "Отмена",
+      "create-button": "Создать",
+      "create-new-type": "Добавить тип"
+    }
+  },
+  "RecordTags": {
+    "ENGINE_OIL_CHANGE": "Замена моторного масла",
+    "OIL_FILTER_REPLACEMENT": "Замена масляного фильтра",
+    "GEARBOX_OIL_CHANGE": "Замена масла в коробке передач",
+    "BRAKE_PADS_REPLACEMENT": "Замена тормозных колодок",
+    "BRAKE_DISKS_REPLACEMENT": "Замена тормозных дисков",
+    "ENGINE_AIR_FILTER_REPLACEMENT": "Замена воздушного фильтра двигателя",
+    "CABIN_FILTER_REPLACEMENT": "Замена салонного фильтра",
+    "BALL_BEARINGS_REPLACEMENT": "Замена шаровых опор",
+    "FRONT_ARM_SILENT_BLOCKS_REPLACEMENT": "Замена сайлентблоков передних рычагов",
+    "REAR_ARM_SILENT_BLOCKS_REPLACEMENT": "Замена сайлентблоков задних рычагов",
+    "FRONT_SHOCK_ABSORBERS_REPLACEMENT": "Замена передних амортизаторов",
+    "REAR_SHOCK_ABSORBERS_REPLACEMENT": "Замена задних амортизаторов",
+    "SPARK_PLUGS_REPLACEMENT": "Замена свечей зажигания",
+    "FUEL_FILTER_REPLACEMENT": "Замена топливного фильтра",
+    "TIMING_BELT_REPLACEMENT": "Замена ремня ГРМ",
+    "ROLLERS_AND_PUMP_REPLACEMENT": "Замена роликов и помпы",
+    "POWER_STEERING_FLUID_CHANGE": "Замена жидкости ГУР"
+  },
+  "CardStatus": {
+    "NO_DATA": "Нет данных",
+    "ALL_GOOD": "Всё в порядке",
+    "AVG_CONDITION": "Среднее состояние",
+    "VERY_BAD": "Очень плохо"
+  },
+  "record": {
+    "overviewForm": {
+      "record-created-success": "Запись была успешно сохранена",
+      "record-created-error": "Возникла ошибка при сохранении записи, проверьте консоль",
+      "name-and-type-form-section": "Название и тип",
+      "title-label": "Название",
+      "title-field-placeholder": "Замена масла, масляного фильтра",
+      "record-type-label": "Тип",
+      "components-additional-spends-tags-section": "Компоненты, дополнительные траты, тэги",
+      "components-label": "Компоненты",
+      "additional-spends-label": "Дополнительные траты",
+      "tags-label": "Тэги",
+      "createdAt-and-mileage-section": "Дата создания и пробег",
+      "createdAt-field-label": "Дата создания",
+      "mileage-field-label": "Пробег (километры)",
+      "insertCurrentMileageButton": {
+        "loading": "Загрузка записей о пробеге...",
+        "error": "Ошибка загрузки записей о пробеге",
+        "noRecords": "Не удалось найти записи о пробеге",
+        "insertCurrentMileage": "Вставить текущий пробег"
+      },
+      "componentsContainer": {
+        "add-or-change": "Добавить / изменить",
+        "componentsDialog": {
+          "chooce-component": "Выбор компонентов",
+          "search-input-placeholder": "Поиск...",
+          "components-load-error": "Ошибка загрузки компонентов",
+          "no-results-for": "Ничего не найдено по запросу",
+          "no-components-found": "Компоненты не найдены",
+          "loading": "Загрузка...",
+          "apply-changes-button": "Применить изменения"
+        },
+        "componentsList": {
+          "components-empty": "Компоненты не добавлены",
+          "sum": "Общяя сумма"
+        }
+      },
+      "additionalSpendsContainer": {
+        "additional-spends-empty": "Дополнительные траты не добавлены",
+        "sum": "Общяя сумма"
+      },
+      "additionalSpendsDialog": {
+        "additional-spend-added": "Доп. трата успешно добавлена",
+        "add-additional-spend": "Добавить",
+        "dialog-title": "Добавление дополнительной траты",
+        "dialog-description": "Заполните поля для добавление дополнительной траты",
+        "name-field-label": "Название",
+        "name-field-placeholder": "Установка на СТО",
+        "cost-field-label": "Цена (грн)",
+        "cancel-button": "Отмена",
+        "save-button": "Сохранить"
+      },
+      "tagsContainer": {
+        "tags-empty": "Тэги не добавлены",
+        "add-button": "Добавить"
+      },
+      "save-changes": "Сохранить"
+    },
+    "tagsDialog": {
+      "chooce-tags": "Выбор тэгов",
+      "search-input-placeholder": "Поиск...",
+      "save-changes": "Применить изменения"
+    },
+    "overviewPage": {
+      "load-error": "Возникла ошибка при загрузке записи",
+      "title": "Редактирование записи",
+      "actionsDropdown": {
+        "deleteing-record": "Удаление записи...",
+        "record-deleated": "Запись была успешно удалена",
+        "create-record-error": "Возникла ошибка при удалении записи, проверьте консоль",
+        "delete-record": "Удалить"
+      }
+    },
+    "mileage-info-card": {
+      "card-description": "Возникла ошибка",
+      "card-title": "Не удалось загрузить данные",
+      "current-mileage": "Текущий пробег",
+      "km": "км",
+      "no-previous-mileage-records": "Предыдущих записей о пробеге не найдено"
+    },
+    "create-dialog": {
+      "record-created": "Запись была успешно создана",
+      "create-record-error": "Возникла ошибка при создании записи, проверьте консоль",
+      "add-record": "Добавить запись",
+      "dialog-title": "Создание записи",
+      "dialog-description": "Введите название записи для создания",
+      "title-field-label": "Название",
+      "title-input-placeholder": "Замена масла, масляного фильтра",
+      "cancel-button": "Отмена",
+      "create-button": "Создать"
+    }
+  },
+  "records": {
+    "title": "Записи",
+    "search-input-placeholder": "Поиск по названию...",
+    "list": {
+      "load-error": "Ошибка загрузки записей",
+      "no-results-for-query": "Ничего не найдено по запросу",
+      "no-records-found": "Записи не найдено",
+      "item": {
+        "type-not-found": "Тип не указан",
+        "tags-empty": "Тип не указан"
+      },
+      "loading": "Загрузка..."
+    }
+  },
+  "reports": {
+    "total-spends-card": {
+      "card-description": "Общяя сумма трат",
+      "avg-month-spends": "В среднем трат за месяц"
+    },
+    "error-card": {
+      "card-description": "Возникла ошибка",
+      "card-title": "Не удалось загрузить данные"
+    },
+    "current-year-spends-card": {
+      "more-than": "Больше на",
+      "small-than": "Меньше на",
+      "card-description": "Траты за текущий год",
+      "compared-to-last-year": "По сравнению с прошлым годом"
+    },
+    "current-month-spends-card": {
+      "more-than": "Больше на",
+      "small-than": "Меньше на",
+      "card-description": "Траты за текущий месяц",
+      "compare-prev-month": "По сравнению с прошлым месяцем"
+    },
+    "current-month-added-records-card": {
+      "more-than": "Больше на",
+      "small-than": "Меньше на",
+      "card-description": "Записей за текущий месяц",
+      "compare-prev-year": "По сравнению с прошлым месяцем"
+    },
+    "year-spends-chart": {
+      "card-title": "График трат",
+      "selected-year": "год",
+      "no-data": "Данные не найдены"
+    },
+    "year-select": {
+      "no-data": "Без данных",
+      "items": {
+        "loading": "Загрузка...",
+        "load-error": "Ошибка загруки",
+        "year-suffix": "год"
+      }
+    }
+  },
+  "charts": {
+    "spend": "Потрачено"
+  },
+  "months": {
+    "1": "Январь",
+    "2": "Февраль",
+    "3": "Март",
+    "4": "Апрель",
+    "5": "Май",
+    "6": "Июнь",
+    "7": "Июль",
+    "8": "Август",
+    "9": "Сентябрь",
+    "10": "Октябрь",
+    "11": "Ноябрь",
+    "12": "Декабрь"
+  },
+  "MileageStatus": {
+    "RECORD_FOUND": "Сегодня уже была добавлена запись о пробеге",
+    "NO_DATA": "За этот день записей о пробеге не найдено"
+  },
+  "mileage": {
+    "create-dialog": {
+      "mileage-created": "Пробег успешно записан",
+      "mileage-create-error": "Возникла ошибка при сохранении пробега, проверьте консоль",
+      "create-mileage-record": "Создание записи о пробеге",
+      "dialog-title": "Создание записи о пробеге",
+      "dialog-description": "Введите число текущего пробега для создания",
+      "mileage-field-label": "Пробег (км)",
+      "cancel-button": "Отмена",
+      "create-button": "Создать"
+    },
+    "history-dialog": {
+      "mileage-history": "История пробега",
+      "dialog-title": "История пробега",
+      "card-description": "Здесь отображаются записи о пробеге",
+      "date-picker": {
+        "pick-diapasone": "Выберите диапазон",
+        "ranges": {
+          "TODAY": "Сегодня",
+          "TODAY_AND_YESTERDAY": "Сегодня и вчера",
+          "YESTERDAY": "Вчера",
+          "THIS_WEEK": "Эта неделя",
+          "LAST_WEEK": "Прошлая неделя",
+          "THIS_MONTH": "Этот месяц",
+          "LAST_MONTH": "Прослый месяц"
+        }
+      },
+      "content": {
+        "load-error": "Возникла ошибка",
+        "load-error-description": "Возникла ошибка загрузки данных. Попробуйте перезагрузить страницу или обновить данные",
+        "retry": "Обновить данные",
+        "no-mileage": "Записей о пробеге не найдено",
+        "no-mileage-description": "За выбранный период нет данных. Попробуйте изменить диапазон дат или    показать последнюю неделю с записями",
+        "show-last-month": "Показать последний месяц"
+      },
+      "content-item": {
+        "deleating-mileage": "Удаление записи о пробеге...",
+        "mileage-deleated": "Запись успешно удалена",
+        "delete-mileage-error": "Возникла ошибка при удалении записи, проверьте консоль",
+        "edit-mileage": "Редактировать",
+        "delete-mileage": "Удалить"
+      }
+    }
+  },
+  "lang-select-button": {
+    "button-trigger-text": "Выбрать язык"
+  },
+  "subscription": {
+    "notificationStatusContainer": {
+      "notifications": "Уведомления",
+      "turn-on": "Включены",
+      "prohibited": "Запрещены",
+      "disabled": "Отключены",
+      "turn-on-notification": "Включить уведомления"
+    }
+  },
+  "appSidebar": {
+    "secretKeysDialog": {
+      "button-label": "Секретные ключи",
+      "dialog-title": "Секретные ключи",
+      "dialog-description": "Секретные ключи для доступа к API",
+      "loading": "Загрузка...",
+      "load-error": "Ошибка при загрузке ключей",
+      "keyField": {
+        "key-copied": "Ключ скопирован",
+        "copy-error": "Не удалось скопировать"
+      }
+    },
+    "navigation": {
+      "maintenance": "Обслуживание",
+      "reports": "Отчеты",
+      "history": "История",
+      "components": "Компоненты"
+    },
+    "logoutButton": {
+      "logout-successfully": "Выход успешный",
+      "logout-error": "Возникла ошибка при выходе, перезагрузите страницу",
+      "button-label": "Выйти"
+    }
+  }
+}

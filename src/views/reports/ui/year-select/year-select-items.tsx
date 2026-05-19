@@ -1,5 +1,7 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
+
 import { Icons, SelectItem } from '@/shared/ui'
 
 interface YearSelectItemsProps {
@@ -13,11 +15,13 @@ export function YearSelectItems({
   isError,
   years,
 }: YearSelectItemsProps) {
+  const t = useTranslations('reports.year-select.items')
+
   if (isLoading) {
     return (
       <div className="flex flex-row items-center justify-center text-muted-foreground h-10">
         <Icons.loader className="size-4 mr-2 animate-spin" />
-        <span className="text-sm">Загрузка...</span>
+        <span className="text-sm">{t('loading')}</span>
       </div>
     )
   }
@@ -25,7 +29,7 @@ export function YearSelectItems({
   if (isError) {
     return (
       <div className="flex items-center justify-center text-destructive h-10">
-        <span className="text-sm">Ошибка загруки</span>
+        <span className="text-sm">{t('load-error')}</span>
       </div>
     )
   }
@@ -34,7 +38,7 @@ export function YearSelectItems({
     <>
       {years.map((year) => (
         <SelectItem value={year} className="rounded-lg" key={year}>
-          {year} год
+          {year} {t("year-suffix")}
         </SelectItem>
       ))}
     </>

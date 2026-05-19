@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
 
 import {
   getYears,
@@ -23,6 +24,8 @@ export function YearSelect({
   setSelectedYear,
   enabled,
 }: YearSelectProps) {
+  const t = useTranslations('reports.year-select')
+
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
   const { data, isLoading, isError, isFetched, refetch } = useQuery({
@@ -57,7 +60,7 @@ export function YearSelect({
         size="sm"
         aria-label="Select a value"
       >
-        <SelectValue placeholder="Без данных" />
+        <SelectValue placeholder={t('no-data')} />
       </SelectTrigger>
       <SelectContent className="rounded-xl">
         <YearSelectItems

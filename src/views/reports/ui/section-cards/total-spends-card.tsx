@@ -1,6 +1,7 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
 
 import {
   AVARAGE_SPENDS_IN_MONTH,
@@ -25,6 +26,8 @@ import {
 import { ErrorCard } from './error-card'
 
 export function TotalSpendsCard() {
+  const t = useTranslations('reports.total-spends-card')
+
   const avarageSpendsInMonth = useQuery({
     queryFn: async () => await avgSpendsInMonth(),
     queryKey: [RECORD_BASE_QUERY_KEY, AVARAGE_SPENDS_IN_MONTH],
@@ -57,7 +60,7 @@ export function TotalSpendsCard() {
   return (
     <Card className="@container/card">
       <CardHeader>
-        <CardDescription>Общяя сумма трат</CardDescription>
+        <CardDescription>{t('card-description')}</CardDescription>
         <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
           {formatCurrency(totalSpends.data)}
         </CardTitle>
@@ -73,7 +76,7 @@ export function TotalSpendsCard() {
           {formattedAvarageSpendsInMonth}
           <Icons.avg className="size-4" />
         </div>
-        <div className="text-muted-foreground">В среднем трат за месяц</div>
+        <div className="text-muted-foreground">{t('avg-month-spends')}</div>
       </CardFooter>
     </Card>
   )

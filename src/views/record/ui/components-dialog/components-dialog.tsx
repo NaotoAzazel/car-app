@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Component } from '@prisma/client'
+import { useTranslations } from 'next-intl'
 
 import { useGetComponents } from '@/entities/component'
 import { useDebounce, useIntersection } from '@/shared/lib'
@@ -29,6 +30,10 @@ export function ComponentsDialog({
   onOpenChange,
   initiallySelected,
 }: ComponentsDialogProps) {
+  const t = useTranslations(
+    'record.overviewForm.componentsContainer.componentsDialog',
+  )
+
   const [searchValue, setSearchValue] = useState<string>('')
   const debouncedSearch = useDebounce<string>(searchValue, 1_000)
 
@@ -79,13 +84,13 @@ export function ComponentsDialog({
       <DialogContent>
         <DialogHeader>
           <DialogHeader>
-            <DialogTitle>Выбор компонентов</DialogTitle>
+            <DialogTitle>{t('chooce-component')}</DialogTitle>
           </DialogHeader>
         </DialogHeader>
 
         <div className="grid gap-2">
           <Input
-            placeholder="Поиск..."
+            placeholder={t('search-input-placeholder')}
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
           />
@@ -110,7 +115,7 @@ export function ComponentsDialog({
             }}
             disabled={isLoading || isError || isFetchingNextPage}
           >
-            Применить изменения
+            {t('apply-changes-button')}
           </Button>
         </div>
       </DialogContent>

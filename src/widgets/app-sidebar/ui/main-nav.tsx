@@ -1,6 +1,6 @@
 'use client'
 
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { usePathname } from 'next/navigation'
 
 import { MileageHistoryDialog } from '@/entities/mileage'
@@ -9,6 +9,7 @@ import { NotificationStatusContainer } from '@/entities/subscription'
 import { cn } from '@/shared/lib'
 import {
   Icons,
+  LangSelect,
   SidebarGroup,
   SidebarGroupContent,
   SidebarMenu,
@@ -70,6 +71,7 @@ export function MainNav({ items }: MainNavProps) {
       </SidebarGroupContent>
       <div className="mt-auto flex flex-col gap-2">
         <SecretKeysDialog />
+        <LangSelect />
         <NotificationStatusContainer />
         <LogoutButton />
       </div>

@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo } from 'react'
+import { useTranslations } from 'next-intl'
 
 import { useGetSpendsByYear } from '@/entities/record'
 import { formatCurrency } from '@/shared/lib'
@@ -19,6 +20,8 @@ import {
 import { ErrorCard } from './error-card'
 
 export function CurrentYearSpendsCard() {
+  const t = useTranslations('reports.current-year-spends-card')
+
   const now = new Date()
   const currYear = now.getFullYear()
 
@@ -55,8 +58,8 @@ export function CurrentYearSpendsCard() {
     return {
       percentChange,
       changeText: isUp
-        ? `Больше на ${percentChange.toFixed(1)}%`
-        : `Меньше на ${Math.abs(percentChange).toFixed(1)}%`,
+        ? `${t('more-than')} ${percentChange.toFixed(1)}%`
+        : `${t('small-than')} ${Math.abs(percentChange).toFixed(1)}%`,
       Icon: isUp ? Icons['trendingUp'] : Icons['trendingDown'],
     }
   }, [currYearSpends, prevYearSpends])
@@ -72,7 +75,7 @@ export function CurrentYearSpendsCard() {
   return (
     <Card className="@container/card">
       <CardHeader>
-        <CardDescription>Траты за текущий год</CardDescription>
+        <CardDescription>{t('card-description')}</CardDescription>
         <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
           {formatCurrency(currYearSpends)}
         </CardTitle>
@@ -88,7 +91,7 @@ export function CurrentYearSpendsCard() {
           {changeText} <Icon className="size-4" />
         </div>
         <div className="text-muted-foreground">
-          По сравнению с прошлым годом
+          {t('compared-to-last-year')}
         </div>
       </CardFooter>
     </Card>

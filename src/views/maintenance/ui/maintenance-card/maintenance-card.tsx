@@ -1,50 +1,15 @@
 'use client'
 
 import { RecordTags } from '@prisma/client'
+import { useTranslations } from 'next-intl'
 
-import { recordTagsRu, useGetLatestRecordByTag } from '@/entities/record'
+import { getRecordTagsLabels, useGetLatestRecordByTag } from '@/entities/record'
 import { cn } from '@/shared/lib'
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  Icons,
-} from '@/shared/ui'
+import { Card, CardDescription, CardHeader, CardTitle } from '@/shared/ui'
 
-import { maintenanceIntervals } from '../../lib'
+import { CardStatus, getStatusConfig, maintenanceIntervals } from '../../lib'
 import { MaintenanceCardError } from './maintenance-card-error'
 import { MaintenanceCardSkeleton } from './maintenance-card-skeleton'
-
-export enum CardStatus {
-  NO_DATA,
-  ALL_GOOD,
-  AVG_CONDITION,
-  VERY_BAD,
-}
-
-const statusConfig = {
-  [CardStatus.NO_DATA]: {
-    icon: Icons.helpCircle,
-    color: 'text-gray-400',
-    label: 'Нет данных',
-  },
-  [CardStatus.ALL_GOOD]: {
-    icon: Icons.checkCircle,
-    color: 'text-green-500',
-    label: 'Всё в порядке',
-  },
-  [CardStatus.AVG_CONDITION]: {
-    icon: Icons.alertTriangle,
-    color: 'text-yellow-500',
-    label: 'Среднее состояние',
-  },
-  [CardStatus.VERY_BAD]: {
-    icon: Icons.alertCircle,
-    color: 'text-red-500',
-    label: 'Очень плохо',
-  },
-}
 
 interface MaintenanceCardProps {
   tag: RecordTags
@@ -52,6 +17,14 @@ interface MaintenanceCardProps {
 }
 
 export function MaintenanceCard({ tag, currMileage }: MaintenanceCardProps) {
+  const tTags = useTranslations('RecordTags')
+  const tagsLabels = getRecordTagsLabels(tTags)
+
+  const tGlobal = useTranslations()
+  const statusConfig = getStatusConfig(tGlobal)
+
+  const tCard = useTranslations('maintenance.maintenanceCard')
+
   const { data, isLoading, isError } = useGetLatestRecordByTag(tag)
   const interval = maintenanceIntervals[tag]
 
@@ -73,9 +46,10 @@ export function MaintenanceCard({ tag, currMileage }: MaintenanceCardProps) {
             <Icon className={cn('size-4', color)} />
             <span>{label}</span>
           </div>
-          <CardTitle>{recordTagsRu[tag]}</CardTitle>
+          <CardTitle>{tagsLabels[tag]}</CardTitle>
           <CardDescription>
-            Каждая замена осуществляется ~{interval.toLocaleString()} км <br />
+            {tCard('every-replacement')} ~{interval.toLocaleString()}{' '}
+            {tCard('km')} <br />
           </CardDescription>
         </CardHeader>
       </Card>
@@ -87,14 +61,14 @@ export function MaintenanceCard({ tag, currMileage }: MaintenanceCardProps) {
   const mileageToNextReplacement = interval - mileageFromLastReplacement
 
   let status: CardStatus = CardStatus.VERY_BAD
-  let replacementText = `До замены ${mileageToNextReplacement.toLocaleString()} км`
+  let replacementText = `${tCard('to-replacement')} ${mileageToNextReplacement.toLocaleString()} ${tCard('km')}`
 
   if (mileageToNextReplacement > interval * 0.3) {
     status = CardStatus.ALL_GOOD
   } else if (mileageToNextReplacement > 300) {
     status = CardStatus.AVG_CONDITION
   } else {
-    replacementText = 'Требуется срочная замена'
+    replacementText = tCard('replacement-soon')
   }
 
   const { icon: Icon, color, label } = statusConfig[status]
@@ -106,9 +80,11 @@ export function MaintenanceCard({ tag, currMileage }: MaintenanceCardProps) {
           <Icon className={cn('size-4', color)} />
           <span>{label}</span>
         </div>
-        <CardTitle>{recordTagsRu[tag]}</CardTitle>
+        <CardTitle>{tagsLabels[tag]}</CardTitle>
         <CardDescription>
-          Каждая замена осуществляется ~{interval.toLocaleString()} км <br />
+          {tCard('every-replacement')} ~{interval.toLocaleString()}{' '}
+          {tCard('km')}
+          <br />
           <span className="font-semibold">{replacementText}</span>
         </CardDescription>
       </CardHeader>

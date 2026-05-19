@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { RecordTags } from '@prisma/client'
+import { useTranslations } from 'next-intl'
 
 import { Button, TagsList } from '@/shared/ui'
 
@@ -18,6 +19,8 @@ export function TagsContainer({
   onChange,
   disabled,
 }: TagsContainerProps) {
+  const t = useTranslations('record.overviewForm.tagsContainer')
+
   const [isTagsDialogOpen, setIsTagsDialogOpen] = useState<boolean>(false)
 
   const onConfirm = (selectedTags: RecordTags[]) => {
@@ -32,7 +35,7 @@ export function TagsContainer({
         ) : (
           <div className="flex items-center justify-center">
             <span className="text-sm text-muted-foreground py-10">
-              Тэги не добавлены
+              {t('tags-empty')}
             </span>
           </div>
         )}
@@ -43,7 +46,7 @@ export function TagsContainer({
           className="w-full"
           disabled={disabled}
         >
-          Добавить
+          {t('add-button')}
         </Button>
       </div>
 

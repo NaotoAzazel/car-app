@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts'
 
 import { useGetMonthsSpends } from '@/entities/record'
@@ -21,22 +22,30 @@ import {
 import { ErrorCard } from '../section-cards/error-card'
 import { YearSelect } from '../year-select/year-select'
 
-const chartConfig = {
-  spend: {
-    label: 'Потрачено',
-    color: 'var(--primary)',
-  },
-} satisfies ChartConfig
+export const getChartConfig = (t: (key: string) => string) => {
+  return {
+    spend: {
+      label: t('charts.spend'),
+      color: 'var(--primary)',
+    },
+  } satisfies ChartConfig
+}
 
 interface YearSpendsChartProps {
   year: string | null
 }
 
 export function YearSpendsChart({ year }: YearSpendsChartProps) {
+  const t = useTranslations('reports.year-spends-chart')
+  const tMonths = useTranslations('months')
+
   const [selectedYear, setSelectedYear] = useState<string | null>(year)
 
   const { data, isLoading, isError } = useGetMonthsSpends(Number(selectedYear))
   const isDataMissing = !data?.length || year === null
+
+  const tGlobal = useTranslations()
+  const chartConfig = getChartConfig(tGlobal)
 
   if (isLoading) {
     return <Skeleton className="h-[400px] w-full" />
@@ -46,13 +55,20 @@ export function YearSpendsChart({ year }: YearSpendsChartProps) {
     return <ErrorCard />
   }
 
+  const localizedData = data.map((item) => ({
+    ...item,
+    monthLabel: tMonths(String(item.month)),
+  }))
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>График трат</CardTitle>
+        <CardTitle>{t('card-title')}</CardTitle>
         {!isDataMissing && selectedYear && (
           <>
-            <CardDescription>{selectedYear} год</CardDescription>
+            <CardDescription>
+              {selectedYear} {t('selected-year')}
+            </CardDescription>
             <CardAction>
               <YearSelect
                 selectedYear={selectedYear}
@@ -66,14 +82,14 @@ export function YearSpendsChart({ year }: YearSpendsChartProps) {
       <CardContent>
         {isDataMissing ? (
           <div className="h-[400px] w-full flex justify-center items-center">
-            <p className="text-muted-foreground">Данные не найдены</p>
+            <p className="text-muted-foreground">{t('no-data')}</p>
           </div>
         ) : (
           <ChartContainer
             config={chartConfig}
             className="aspect-auto h-[400px] w-full"
           >
-            <AreaChart data={data}>
+            <AreaChart data={localizedData}>
               <defs>
                 <linearGradient id="fillSpend" x1="0" y1="0" x2="0" y2="1">
                   <stop
@@ -91,7 +107,7 @@ export function YearSpendsChart({ year }: YearSpendsChartProps) {
               <CartesianGrid vertical={false} />
 
               <XAxis
-                dataKey="month"
+                dataKey="monthLabel"
                 tickLine={false}
                 axisLine={false}
                 tickMargin={12}

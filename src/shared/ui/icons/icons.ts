@@ -14,6 +14,7 @@ import {
   Eye,
   EyeOff,
   Gauge,
+  Globe,
   HelpCircle,
   History,
   Loader,
@@ -51,4 +52,5 @@ export const Icons = {
   copy: Copy,
   eye: Eye,
   eyeOff: EyeOff,
+  globe: Globe,
 }

@@ -1,5 +1,7 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
+
 import { useGetRecords } from '@/entities/record'
 import { useIntersection } from '@/shared/lib'
 import { Icons } from '@/shared/ui'
@@ -14,6 +16,8 @@ interface RecordsListProps {
 }
 
 export function RecordsList({ searchValue }: RecordsListProps) {
+  const t = useTranslations('records.list')
+
   const { data, isLoading, isError, isFetchingNextPage, fetchNextPage } =
     useGetRecords(searchValue)
 
@@ -37,15 +41,18 @@ export function RecordsList({ searchValue }: RecordsListProps) {
   }
 
   if (isError) {
-    return <p>error</p>
+    return <p>{t('load-error')}</p>
   }
 
   if (hasNoResults) {
     return (
       <div className="text-muted-foreground text-sm text-center py-4">
-        {searchValue.length > 0
+        {/* {searchValue.length > 0
           ? `Ничего не найдено по запросу «${searchValue}»`
-          : 'Записи не найдено'}
+          : 'Записи не найдено'} */}
+        {searchValue.length > 0
+          ? `${t('no-results-for-query')} «${searchValue}»`
+          : t('no-records-found')}
       </div>
     )
   }
@@ -72,7 +79,7 @@ export function RecordsList({ searchValue }: RecordsListProps) {
           {isFetchingNextPage && (
             <div className="text-muted-foreground flex items-center">
               <Icons.loader className="mr-2 size-4 animate-spin" />
-              <span className="text-sm">Загрузка...</span>
+              <span className="text-sm">{t('loading')}</span>
             </div>
           )}
         </div>

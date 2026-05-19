@@ -14,5 +14,5 @@ export { useGetRecordsCountByMonth } from './use-get-records-count-by-month'
 export { useGetSpendsByMonthYear } from './use-get-spends-by-month-and-year'
 export { useGetSpendsByYear } from './use-get-spends-by-year'
 
-export { recordTagsRu } from './record-tags'
+export { getRecordTagsLabels } from './record-tags'
 export { useGetLatestRecordByTag } from './use-get-latest-record-by-tag'

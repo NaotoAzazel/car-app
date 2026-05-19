@@ -1,4 +1,5 @@
 import { RecordType } from '@prisma/client'
+import { useTranslations } from 'next-intl'
 
 import { Button, Icons, SelectItem, SelectSeparator } from '@/shared/ui'
 
@@ -13,21 +14,23 @@ export function RecordTypeSelectContent({
   isLoading,
   onAddNewType,
 }: RecordTypeSelectContentProps) {
+  const t = useTranslations('maintenance.recordTypeSelect')
+
   const isEmpty = !isLoading && recordTypes?.length === 0
 
   if (isEmpty) {
     return (
       <div className="flex flex-col gap-2 py-3 items-center justify-center text-center">
         <div className="flex gap-1 flex-col">
-          <p className="text-sm font-medium">Типов записей не найдено</p>
+          <p className="text-sm font-medium">{t('types-not-found')}</p>
           <p className="text-xs text-muted-foreground">
-            Добавьте новый тип, чтобы начать создавать записи с ним
+            {t('types-not-found-description')}
           </p>
         </div>
 
         <div className="flex gap-2">
           <Button size="sm" onClick={onAddNewType}>
-            Добавить тип записи
+            {t('add-type')}
           </Button>
         </div>
       </div>
@@ -52,7 +55,7 @@ export function RecordTypeSelectContent({
         size="sm"
       >
         <Icons.circlePlus className="size-4" />
-        Добавить новый тип
+        {t('add-type')}
       </Button>
     </>
   )
