@@ -143,6 +143,10 @@ export async function deleteRecordById(id: Record['id']) {
       where: { recordId: id },
     })
 
+    await tx.recordToAdditionalSpend.deleteMany({
+      where: { recordId: id },
+    })
+
     const deletedRecord = await tx.record.delete({
       where: { id },
     })
